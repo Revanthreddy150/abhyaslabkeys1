@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADITYALABKEYS | HD PDF Live</title>
+    
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getDatabase, ref, set, onValue, push, remove, update } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDAheWdYiiEBUHgbokK7kDPjMEEk7fngYQ",
+            authDomain: "abhyaslabkeys.firebaseapp.com",
+            databaseURL: "https://abhyaslabkeys-default-rtdb.firebaseio.com",
+            projectId: "abhyaslabkeys",
+            storageBucket: "abhyaslabkeys.firebasestorage.app",
+            messagingSenderId: "782150849318",
+            appId: "1:782150849318:web:79710f1e99b32644c567e7",
+            measurementId: "G-K4FM6QY4HY"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        const dbRef = ref(db, 'lab_keys');
+        window.firebaseDB = { db, dbRef, set, onValue, push, remove, update, ref };
+    </script>
+    
+    <style>
+        :root { --primary: #3b82f6; --secondary: #10b981; --text: #1f2937; --bg: #ffffff; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Inter', sans-serif; margin: 0; background: var(--bg); color: var(--text); overflow-x: hidden; }
+
+        .container { padding: 40px 20px; max-width: 800px; margin: 0 auto; }
+        .hero h1 { font-size: 2.8rem; margin: 0; line-height: 1.1; color: var(--primary); }
+        #admin-trigger { color: var(--secondary); cursor: pointer; user-select: none; display: inline-block; padding: 5px; }
+
+        .feature-box { background: #f9fafb; padding: 25px; border-radius: 20px; margin: 25px 0; border: 1px solid #f3f4f6; }
+
+        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin: 30px 0; min-height: 100px; }
+        .card { 
+            background: white; padding: 20px; border-radius: 18px; border: 1px solid #e5e7eb;
+            transition: transform 0.2s, border 0.2s; cursor: pointer; position: relative;
+        }
+        .card.selected { border: 2px solid var(--primary); background: #eff6ff; transform: scale(0.98); }
+        
+        .admin-controls { margin-top: 15px; display: flex; gap: 8px; border-top: 1px solid #eee; padding-top: 12px; }
+        .adm-btn { flex: 1; border: none; padding: 8px; border-radius: 8px; font-weight: 800; cursor: pointer; font-size: 11px; }
+        .edit-btn { background: #dbeafe; color: #1e40af; }
+        .del-btn { background: #fee2e2; color: #b91c1c; }
+
+        .banner { 
+            background: linear-gradient(135deg, #3b82f6, #10b981); 
+            border-radius: 25px; padding: 45px 25px; color: white; 
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            text-align: center; box-shadow: 0 15px 30px rgba(59, 130, 246, 0.2);
+        }
+        #open-btn { 
+            display: none; background: white; color: black; padding: 16px 35px; 
+            border-radius: 14px; border: none; font-weight: 800; margin-top: 25px; 
+            cursor: pointer; width: fit-content; transition: 0.2s;
+        }
+        #open-btn:active { transform: scale(0.95); }
+
+        @media (max-width: 500px) { .grid { grid-template-columns: 1fr; } .hero h1 { font-size: 2.2rem; } }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="hero">
+        <h1>Abhyas<br><span id="admin-trigger">Lab Keys</span></h1>
+        <p style="color:#6b7280; font-weight: 500;">Cloud-Synced HD Repository.</p>
+    </div>
+
+    <div class="feature-box">
+        <ul style="list-style:none; padding:0; margin: 0; font-weight: 600;">
+            <li>✦ Native Browser PDF Rendering</li>
+            <li style="margin: 10px 0;">✦ High Speed & Zoom Support</li>
+            <li>✦ Print & Download Enabled</li>
+        </ul>
+    </div>
+
+    <div id="loading-text" style="text-align:center; color:gray; padding: 20px;">Connecting to Cloud...</div>
+    <div class="grid" id="main-grid"></div>
+
+    <div class="banner">
+        <h2 style="margin:0; font-size: 1.8rem;">View Lab Work</h2>
+        <p id="label" style="font-weight: 500; opacity: 0.9;">Choose a category to start</p>
+        <button id="open-btn" onclick="openPDF()">Open in Browser →</button>
+    </div>
+</div>
+
+<script>
+    let currentData = {};
+    let selectedKey = null;
+    let clickCount = 0;
+    let isAdmin = false;
+
+    // Admin Access Logic
+    document.getElementById('admin-trigger').onclick = () => {
+        clickCount++;
+        if(clickCount === 5) {
+            if(prompt("Admin Password:") === "adcrjy@123") {
+                isAdmin = true;
+                alert("Admin Access Granted.");
+                render();
+            }
+            clickCount = 0;
+        }
+    };
+
+    // Database Sync
+    window.onload = () => {
+        const checkFB = setInterval(() => {
+            if(window.firebaseDB) {
+                clearInterval(checkFB);
+                const { dbRef, onValue } = window.firebaseDB;
+                onValue(dbRef, (snapshot) => {
+                    currentData = snapshot.val() || {};
+                    document.getElementById('loading-text').style.display = 'none';
+                    render();
+                });
+            }
+        }, 100);
+    };
+
+    function render() {
+        const grid = document.getElementById('main-grid');
+        const fragment = document.createDocumentFragment();
+
+        if(isAdmin) {
+            const addCard = document.createElement('div');
+            addCard.className = 'card';
+            addCard.style.cssText = "border:2px dashed #ccc; text-align:center;";
+            addCard.innerHTML = "<strong>+ Add New File</strong>";
+            addCard.onclick = addWindow;
+            fragment.appendChild(addCard);
+        }
+
+        Object.keys(currentData).forEach((key) => {
+            const item = currentData[key];
+            const card = document.createElement('div');
+            card.className = `card ${selectedKey === key ? 'selected' : ''}`;
+            
+            card.onclick = () => { 
+                selectedKey = key; 
+                document.getElementById('open-btn').style.display = 'block'; 
+                document.getElementById('label').innerText = "Selected: " + item.name;
+                document.querySelectorAll('.card').forEach(c => c.classList.remove('selected'));
+                card.classList.add('selected');
+            };
+
+            card.innerHTML = `<strong>${item.name}</strong><p style="font-size:12px; color:var(--primary); font-weight:700; margin-top:5px;">READY TO LOAD</p>`;
+            
+            if(isAdmin) {
+                const controls = document.createElement('div');
+                controls.className = 'admin-controls';
+                controls.innerHTML = `<button class="adm-btn edit-btn">Edit</button><button class="adm-btn del-btn">Delete</button>`;
+                controls.querySelector('.edit-btn').onclick = (e) => { e.stopPropagation(); editWindow(key); };
+                controls.querySelector('.del-btn').onclick = (e) => { e.stopPropagation(); deleteWindow(key); };
+                card.appendChild(controls);
+            }
+            fragment.appendChild(card);
+        });
+
+        grid.innerHTML = '';
+        grid.appendChild(fragment);
+    }
+
+    /**
+     * THE CORE CHANGE:
+     * Instead of rendering manually, we simply point the browser to the PDF link.
+     */
+    function openPDF() {
+        if (!selectedKey) return;
+        const item = currentData[selectedKey];
+        
+        // Opens the PDF link directly in a new tab. 
+        // Modern browsers handle PDFs natively with zoom, search, and rotate.
+        window.open(item.link, '_blank');
+    }
+
+    // Admin Functions
+    function addWindow() {
+        const name = prompt("File Name (e.g., Physics Lab):");
+        const link = prompt("Direct PDF URL:");
+        if(name && link) window.firebaseDB.push(window.firebaseDB.dbRef, { name, link });
+    }
+
+    function editWindow(key) {
+        const n = prompt("New Name:", currentData[key].name);
+        const l = prompt("New Link:", currentData[key].link);
+        if(n && l) window.firebaseDB.update(window.firebaseDB.ref(window.firebaseDB.db, 'lab_keys/' + key), { name: n, link: l });
+    }
+
+    function deleteWindow(key) {
+        if(confirm("Permanently delete this file?")) window.firebaseDB.remove(window.firebaseDB.ref(window.firebaseDB.db, 'lab_keys/' + key));
+    }
+</script>
+
+</body>
+</html>
