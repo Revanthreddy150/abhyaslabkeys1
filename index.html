@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADITYALABKEYS | Cloud Sync</title>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getDatabase, ref, set, onValue, push, remove, update } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDAheWdYiiEBUHgbokK7kDPjMEEk7fngYQ",
+            authDomain: "abhyaslabkeys.firebaseapp.com",
+            databaseURL: "https://abhyaslabkeys-default-rtdb.firebaseio.com",
+            projectId: "abhyaslabkeys",
+            storageBucket: "abhyaslabkeys.firebasestorage.app",
+            messagingSenderId: "782150849318",
+            appId: "1:782150849318:web:79710f1e99b32644c567e7",
+            measurementId: "G-K4FM6QY4HY"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        const dbRef = ref(db, 'lab_keys');
+
+        window.firebaseDB = { db, dbRef, set, onValue, push, remove, update, ref };
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
+    
+    <style>
+        :root { --primary: #3b82f6; --secondary: #10b981; --text: #1f2937; --bg: #ffffff; }
+
+        @keyframes logoPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        body { font-family: 'Inter', sans-serif; margin: 0; background: var(--bg); color: var(--text); overflow-x: hidden; }
+
+        nav { 
+            display: flex; justify-content: center; align-items: center; 
+            padding: 15px 0; background: white; border-bottom: 1px solid #f3f4f6;
+            position: sticky; top: 0; z-index: 1000; height: 60px;
+        }
+        .nav-logo { font-weight: 900; font-size: 1.2rem; letter-spacing: 1px; color: #111; }
+
+        .container { padding: 20px; max-width: 800px; margin: 0 auto; }
+        
+        /* HERO SECTION */
+        .hero h1 { font-size: 2.8rem; margin: 0; line-height: 1.1; color: var(--primary); }
+        #admin-trigger { color: var(--secondary); cursor: pointer; user-select: none; display: inline-block; }
+
+        .feature-box {
+            background: #f9fafb; padding: 25px; border-radius: 20px; margin: 25px 0;
+            border: 1px solid #f3f4f6;
+        }
+
+        /* GRID SYSTEM */
+        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin: 30px 0; }
+        .card { 
+            background: white; padding: 20px; border-radius: 18px; border: 1px solid #e5e7eb;
+            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; position: relative;
+        }
+        .card.selected { border: 2px solid var(--primary); background: #eff6ff; box-shadow: 0 10px 15px rgba(59, 130, 246, 0.1); }
+        
+        /* ADMIN UI */
+        .admin-controls { margin-top: 15px; display: flex; gap: 8px; border-top: 1px solid #eee; padding-top: 12px; }
+        .adm-btn { flex: 1; border: none; padding: 8px; border-radius: 8px; font-weight: 800; cursor: pointer; font-size: 11px; }
+        .edit-btn { background: #dbeafe; color: #1e40af; }
+        .del-btn { background: #fee2e2; color: #b91c1c; }
+
+        /* CENTERED BANNER & BUTTON */
+        .banner { 
+            background: linear-gradient(135deg, #3b82f6, #10b981); 
+            border-radius: 25px; padding: 45px 25px; color: white; 
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            text-align: center; box-shadow: 0 15px 30px rgba(59, 130, 246, 0.2);
+        }
+        #open-btn { 
+            display: none; background: white; color: black; padding: 16px 35px; 
+            border-radius: 14px; border: none; font-weight: 800; margin-top: 25px; 
+            cursor: pointer; width: fit-content; transition: 0.2s;
+        }
+        #open-btn:active { transform: scale(0.95); }
+
+        /* MODAL */
+        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 3000; }
+        .modal-body { background: white; width: 95%; height: 92vh; margin: 2vh auto; border-radius: 25px; display: flex; flex-direction: column; overflow: hidden; }
+        #pdf-viewer { flex: 1; overflow-y: auto; background: #334155; padding: 15px; display: flex; flex-direction: column; align-items: center; }
+        canvas { max-width: 100%; margin-bottom: 15px; border-radius: 10px; box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
+        .modal-footer { padding: 15px; display: flex; gap: 10px; border-top: 1px solid #eee; }
+        .btn-foot { flex: 1; border: none; padding: 16px; border-radius: 14px; font-weight: 800; cursor: pointer; }
+
+        @media (max-width: 500px) { .grid { grid-template-columns: 1fr; } .hero h1 { font-size: 2.2rem; } }
+    </style>
+</head>
+<body>
+
+<nav><div class="nav-logo">ADITYALABKEYS</div></nav>
+
+<div class="container">
+    <div class="hero">
+        <h1>Abhyas<br><span id="admin-trigger">Lab Keys</span></h1>
+        <p style="color:#6b7280; font-weight: 500;">Cloud-Synced Lab Repository.</p>
+    </div>
+
+    <div class="feature-box">
+        <ul style="list-style:none; padding:0; margin: 0; font-weight: 600;">
+            <li style="margin-bottom: 10px;">✦ Live 24/7 Monitoring to reduce errors</li>
+            <li style="margin-bottom: 10px;">✦ Smart PDF Rendering</li>
+            <li>✦ Fast and lite version</li>
+        </ul>
+    </div>
+
+    <h3>Programs</h3>
+    <div id="loading-text" style="text-align:center; color:gray; padding: 20px;">Connecting to server...</div>
+    <div class="grid" id="main-grid"></div>
+
+    <div class="banner">
+        <h2 style="margin:0; font-size: 1.8rem;">View Lab Work</h2>
+        <p id="label" style="font-weight: 500; opacity: 0.9;">Select a category to continue</p>
+        <button id="open-btn" onclick="openPDF()">Open Program →</button>
+    </div>
+</div>
+
+<div id="pdf-modal" class="modal">
+    <div class="modal-body" id="modal-container">
+        <div id="pdf-viewer"></div>
+        <div class="modal-footer">
+            <button class="btn-foot" style="background:#f3f4f6;" onclick="toggleFS()">⛶ Full Screen</button>
+            <button class="btn-foot" style="background:#fee2e2; color:#ef4444;" onclick="closePDF()">Close</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let currentData = {};
+    let selectedKey = null;
+    let clickCount = 0;
+    let isAdmin = false;
+
+    // --- FIX: ADMIN TRIGGER ON "Lab Keys" TEXT ---
+    document.getElementById('admin-trigger').onclick = () => {
+        clickCount++;
+        if(clickCount === 5) {
+            if(prompt("Admin Password:") === "adcrjy@123") {
+                isAdmin = true;
+                alert("Admin Access Granted.");
+                render();
+            }
+            clickCount = 0;
+        }
+    };
+
+    // --- FIREBASE SYNC ---
+    window.onload = () => {
+        const checkFB = setInterval(() => {
+            if(window.firebaseDB) {
+                clearInterval(checkFB);
+                const { dbRef, onValue } = window.firebaseDB;
+                onValue(dbRef, (snapshot) => {
+                    currentData = snapshot.val() || {};
+                    document.getElementById('loading-text').style.display = 'none';
+                    render();
+                });
+            }
+        }, 100);
+    };
+
+    function render() {
+        const grid = document.getElementById('main-grid');
+        grid.innerHTML = isAdmin ? `<div class="card" onclick="addWindow()" style="border:2px dashed #ccc; text-align:center; font-weight:bold; color:#666;">+ Add New Window</div>` : '';
+        
+        Object.keys(currentData).forEach((key) => {
+            const item = currentData[key];
+            const card = document.createElement('div');
+            card.className = `card ${selectedKey === key ? 'selected' : ''}`;
+            card.onclick = () => {
+                selectedKey = key;
+                document.getElementById('open-btn').style.display = 'block';
+                document.getElementById('label').innerText = "Category Selected: " + item.name;
+                render();
+            };
+            
+            let html = `<strong style="font-size:1.1rem;">${item.name}</strong><p style="margin:8px 0 0; font-size:12px; color:var(--primary); font-weight:700;">VIEW FILE</p>`;
+            
+            if(isAdmin) {
+                html += `<div class="admin-controls">
+                            <button class="adm-btn edit-btn" onclick="editWindow('${key}', event)">Edit</button>
+                            <button class="adm-btn del-btn" onclick="deleteWindow('${key}', event)">Delete</button>
+                         </div>`;
+            }
+            card.innerHTML = html;
+            grid.appendChild(card);
+        });
+    }
+
+    // --- DATABASE ACTIONS ---
+    function addWindow() {
+        const name = prompt("Window Name:");
+        const link = prompt("PDF Link:");
+        if(name && link) {
+            const { dbRef, push } = window.firebaseDB;
+            push(dbRef, { name, link });
+        }
+    }
+
+    function editWindow(key, e) {
+        e.stopPropagation();
+        const newName = prompt("Update Name:", currentData[key].name);
+        const newLink = prompt("Update Link:", currentData[key].link);
+        if(newName && newLink) {
+            const { db, ref, update } = window.firebaseDB;
+            update(ref(db, 'lab_keys/' + key), { name: newName, link: newLink });
+        }
+    }
+
+    function deleteWindow(key, e) {
+        e.stopPropagation();
+        if(confirm("Permanently delete from cloud?")) {
+            const { db, ref, remove } = window.firebaseDB;
+            remove(ref(db, 'lab_keys/' + key));
+        }
+    }
+
+    // --- PDF ENGINE ---
+    async function openPDF() {
+        const item = currentData[selectedKey];
+        document.getElementById('pdf-modal').style.display = 'block';
+        const view = document.getElementById('pdf-viewer');
+        view.innerHTML = '<p style="color:white; font-weight:bold;">Initializing PDF Stream...</p>';
+
+        try {
+            const doc = await pdfjsLib.getDocument(item.link).promise;
+            view.innerHTML = '';
+            for(let n=1; n<=doc.numPages; n++) {
+                const page = await doc.getPage(n);
+                const vp = page.getViewport({scale: 1.5});
+                const canvas = document.createElement('canvas');
+                canvas.width = vp.width; canvas.height = vp.height;
+                await page.render({canvasContext: canvas.getContext('2d'), viewport: vp}).promise;
+                view.appendChild(canvas);
+            }
+        } catch (err) { view.innerHTML = '<p style="color:red; font-weight:bold;">Error loading PDF.</p>'; }
+    }
+
+    function toggleFS() {
+        const el = document.getElementById('modal-container');
+        if (!document.fullscreenElement) el.requestFullscreen();
+        else document.exitFullscreen();
+    }
+
+    function closePDF() { document.getElementById('pdf-modal').style.display = 'none'; }
+</script>
+
+</body>
+</html>
+
