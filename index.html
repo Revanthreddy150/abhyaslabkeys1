@@ -31,13 +31,8 @@
     
     <style>
         :root { --primary: #3b82f6; --secondary: #10b981; --text: #1f2937; --bg: #ffffff; }
-        
-        /* Smooth scrolling for the entire document */
         html { scroll-behavior: smooth; }
-
         body { font-family: 'Inter', sans-serif; margin: 0; background: var(--bg); color: var(--text); overflow-x: hidden; }
-
-        /* Navigation Header Removed */
 
         .container { padding: 40px 20px; max-width: 800px; margin: 0 auto; }
         .hero h1 { font-size: 2.8rem; margin: 0; line-height: 1.1; color: var(--primary); }
@@ -45,12 +40,13 @@
 
         .feature-box { background: #f9fafb; padding: 25px; border-radius: 20px; margin: 25px 0; border: 1px solid #f3f4f6; }
 
-        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin: 30px 0; }
+        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin: 30px 0; min-height: 100px; }
         .card { 
             background: white; padding: 20px; border-radius: 18px; border: 1px solid #e5e7eb;
-            transition: 0.3s; cursor: pointer; position: relative;
+            transition: transform 0.2s, border 0.2s; cursor: pointer; position: relative;
+            will-change: transform;
         }
-        .card.selected { border: 2px solid var(--primary); background: #eff6ff; }
+        .card.selected { border: 2px solid var(--primary); background: #eff6ff; transform: scale(0.98); }
         
         .admin-controls { margin-top: 15px; display: flex; gap: 8px; border-top: 1px solid #eee; padding-top: 12px; }
         .adm-btn { flex: 1; border: none; padding: 8px; border-radius: 8px; font-weight: 800; cursor: pointer; font-size: 11px; }
@@ -69,14 +65,11 @@
             cursor: pointer; width: fit-content;
         }
 
-        /* MODAL & HD PDF VIEW */
         .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 3000; }
         .modal-body { background: #334155; width: 100%; height: 100vh; display: flex; flex-direction: column; overflow: hidden; position: relative; }
         
-        /* Floating Minimal X Button */
         .close-container { position: absolute; top: 15px; right: 20px; z-index: 4000; }
-        .btn-close-minimal { background: transparent; color: #ffffff; border: none; font-size: 38px; font-weight: 200; cursor: pointer; padding: 10px; line-height: 1; opacity: 0.7; transition: 0.3s; }
-        .btn-close-minimal:hover { opacity: 1; color: #ef4444; }
+        .btn-close-minimal { background: transparent; color: #ffffff; border: none; font-size: 38px; font-weight: 200; cursor: pointer; padding: 10px; opacity: 0.7; transition: 0.3s; }
 
         #pdf-viewer { 
             flex: 1; overflow-y: auto; 
@@ -90,6 +83,7 @@
             margin-bottom: 20px;
             background: white;
             box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            contain: layout paint; /* Optimization: Keeps rendering local to the page */
         }
 
         canvas { display: block; width: 100%; height: auto; }
@@ -118,13 +112,13 @@
 
     <div class="feature-box">
         <ul style="list-style:none; padding:0; margin: 0; font-weight: 600;">
-            <li style="margin-bottom: 10px;">✦ Ultra-Sharp HD Text Rendering</li>
-            <li style="margin-bottom: 10px;">✦ Full Screen & Copy Support</li>
+            <li>✦ Ultra-Sharp HD Text Rendering</li>
+            <li style="margin: 10px 0;">✦ Full Screen & Copy Support</li>
             <li>✦ Fluid Smooth-Scroll Experience</li>
         </ul>
     </div>
 
-    <div id="loading-text" style="text-align:center; color:gray; padding: 20px;">Connecting to secure server...</div>
+    <div id="loading-text" style="text-align:center; color:gray; padding: 20px;">Connecting...</div>
     <div class="grid" id="main-grid"></div>
 
     <div class="banner">
@@ -139,7 +133,6 @@
         <div class="close-container">
             <button class="btn-close-minimal" onclick="closePDF()">✕</button>
         </div>
-
         <div id="pdf-viewer"></div>
         <div class="modal-footer">
             <button class="btn-foot" style="background:#475569; color:white;" onclick="toggleFS()">⛶ Full Screen</button>
@@ -167,7 +160,7 @@
         }
     };
 
-    // Real-time Database Init
+    // Database Initialization
     window.onload = () => {
         const checkFB = setInterval(() => {
             if(window.firebaseDB) {
@@ -182,26 +175,54 @@
         }, 100);
     };
 
+    // Optimized Render (Uses DocumentFragment to prevent UI freezing)
     function render() {
         const grid = document.getElementById('main-grid');
-        grid.innerHTML = isAdmin ? `<div class="card" onclick="addWindow()" style="border:2px dashed #ccc; text-align:center;">+ Add Window</div>` : '';
+        const fragment = document.createDocumentFragment();
+
+        if(isAdmin) {
+            const addCard = document.createElement('div');
+            addCard.className = 'card';
+            addCard.style.cssText = "border:2px dashed #ccc; text-align:center;";
+            addCard.innerHTML = "<strong>+ Add Window</strong>";
+            addCard.onclick = addWindow;
+            fragment.appendChild(addCard);
+        }
+
         Object.keys(currentData).forEach((key) => {
             const item = currentData[key];
             const card = document.createElement('div');
             card.className = `card ${selectedKey === key ? 'selected' : ''}`;
+            card.id = `card-${key}`;
+            
             card.onclick = () => { 
                 selectedKey = key; 
                 document.getElementById('open-btn').style.display = 'block'; 
                 document.getElementById('label').innerText = "Selected: " + item.name;
-                render(); 
+                
+                // Visual feedback without full re-render
+                document.querySelectorAll('.card').forEach(c => c.classList.remove('selected'));
+                card.classList.add('selected');
             };
+
             card.innerHTML = `<strong>${item.name}</strong><p style="font-size:12px; color:var(--primary); font-weight:700; margin-top:5px;">VIEW FILE</p>`;
-            if(isAdmin) card.innerHTML += `<div class="admin-controls"><button class="adm-btn edit-btn" onclick="editWindow('${key}', event)">Edit</button><button class="adm-btn del-btn" onclick="deleteWindow('${key}', event)">Delete</button></div>`;
-            grid.appendChild(card);
+            
+            if(isAdmin) {
+                const controls = document.createElement('div');
+                controls.className = 'admin-controls';
+                controls.innerHTML = `<button class="adm-btn edit-btn">Edit</button><button class="adm-btn del-btn">Delete</button>`;
+                controls.querySelector('.edit-btn').onclick = (e) => { e.stopPropagation(); editWindow(key); };
+                controls.querySelector('.del-btn').onclick = (e) => { e.stopPropagation(); deleteWindow(key); };
+                card.appendChild(controls);
+            }
+            fragment.appendChild(card);
         });
+
+        grid.innerHTML = '';
+        grid.appendChild(fragment);
     }
 
-    // HIGH QUALITY PDF RENDERING
+    // High Quality PDF Rendering with "Breathing Room" for Scroll
     async function openPDF() {
         const item = currentData[selectedKey];
         const modal = document.getElementById('pdf-modal');
@@ -209,19 +230,22 @@
         
         modal.style.display = 'block';
         document.body.style.overflow = 'hidden'; 
-        view.innerHTML = '<p style="color:white; padding:20px;">Rendering HD Pages...</p>';
+        view.innerHTML = '<p style="color:white; padding:20px;">Loading HD Pages...</p>';
 
         try {
             const doc = await pdfjsLib.getDocument(item.link).promise;
-            view.innerHTML = '';
+            view.innerHTML = ''; // Clear loading text
 
             const viewerWidth = view.clientWidth;
             const outputScale = window.devicePixelRatio || 2; 
 
             for(let n=1; n<=doc.numPages; n++) {
+                // Pause every page for 50ms to allow browser to handle touch/scroll
+                await new Promise(r => setTimeout(r, 50));
+
                 const page = await doc.getPage(n);
                 const unscaledViewport = page.getViewport({scale: 1});
-                const fitScale = (viewerWidth - 20) / unscaledViewport.width;
+                const fitScale = (viewerWidth - 30) / unscaledViewport.width;
                 const viewport = page.getViewport({scale: fitScale});
 
                 const container = document.createElement('div');
@@ -237,41 +261,29 @@
                 canvas.style.width = viewport.width + "px";
                 canvas.style.height = viewport.height + "px";
 
-                const transform = [outputScale, 0, 0, outputScale, 0, 0];
-                const textLayerDiv = document.createElement('div');
-                textLayerDiv.className = 'textLayer';
-                
                 container.appendChild(canvas);
-                container.appendChild(textLayerDiv);
                 view.appendChild(container);
 
                 await page.render({
                     canvasContext: context, 
                     viewport: viewport,
-                    transform: transform
+                    transform: [outputScale, 0, 0, outputScale, 0, 0]
                 }).promise;
 
+                // Add text layer for copy-paste after image renders
                 const textContent = await page.getTextContent();
-                pdfjsLib.renderTextLayer({
-                    textContent: textContent,
-                    container: textLayerDiv,
-                    viewport: viewport,
-                    textDivs: []
-                });
+                const textLayerDiv = document.createElement('div');
+                textLayerDiv.className = 'textLayer';
+                container.appendChild(textLayerDiv);
+                pdfjsLib.renderTextLayer({ textContent, container: textLayerDiv, viewport, textDivs: [] });
             }
-        } catch (err) { view.innerHTML = '<p style="color:red; padding:20px;">Quality rendering failed. Link may be broken.</p>'; }
+        } catch (err) { view.innerHTML = '<p style="color:red; padding:20px;">Render failed. Link may be broken.</p>'; }
     }
 
-    // FULLSCREEN & UTILS
     function toggleFS() {
         const target = document.getElementById('fullscreen-target');
-        if (!document.fullscreenElement) {
-            target.requestFullscreen().catch(err => {
-                alert("Fullscreen not supported in this browser/frame.");
-            });
-        } else {
-            document.exitFullscreen();
-        }
+        if (!document.fullscreenElement) target.requestFullscreen().catch(() => alert("Not supported."));
+        else document.exitFullscreen();
     }
 
     function addWindow() {
@@ -280,16 +292,14 @@
         if(name && link) window.firebaseDB.push(window.firebaseDB.dbRef, { name, link });
     }
 
-    function editWindow(key, e) {
-        e.stopPropagation();
+    function editWindow(key) {
         const n = prompt("New Name:", currentData[key].name);
         const l = prompt("New Link:", currentData[key].link);
         if(n && l) window.firebaseDB.update(window.firebaseDB.ref(window.firebaseDB.db, 'lab_keys/' + key), { name: n, link: l });
     }
 
-    function deleteWindow(key, e) {
-        e.stopPropagation();
-        if(confirm("Permanently delete from Cloud?")) window.firebaseDB.remove(window.firebaseDB.ref(window.firebaseDB.db, 'lab_keys/' + key));
+    function deleteWindow(key) {
+        if(confirm("Delete from Cloud?")) window.firebaseDB.remove(window.firebaseDB.ref(window.firebaseDB.db, 'lab_keys/' + key));
     }
 
     function closePDF() { 
