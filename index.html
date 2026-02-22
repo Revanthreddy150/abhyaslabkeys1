@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ADITYALABKEYS | Cloud Sync</title>
+    <title>ADITYALABKEYS | HD PDF Live</title>
+    
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getDatabase, ref, set, onValue, push, remove, update } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
@@ -22,21 +23,14 @@
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
         const dbRef = ref(db, 'lab_keys');
-
         window.firebaseDB = { db, dbRef, set, onValue, push, remove, update, ref };
     </script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf_viewer.min.css">
     
     <style>
         :root { --primary: #3b82f6; --secondary: #10b981; --text: #1f2937; --bg: #ffffff; }
-
-        @keyframes logoPulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-
         body { font-family: 'Inter', sans-serif; margin: 0; background: var(--bg); color: var(--text); overflow-x: hidden; }
 
         nav { 
@@ -47,31 +41,23 @@
         .nav-logo { font-weight: 900; font-size: 1.2rem; letter-spacing: 1px; color: #111; }
 
         .container { padding: 20px; max-width: 800px; margin: 0 auto; }
-        
-        /* HERO SECTION */
         .hero h1 { font-size: 2.8rem; margin: 0; line-height: 1.1; color: var(--primary); }
-        #admin-trigger { color: var(--secondary); cursor: pointer; user-select: none; display: inline-block; }
+        #admin-trigger { color: var(--secondary); cursor: pointer; user-select: none; display: inline-block; padding: 5px; }
 
-        .feature-box {
-            background: #f9fafb; padding: 25px; border-radius: 20px; margin: 25px 0;
-            border: 1px solid #f3f4f6;
-        }
+        .feature-box { background: #f9fafb; padding: 25px; border-radius: 20px; margin: 25px 0; border: 1px solid #f3f4f6; }
 
-        /* GRID SYSTEM */
         .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin: 30px 0; }
         .card { 
             background: white; padding: 20px; border-radius: 18px; border: 1px solid #e5e7eb;
-            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; position: relative;
+            transition: 0.3s; cursor: pointer; position: relative;
         }
-        .card.selected { border: 2px solid var(--primary); background: #eff6ff; box-shadow: 0 10px 15px rgba(59, 130, 246, 0.1); }
+        .card.selected { border: 2px solid var(--primary); background: #eff6ff; }
         
-        /* ADMIN UI */
         .admin-controls { margin-top: 15px; display: flex; gap: 8px; border-top: 1px solid #eee; padding-top: 12px; }
         .adm-btn { flex: 1; border: none; padding: 8px; border-radius: 8px; font-weight: 800; cursor: pointer; font-size: 11px; }
         .edit-btn { background: #dbeafe; color: #1e40af; }
         .del-btn { background: #fee2e2; color: #b91c1c; }
 
-        /* CENTERED BANNER & BUTTON */
         .banner { 
             background: linear-gradient(135deg, #3b82f6, #10b981); 
             border-radius: 25px; padding: 45px 25px; color: white; 
@@ -81,17 +67,38 @@
         #open-btn { 
             display: none; background: white; color: black; padding: 16px 35px; 
             border-radius: 14px; border: none; font-weight: 800; margin-top: 25px; 
-            cursor: pointer; width: fit-content; transition: 0.2s;
+            cursor: pointer; width: fit-content;
         }
-        #open-btn:active { transform: scale(0.95); }
 
-        /* MODAL */
+        /* MODAL & HD PDF VIEW */
         .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 3000; }
-        .modal-body { background: white; width: 95%; height: 92vh; margin: 2vh auto; border-radius: 25px; display: flex; flex-direction: column; overflow: hidden; }
-        #pdf-viewer { flex: 1; overflow-y: auto; background: #334155; padding: 15px; display: flex; flex-direction: column; align-items: center; }
-        canvas { max-width: 100%; margin-bottom: 15px; border-radius: 10px; box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
-        .modal-footer { padding: 15px; display: flex; gap: 10px; border-top: 1px solid #eee; }
-        .btn-foot { flex: 1; border: none; padding: 16px; border-radius: 14px; font-weight: 800; cursor: pointer; }
+        .modal-body { background: #334155; width: 100%; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+        
+        #pdf-viewer { 
+            flex: 1; overflow-y: auto; 
+            display: flex; flex-direction: column; align-items: center;
+            padding: 10px 0; scroll-behavior: smooth;
+        }
+
+        .page-container {
+            position: relative;
+            margin-bottom: 20px;
+            background: white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+        }
+
+        canvas { display: block; width: 100%; height: auto; }
+
+        .textLayer {
+            position: absolute;
+            left: 0; top: 0; right: 0; bottom: 0;
+            overflow: hidden;
+            opacity: 0.2;
+            line-height: 1.0;
+        }
+
+        .modal-footer { padding: 12px; display: flex; gap: 10px; border-top: 1px solid #444; background: #1e293b; }
+        .btn-foot { flex: 1; border: none; padding: 14px; border-radius: 10px; font-weight: 800; cursor: pointer; }
 
         @media (max-width: 500px) { .grid { grid-template-columns: 1fr; } .hero h1 { font-size: 2.2rem; } }
     </style>
@@ -103,34 +110,33 @@
 <div class="container">
     <div class="hero">
         <h1>Abhyas<br><span id="admin-trigger">Lab Keys</span></h1>
-        <p style="color:#6b7280; font-weight: 500;">Cloud-Synced Lab Repository.</p>
+        <p style="color:#6b7280; font-weight: 500;">Cloud-Synced HD Repository.</p>
     </div>
 
     <div class="feature-box">
         <ul style="list-style:none; padding:0; margin: 0; font-weight: 600;">
-            <li style="margin-bottom: 10px;">✦ Live 24/7 Monitoring to reduce errors</li>
-            <li style="margin-bottom: 10px;">✦ Smart PDF Rendering</li>
-            <li>✦ Fast and lite version</li>
+            <li style="margin-bottom: 10px;">✦ Ultra-Sharp HD Text Rendering</li>
+            <li style="margin-bottom: 10px;">✦ Full Screen & Copy Support</li>
+            <li>✦ Dynamic Width Auto-Fit</li>
         </ul>
     </div>
 
-    <h3>Programs</h3>
-    <div id="loading-text" style="text-align:center; color:gray; padding: 20px;">Connecting to server...</div>
+    <div id="loading-text" style="text-align:center; color:gray; padding: 20px;">Connecting to secure server...</div>
     <div class="grid" id="main-grid"></div>
 
     <div class="banner">
         <h2 style="margin:0; font-size: 1.8rem;">View Lab Work</h2>
-        <p id="label" style="font-weight: 500; opacity: 0.9;">Select a category to continue</p>
+        <p id="label" style="font-weight: 500; opacity: 0.9;">Choose a category to start</p>
         <button id="open-btn" onclick="openPDF()">Open Program →</button>
     </div>
 </div>
 
 <div id="pdf-modal" class="modal">
-    <div class="modal-body" id="modal-container">
+    <div class="modal-body" id="fullscreen-target">
         <div id="pdf-viewer"></div>
         <div class="modal-footer">
-            <button class="btn-foot" style="background:#f3f4f6;" onclick="toggleFS()">⛶ Full Screen</button>
-            <button class="btn-foot" style="background:#fee2e2; color:#ef4444;" onclick="closePDF()">Close</button>
+            <button class="btn-foot" style="background:#475569; color:white;" onclick="toggleFS()">⛶ Full Screen</button>
+            <button class="btn-foot" style="background:#ef4444; color:white;" onclick="closePDF()">Close</button>
         </div>
     </div>
 </div>
@@ -141,7 +147,7 @@
     let clickCount = 0;
     let isAdmin = false;
 
-    // --- FIX: ADMIN TRIGGER ON "Lab Keys" TEXT ---
+    // Admin Access
     document.getElementById('admin-trigger').onclick = () => {
         clickCount++;
         if(clickCount === 5) {
@@ -154,7 +160,7 @@
         }
     };
 
-    // --- FIREBASE SYNC ---
+    // Real-time Database Init
     window.onload = () => {
         const checkFB = setInterval(() => {
             if(window.firebaseDB) {
@@ -171,90 +177,125 @@
 
     function render() {
         const grid = document.getElementById('main-grid');
-        grid.innerHTML = isAdmin ? `<div class="card" onclick="addWindow()" style="border:2px dashed #ccc; text-align:center; font-weight:bold; color:#666;">+ Add New Window</div>` : '';
-        
+        grid.innerHTML = isAdmin ? `<div class="card" onclick="addWindow()" style="border:2px dashed #ccc; text-align:center;">+ Add Window</div>` : '';
         Object.keys(currentData).forEach((key) => {
             const item = currentData[key];
             const card = document.createElement('div');
             card.className = `card ${selectedKey === key ? 'selected' : ''}`;
-            card.onclick = () => {
-                selectedKey = key;
-                document.getElementById('open-btn').style.display = 'block';
-                document.getElementById('label').innerText = "Category Selected: " + item.name;
-                render();
+            card.onclick = () => { 
+                selectedKey = key; 
+                document.getElementById('open-btn').style.display = 'block'; 
+                document.getElementById('label').innerText = "Selected: " + item.name;
+                render(); 
             };
-            
-            let html = `<strong style="font-size:1.1rem;">${item.name}</strong><p style="margin:8px 0 0; font-size:12px; color:var(--primary); font-weight:700;">VIEW FILE</p>`;
-            
-            if(isAdmin) {
-                html += `<div class="admin-controls">
-                            <button class="adm-btn edit-btn" onclick="editWindow('${key}', event)">Edit</button>
-                            <button class="adm-btn del-btn" onclick="deleteWindow('${key}', event)">Delete</button>
-                         </div>`;
-            }
-            card.innerHTML = html;
+            card.innerHTML = `<strong>${item.name}</strong><p style="font-size:12px; color:var(--primary); font-weight:700; margin-top:5px;">VIEW FILE</p>`;
+            if(isAdmin) card.innerHTML += `<div class="admin-controls"><button class="adm-btn edit-btn" onclick="editWindow('${key}', event)">Edit</button><button class="adm-btn del-btn" onclick="deleteWindow('${key}', event)">Delete</button></div>`;
             grid.appendChild(card);
         });
     }
 
-    // --- DATABASE ACTIONS ---
-    function addWindow() {
-        const name = prompt("Window Name:");
-        const link = prompt("PDF Link:");
-        if(name && link) {
-            const { dbRef, push } = window.firebaseDB;
-            push(dbRef, { name, link });
-        }
-    }
-
-    function editWindow(key, e) {
-        e.stopPropagation();
-        const newName = prompt("Update Name:", currentData[key].name);
-        const newLink = prompt("Update Link:", currentData[key].link);
-        if(newName && newLink) {
-            const { db, ref, update } = window.firebaseDB;
-            update(ref(db, 'lab_keys/' + key), { name: newName, link: newLink });
-        }
-    }
-
-    function deleteWindow(key, e) {
-        e.stopPropagation();
-        if(confirm("Permanently delete from cloud?")) {
-            const { db, ref, remove } = window.firebaseDB;
-            remove(ref(db, 'lab_keys/' + key));
-        }
-    }
-
-    // --- PDF ENGINE ---
+    // HIGH QUALITY PDF RENDERING
     async function openPDF() {
         const item = currentData[selectedKey];
-        document.getElementById('pdf-modal').style.display = 'block';
+        const modal = document.getElementById('pdf-modal');
         const view = document.getElementById('pdf-viewer');
-        view.innerHTML = '<p style="color:white; font-weight:bold;">Initializing PDF Stream...</p>';
+        
+        modal.style.display = 'block';
+        view.innerHTML = '<p style="color:white; padding:20px;">Rendering HD Pages...</p>';
 
         try {
             const doc = await pdfjsLib.getDocument(item.link).promise;
             view.innerHTML = '';
+
+            const viewerWidth = view.clientWidth;
+            // Higher output scale for sharpness (HD fix)
+            const outputScale = window.devicePixelRatio || 2; 
+
             for(let n=1; n<=doc.numPages; n++) {
                 const page = await doc.getPage(n);
-                const vp = page.getViewport({scale: 1.5});
+                
+                // Calculate scale to fit width
+                const unscaledViewport = page.getViewport({scale: 1});
+                const fitScale = viewerWidth / unscaledViewport.width;
+                const viewport = page.getViewport({scale: fitScale});
+
+                const container = document.createElement('div');
+                container.className = 'page-container';
+                container.style.width = viewport.width + 'px';
+                container.style.height = viewport.height + 'px';
+
                 const canvas = document.createElement('canvas');
-                canvas.width = vp.width; canvas.height = vp.height;
-                await page.render({canvasContext: canvas.getContext('2d'), viewport: vp}).promise;
-                view.appendChild(canvas);
+                const context = canvas.getContext('2d');
+
+                // Set canvas internal resolution higher than display size for HD quality
+                canvas.width = Math.floor(viewport.width * outputScale);
+                canvas.height = Math.floor(viewport.height * outputScale);
+                canvas.style.width = viewport.width + "px";
+                canvas.style.height = viewport.height + "px";
+
+                const transform = [outputScale, 0, 0, outputScale, 0, 0];
+
+                const textLayerDiv = document.createElement('div');
+                textLayerDiv.className = 'textLayer';
+                
+                container.appendChild(canvas);
+                container.appendChild(textLayerDiv);
+                view.appendChild(container);
+
+                // Render with HD transform
+                await page.render({
+                    canvasContext: context, 
+                    viewport: viewport,
+                    transform: transform
+                }).promise;
+
+                // Text Layer for selection
+                const textContent = await page.getTextContent();
+                pdfjsLib.renderTextLayer({
+                    textContent: textContent,
+                    container: textLayerDiv,
+                    viewport: viewport,
+                    textDivs: []
+                });
             }
-        } catch (err) { view.innerHTML = '<p style="color:red; font-weight:bold;">Error loading PDF.</p>'; }
+        } catch (err) { view.innerHTML = '<p style="color:red; padding:20px;">Quality rendering failed. Link may be broken.</p>'; }
     }
 
+    // FULLSCREEN & UTILS
     function toggleFS() {
-        const el = document.getElementById('modal-container');
-        if (!document.fullscreenElement) el.requestFullscreen();
-        else document.exitFullscreen();
+        const target = document.getElementById('fullscreen-target');
+        if (!document.fullscreenElement) {
+            target.requestFullscreen().catch(err => {
+                alert("Fullscreen not supported in this browser/frame.");
+            });
+        } else {
+            document.exitFullscreen();
+        }
     }
 
-    function closePDF() { document.getElementById('pdf-modal').style.display = 'none'; }
+    function addWindow() {
+        const name = prompt("Name:");
+        const link = prompt("Direct PDF Link:");
+        if(name && link) window.firebaseDB.push(window.firebaseDB.dbRef, { name, link });
+    }
+
+    function editWindow(key, e) {
+        e.stopPropagation();
+        const n = prompt("New Name:", currentData[key].name);
+        const l = prompt("New Link:", currentData[key].link);
+        if(n && l) window.firebaseDB.update(window.firebaseDB.ref(window.firebaseDB.db, 'lab_keys/' + key), { name: n, link: l });
+    }
+
+    function deleteWindow(key, e) {
+        e.stopPropagation();
+        if(confirm("Permanently delete from Cloud?")) window.firebaseDB.remove(window.firebaseDB.ref(window.firebaseDB.db, 'lab_keys/' + key));
+    }
+
+    function closePDF() { 
+        if (document.fullscreenElement) document.exitFullscreen();
+        document.getElementById('pdf-modal').style.display = 'none'; 
+    }
 </script>
 
 </body>
 </html>
-
