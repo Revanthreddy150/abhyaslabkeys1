@@ -1,128 +1,82 @@
+// admin-logic.js
 import { db, ref, set, onValue, push, remove, update, get } from './firebase-config.js';
 
-// --- INITIAL STATE & CONFIG ---
+// Admin State
 window.isAdmin = false;
 window.dbPasswords = { main: "adcrjylab@123", vault: "admin@123" };
 let clickCount = 0;
 
-// Export DB tools
+// Export DB tools for the main app
 window.firebaseDB = { db, dbRef: ref(db, 'lab_keys'), backupRef: ref(db, 'backups'), set, onValue, push, remove, update, ref, get };
 
-// --- STYLING (Add this to your CSS file or a <style> tag) ---
-const style = document.createElement('style');
-style.innerHTML = `
-    .card {
-        position: relative; /* Essential for the image positioning */
-        background: #fff;
-        border: 1px solid #e0e0e0;
-        border-radius: 15px;
-        padding: 20px;
-        width: 350px;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-        font-family: sans-serif;
-    }
-    .card-image {
-        position: absolute;
-        top: 15px;
-        right: 15px;
-        width: 80px;  /* Adjust size as needed */
-        height: 80px;
-        border-radius: 50%; /* Makes it circular like your drawing area */
-        object-fit: cover;
-        border: 2px solid #f0f0f0;
-        display: block;
-    }
-    .card-title { font-size: 1.2rem; margin: 0 0 10px 0; color: #333; }
-    .view-repo { color: #00a884; font-weight: bold; text-decoration: none; font-size: 0.9rem; cursor: pointer; }
-    .btn-group { display: flex; gap: 10px; margin-top: 20px; border-top: 1px solid #eee; padding-top: 15px; }
-    .btn { flex: 1; border: none; padding: 10px; border-radius: 8px; font-weight: bold; cursor: pointer; }
-    .edit-btn { background: #e3f2fd; color: #1976d2; }
-    .del-btn { background: #ffebee; color: #c62828; }
-`;
-document.head.appendChild(style);
-
-// --- CORE LOGIC ---
-
-// Listen for password changes
-onValue(ref(db, 'passwords'), (ps) => { 
-    if(ps.exists()) window.dbPasswords = ps.val(); 
+// Listen for password changes from DB
+onValue(ref(db, 'passwords'), (ps) => { 
+    if(ps.exists()) window.dbPasswords = ps.val(); 
 });
 
-// Admin Login Trigger (Click title 5 times)
+// Admin Login Trigger
 window.handleAdminTrigger = () => {
-    clickCount++;
-    if(clickCount === 5) {
-        if(prompt("Password:") === window.dbPasswords.main) {
-            window.isAdmin = true;
-            const tools = document.getElementById('admin-main-tools');
-            if(tools) tools.style.display = 'block';
-            window.showMsg("Logged in as Admin");
-            window.render(); 
-        }
-        clickCount = 0;
-    }
+    clickCount++;
+    if(clickCount === 5) {
+        if(prompt("Password:") === window.dbPasswords.main) {
+            window.isAdmin = true;
+            document.getElementById('admin-main-tools').style.display = 'block';
+            window.showMsg("Logged in as Admin");
+            window.render(); // Re-render to show admin buttons
+        }
+        clickCount = 0;
+    }
 };
 
-// Function to Render the Card with the Image
-window.render = () => {
-    const container = document.getElementById('app-container');
-    onValue(window.firebaseDB.dbRef, (snapshot) => {
-        const data = snapshot.val();
-        if(!data) return;
-
-        container.innerHTML = `
-            <div class="card">
-                ${data.imageUrl ? `<img src="${data.imageUrl}" class="card-image" alt="Repo Icon">` : ''}
-                
-                <h2 class="card-title" onclick="handleAdminTrigger()">${data.title || 'Python Lo Functionss'}</h2>
-                <div class="view-repo">VIEW REPOSITORY</div>
-                
-                ${window.isAdmin ? `
-                    <div class="btn-group">
-                        <button class="btn edit-btn" onclick="editCard()">Edit</button>
-                        <button class="btn del-btn" onclick="deleteCard()">Delete</button>
-                    </div>
-                ` : ''}
-            </div>
-        `;
-    });
+window.openSecureData = () => {
+    if(prompt("2nd Step Password:") === window.dbPasswords.vault) {
+        document.getElementById('secure-modal').style.display = 'block';
+        window.loadBackups();
+    } else alert("Wrong Password!");
 };
 
-// Admin Edit: Includes Image URL prompt
-window.editCard = async () => {
-    const newTitle = prompt("New Title:");
-    const newImg = prompt("New Image URL:");
-    if(newTitle || newImg) {
-        await update(window.firebaseDB.dbRef, { 
-            title: newTitle || "Python Lo Functionss", 
-            imageUrl: newImg 
-        });
-        window.showMsg("Updated!");
-    }
-};
-
-// Backup Logic
 window.createBackup = async () => {
-    const currentSnap = await get(window.firebaseDB.dbRef);
-    await push(window.firebaseDB.backupRef, { 
-        date: new Date().toLocaleString(), 
-        snapshot: currentSnap.val() 
-    });
-    window.showMsg("Backup Saved!");
+    await push(window.firebaseDB.backupRef, { 
+        date: new Date().toLocaleString(), 
+        snapshot: window.currentData 
+    });
+    window.showMsg("Backup Saved!");
+};
+
+window.loadBackups = () => {
+    const listDiv = document.getElementById('backup-list');
+    onValue(window.firebaseDB.backupRef, (snapshot) => {
+        const backups = snapshot.val();
+        listDiv.innerHTML = "";
+        if(!backups) return listDiv.innerHTML = "<p style='text-align:center'>No backups found.</p>";
+        Object.keys(backups).reverse().forEach(id => {
+            const b = backups[id];
+            const div = document.createElement('div');
+            div.className = 'backup-item';
+            div.innerHTML = `
+                <div style="font-size:12px; font-weight:bold;">${b.date}</div>
+                <div style="display:flex; gap:5px;">
+                    <button class="mini-btn edit-btn" onclick="restoreBackup('${id}')">RETAKE</button>
+                    <button class="mini-btn del-btn" onclick="deleteBackup('${id}')">×</button>
+                </div>`;
+            listDiv.appendChild(div);
+        });
+    });
 };
 
 window.restoreBackup = async (id) => {
-    if(confirm("Overwrite current live data?")) {
-        const snap = await get(ref(db, 'backups/' + id + '/snapshot'));
-        if(snap.exists()) { 
-            await set(window.firebaseDB.dbRef, snap.val()); 
-            window.showMsg("Restored!"); 
-        }
-    }
+    if(confirm("Overwrite current live data?")) {
+        const snap = await get(ref(db, 'backups/' + id + '/snapshot'));
+        if(snap.exists()) { 
+            await set(ref(db, 'lab_keys'), snap.val()); 
+            window.showMsg("Restored!"); 
+        }
+    }
 };
 
-// Utility
-window.showMsg = (msg) => alert(msg);
+window.deleteBackup = async (id) => {
+    if(confirm("Delete backup?")) await remove(ref(db, 'backups/' + id));
+};
 
-// Initialize
-window.render();
+
+in this code all good but i want to do like this want to display the image in that area by url so fix code and give my full code
