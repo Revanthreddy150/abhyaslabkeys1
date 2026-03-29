@@ -5,80 +5,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ADITYALABKEYS | HD Repository</title>
     
-    <script type="module">
-        import { db, ref, set, onValue, push, remove, update, get } from './firebase-config.js';
-        
-        // Define references
-        const dbRef = ref(db, 'lab_keys');
-        const backupRef = ref(db, 'backups');
-        
-        // Attach to window so the rest of your non-module functions can see them
-        window.firebaseDB = { db, dbRef, backupRef, set, onValue, push, remove, update, ref, get };
-    </script>
+    <script type="module" src="./admin-logic.js"></script>
     
     <style>
+        /* [Keeping your existing CSS Styles here...] */
         :root { --primary: #3b82f6; --secondary: #10b981; --text: #1f2937; --bg: #ffffff; --danger: #ef4444; }
         html { scroll-behavior: smooth; }
         body { font-family: 'Inter', sans-serif; margin: 0; background: var(--bg); color: var(--text); padding-bottom: 50px; overflow-x: hidden; }
-
         .container { padding: 40px 20px; max-width: 800px; margin: 0 auto; }
         .hero h1 { font-size: 2.8rem; margin: 0; line-height: 1.1; color: var(--primary); }
         #admin-trigger { color: var(--secondary); cursor: pointer; user-select: none; display: inline-block; }
-
         .feature-box { background: #f9fafb; padding: 25px; border-radius: 20px; margin: 25px 0; border: 1px solid #f3f4f6; }
         .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin: 30px 0; }
-        
-        .card { 
-            background: white; padding: 25px; border-radius: 18px; border: 1px solid #e5e7eb;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; position: relative;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
-        }
-        .card:active { transform: scale(0.96); background: #f9fafb; }
-        
-        .spinner {
-            display: none; width: 18px; height: 18px; border: 2px solid #e2e8f0;
-            border-top: 2px solid var(--secondary); border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-        }
+        .card { background: white; padding: 25px; border-radius: 18px; border: 1px solid #e5e7eb; transition: all 0.3s; cursor: pointer; position: relative; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+        .card:active { transform: scale(0.96); }
+        .spinner { display: none; width: 18px; height: 18px; border: 2px solid #e2e8f0; border-top: 2px solid var(--secondary); border-radius: 50%; animation: spin 0.8s linear infinite; }
         .card.loading .spinner { display: block; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
-        #toast {
-            display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            background: rgba(0, 0, 0, 0.9); color: white; padding: 16px 32px; border-radius: 50px;
-            z-index: 5000; font-weight: 600; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-        }
-
-        .modal { 
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: rgba(0,0,0,0.7); z-index: 1000; overflow-y: auto; padding: 20px; 
-        }
-        .modal-wrapper { max-width: 600px; margin: 40px auto; padding: 12px; border-radius: 35px; transition: 0.3s; }
+        #toast { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0, 0, 0, 0.9); color: white; padding: 16px 32px; border-radius: 50px; z-index: 5000; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 1000; overflow-y: auto; padding: 20px; }
+        .modal-wrapper { max-width: 600px; margin: 40px auto; padding: 12px; border-radius: 35px; }
         .modal-content { background: white; border-radius: 25px; padding: 30px; position: relative; }
-        
         .frame-red { background: #ef4444; } .frame-blue { background: #3b82f6; }
         .frame-yellow { background: #f59e0b; } .frame-green { background: #10b981; }
-
         .close-modal { position: absolute; right: 20px; top: 20px; font-size: 24px; cursor: pointer; color: #9ca3af; }
-        
         .qa-item { border-bottom: 1px solid #f3f4f6; padding: 15px 0; }
         .qa-header { display: flex; justify-content: space-between; align-items: center; }
         .qa-question { font-weight: 700; color: var(--primary); cursor: pointer; flex: 1; }
         .qa-ans-box { display: none; background: #f8fafc; padding: 15px; border-radius: 12px; margin-top: 10px; border: 1px solid #e2e8f0; }
-        .qa-code { font-family: monospace; white-space: pre-wrap; font-size: 13px; color: #374151; }
-        
-        .copy-btn { background: #10b981; color: white; border: none; padding: 10px; border-radius: 8px; cursor: pointer; width: 100%; font-weight: 700; margin-top: 10px; }
-
+        .qa-code { font-family: monospace; white-space: pre-wrap; font-size: 13px; }
+        .copy-btn { background: #10b981; color: white; border: none; padding: 10px; border-radius: 8px; cursor: pointer; width: 100%; font-weight: 700; }
         .admin-controls { margin-top: 15px; display: flex; gap: 8px; border-top: 1px solid #eee; padding-top: 12px; }
         .adm-btn { flex: 1; border: none; padding: 8px; border-radius: 8px; font-weight: 800; cursor: pointer; font-size: 11px; }
         .edit-btn { background: #dbeafe; color: #1e40af; }
         .del-btn { background: #fee2e2; color: #b91c1c; }
         .secure-btn { background: #111827; color: #ffffff; }
-        .mini-btn { padding: 4px 8px; border-radius: 4px; border: none; font-size: 10px; cursor: pointer; font-weight: bold; margin-left: 5px; }
-
+        .mini-btn { padding: 4px 8px; border-radius: 4px; border: none; font-size: 10px; cursor: pointer; font-weight: bold; }
         .backup-item { display: flex; justify-content: space-between; align-items: center; padding: 10px; border: 1px solid #eee; margin-bottom: 8px; border-radius: 10px; }
-
-        @media (max-width: 500px) { .grid { grid-template-columns: 1fr; } .hero h1 { font-size: 2.2rem; } }
+        @media (max-width: 500px) { .grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
@@ -87,7 +51,7 @@
 
 <div class="container">
     <div class="hero">
-        <h1>Abhyas<br><span id="admin-trigger">Lab Keys</span></h1>
+        <h1>Abhyas<br><span id="admin-trigger" onclick="handleAdminTrigger()">Lab Keys</span></h1>
         <p style="color:#6b7280; font-weight: 500;">Cloud-Synced HD Repository.</p>
         <div id="admin-main-tools" style="display:none; margin-top: 10px;">
             <button class="adm-btn secure-btn" onclick="openSecureData()">🛡️ 2nd Step Secure Data</button>
@@ -111,14 +75,10 @@
         <div class="modal-content">
             <span class="close-modal" onclick="closeQA()">&times;</span>
             <h2 id="modal-title" style="margin:0 0 15px 0; color: var(--primary);">Questions</h2>
-            
             <div id="admin-qa-tools" style="display:none; margin-bottom: 20px; padding: 15px; background: #f8fafc; border-radius: 15px; border: 1px dashed #cbd5e1;">
-                <div style="display:flex; gap: 10px;">
-                    <button class="adm-btn edit-btn" onclick="addQuestion()">+ New Question</button>
-                    <button class="adm-btn edit-btn" style="background:#e0e7ff" onclick="setFrameColor()">Change Color</button>
-                </div>
+                <button class="adm-btn edit-btn" onclick="addQuestion()">+ New Question</button>
+                <button class="adm-btn edit-btn" onclick="setFrameColor()">Change Color</button>
             </div>
-
             <div id="qa-container"></div>
         </div>
     </div>
@@ -128,52 +88,29 @@
     <div class="modal-wrapper frame-green">
         <div class="modal-content">
             <span class="close-modal" onclick="document.getElementById('secure-modal').style.display='none'">&times;</span>
-            <h2 style="margin:0 0 10px 0; color: #065f46;">🛡️ Backup Vault</h2>
-            <button class="copy-btn" style="background: #059669; margin-bottom: 20px;" onclick="createBackup()">SAVE CURRENT BACKUP</button>
-            <div id="backup-list" style="max-height: 300px; overflow-y: auto;">
-                <p style="text-align:center; color: #999;">Loading backups...</p>
-            </div>
+            <h2>🛡️ Backup Vault</h2>
+            <button class="copy-btn" onclick="createBackup()">SAVE CURRENT BACKUP</button>
+            <div id="backup-list" style="margin-top:20px;"></div>
         </div>
     </div>
 </div>
 
 <script>
-    let currentData = {};
-    let dbPasswords = { main: "adcrjylab@123", vault: "admin@123" };
-    let clickCount = 0;
-    let isAdmin = false;
+    window.currentData = {};
     let activeKey = null;
 
-    function showMsg(text) {
+    window.showMsg = (text) => {
         const t = document.getElementById('toast');
-        t.innerText = text;
-        t.style.display = 'block';
+        t.innerText = text; t.style.display = 'block';
         setTimeout(() => { t.style.display = 'none'; }, 2000);
-    }
-
-    document.getElementById('admin-trigger').onclick = () => {
-        clickCount++;
-        if(clickCount === 5) {
-            if(prompt("Password:") === dbPasswords.main) {
-                isAdmin = true;
-                showMsg("Logged in as Admin");
-                document.getElementById('admin-main-tools').style.display = 'block';
-                render();
-            }
-            clickCount = 0;
-        }
     };
 
     window.onload = () => {
         const checkFB = setInterval(() => {
             if(window.firebaseDB) {
                 clearInterval(checkFB);
-                const { db, ref, onValue } = window.firebaseDB;
-                
-                onValue(ref(db, 'passwords'), (ps) => { if(ps.exists()) dbPasswords = ps.val(); });
-
-                onValue(window.firebaseDB.dbRef, (snapshot) => {
-                    currentData = snapshot.val() || {};
+                window.firebaseDB.onValue(window.firebaseDB.dbRef, (snapshot) => {
+                    window.currentData = snapshot.val() || {};
                     document.getElementById('loading-text').style.display = 'none';
                     render();
                     if(activeKey) openQA(activeKey);
@@ -182,92 +119,77 @@
         }, 100);
     };
 
-    function render() {
+    window.render = () => {
         const grid = document.getElementById('main-grid');
-        const fragment = document.createDocumentFragment();
+        grid.innerHTML = '';
 
-        if(isAdmin) {
+        if(window.isAdmin) {
             const addCard = document.createElement('div');
             addCard.className = 'card';
             addCard.style.cssText = "border:2px dashed #ccc; text-align:center;";
             addCard.innerHTML = "<strong>+ Create New</strong>";
             addCard.onclick = () => {
-                const choice = prompt("1: Normal PDF (File)\n2: Repository (Q&A)");
+                const choice = prompt("1: Normal PDF\n2: Repository (Q&A)");
                 if(choice === "1") {
-                    const n = prompt("Name:");
-                    const l = prompt("URL:");
+                    const n = prompt("Name:"), l = prompt("URL:");
                     if(n && l) window.firebaseDB.push(window.firebaseDB.dbRef, { name: n, link: l, type: 'normal' });
                 } else if(choice === "2") {
                     const n = prompt("Subject Name:");
                     if(n) window.firebaseDB.push(window.firebaseDB.dbRef, { name: n, questions: [], type: 'qa', color: 'blue' });
                 }
             };
-            fragment.appendChild(addCard);
+            grid.appendChild(addCard);
         }
 
-        Object.keys(currentData).forEach((key) => {
-            const item = currentData[key];
+        Object.keys(window.currentData).forEach((key) => {
+            const item = window.currentData[key];
             const card = document.createElement('div');
             card.className = 'card';
             const isQA = item.type === 'qa';
             
             card.innerHTML = `
-                <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                <div style="display:flex; justify-content:space-between;">
                     <strong>${item.name}</strong>
                     <div class="spinner"></div>
                 </div>
-                <p style="font-size:11px; color:${isQA ? '#10b981' : '#9ca3af'}; font-weight:800; margin: 5px 0 0 0;">
-                    ${isQA ? 'VIEW REPOSITORY' : 'OPEN PDF'}
-                </p>
+                <p style="font-size:11px; color:${isQA ? '#10b981' : '#9ca3af'}; font-weight:800;">${isQA ? 'VIEW REPOSITORY' : 'OPEN PDF'}</p>
             `;
             
             card.onclick = () => {
-                if(card.classList.contains('loading')) return;
                 if(isQA) openQA(key);
-                else {
-                    card.classList.add('loading');
-                    setTimeout(() => { window.open(item.link, '_blank'); card.classList.remove('loading'); }, 1200);
-                }
+                else window.open(item.link, '_blank');
             };
 
-            if(isAdmin) {
+            if(window.isAdmin) {
                 const controls = document.createElement('div');
                 controls.className = 'admin-controls';
                 controls.innerHTML = `<button class="adm-btn edit-btn">Edit</button><button class="adm-btn del-btn">Delete</button>`;
-                
                 controls.querySelector('.edit-btn').onclick = (e) => {
                     e.stopPropagation();
                     if(isQA) openQA(key);
                     else {
-                        const newN = prompt("New Name:", item.name);
-                        const newL = prompt("New Link:", item.link);
-                        if(newN && newL) window.firebaseDB.update(window.firebaseDB.ref(window.firebaseDB.db, 'lab_keys/' + key), { name: newN, link: newL });
+                        const n = prompt("New Name:", item.name), l = prompt("New Link:", item.link);
+                        if(n && l) window.firebaseDB.update(window.firebaseDB.ref(window.firebaseDB.db, 'lab_keys/' + key), { name: n, link: l });
                     }
                 };
-
                 controls.querySelector('.del-btn').onclick = (e) => {
                     e.stopPropagation();
-                    if(confirm("Delete this?")) window.firebaseDB.remove(window.firebaseDB.ref(window.firebaseDB.db, 'lab_keys/' + key));
+                    if(confirm("Delete?")) window.firebaseDB.remove(window.firebaseDB.ref(window.firebaseDB.db, 'lab_keys/' + key));
                 };
                 card.appendChild(controls);
             }
-            fragment.appendChild(card);
+            grid.appendChild(card);
         });
-
-        grid.innerHTML = '';
-        grid.appendChild(fragment);
-    }
+    };
 
     function openQA(key) {
         activeKey = key;
-        const item = currentData[key];
-        const wrapper = document.getElementById('modal-wrapper');
-        const container = document.getElementById('qa-container');
-        
+        const item = window.currentData[key];
         document.getElementById('modal-title').innerText = item.name;
-        document.getElementById('admin-qa-tools').style.display = isAdmin ? 'block' : 'none';
-        wrapper.className = 'modal-wrapper frame-' + (item.color || 'blue');
+        document.getElementById('admin-qa-tools').style.display = window.isAdmin ? 'block' : 'none';
+        document.getElementById('modal-wrapper').className = 'modal-wrapper frame-' + (item.color || 'blue');
         
+        const container = document.getElementById('qa-container');
         container.innerHTML = '';
         (item.questions || []).forEach((pair, index) => {
             const div = document.createElement('div');
@@ -275,92 +197,48 @@
             div.innerHTML = `
                 <div class="qa-header">
                     <div class="qa-question" onclick="toggleAns(${index})">${pair.q}</div>
-                    ${isAdmin ? `<div><button class="mini-btn edit-btn" onclick="editQAItem(${index})">Edit</button><button class="mini-btn del-btn" onclick="deleteQAItem(${index})">×</button></div>` : ''}
+                    ${window.isAdmin ? `<div><button class="mini-btn edit-btn" onclick="editQAItem(${index})">Edit</button><button class="mini-btn del-btn" onclick="deleteQAItem(${index})">×</button></div>` : ''}
                 </div>
                 <div class="qa-ans-box" id="ans-${index}">
                     <div class="qa-code" id="text-${index}">${pair.a}</div>
                     <button class="copy-btn" onclick="copyCode(${index})">COPY CODE</button>
-                </div>
-            `;
+                </div>`;
             container.appendChild(div);
         });
         document.getElementById('qa-modal').style.display = 'block';
     }
 
-    function openSecureData() {
-        if(prompt("2nd Step Password:") === dbPasswords.vault) {
-            document.getElementById('secure-modal').style.display = 'block';
-            loadBackups();
-        } else alert("Wrong Password!");
-    }
+    // Modal Helpers
+    window.toggleAns = (i) => { const b = document.getElementById(`ans-${i}`); b.style.display = b.style.display === 'block' ? 'none' : 'block'; };
+    window.copyCode = (i) => { navigator.clipboard.writeText(document.getElementById(`text-${i}`).innerText); window.showMsg("Copied!"); };
+    window.closeQA = () => { document.getElementById('qa-modal').style.display = 'none'; activeKey = null; };
 
-    async function createBackup() {
-        const { backupRef, push } = window.firebaseDB;
-        await push(backupRef, { date: new Date().toLocaleString(), snapshot: currentData });
-        showMsg("Backup Saved!");
-    }
-
-    function loadBackups() {
-        const { backupRef, onValue } = window.firebaseDB;
-        const listDiv = document.getElementById('backup-list');
-        onValue(backupRef, (snapshot) => {
-            const backups = snapshot.val();
-            listDiv.innerHTML = "";
-            if(!backups) return listDiv.innerHTML = "<p style='text-align:center'>No backups found.</p>";
-            Object.keys(backups).reverse().forEach(id => {
-                const b = backups[id];
-                const div = document.createElement('div');
-                div.className = 'backup-item';
-                div.innerHTML = `<div style="font-size:12px; font-weight:bold;">${b.date}</div><div style="display:flex; gap:5px;"><button class="mini-btn edit-btn" onclick="restoreBackup('${id}')">RETAKE</button><button class="mini-btn del-btn" onclick="deleteBackup('${id}')">×</button></div>`;
-                listDiv.appendChild(div);
-            });
-        });
-    }
-
-    async function restoreBackup(id) {
-        if(confirm("Overwrite current live data?")) {
-            const { db, ref, get, set } = window.firebaseDB;
-            const snap = await get(ref(db, 'backups/' + id + '/snapshot'));
-            if(snap.exists()) { await set(ref(db, 'lab_keys'), snap.val()); showMsg("Restored!"); }
-        }
-    }
-
-    async function deleteBackup(id) {
-        if(confirm("Delete backup?")) await window.firebaseDB.remove(window.firebaseDB.ref(window.firebaseDB.db, 'backups/' + id));
-    }
-
-    function addQuestion() {
-        const q = prompt("Question:"); const a = prompt("Answer/Code:");
+    // Admin CRUD Helpers
+    window.addQuestion = () => {
+        const q = prompt("Q:"), a = prompt("A:");
         if(q && a) {
-            const qList = currentData[activeKey].questions || [];
-            qList.push({ q, a });
-            window.firebaseDB.update(window.firebaseDB.ref(window.firebaseDB.db, 'lab_keys/' + activeKey), { questions: qList });
+            const list = window.currentData[activeKey].questions || [];
+            list.push({ q, a });
+            window.firebaseDB.update(window.firebaseDB.ref(window.firebaseDB.db, 'lab_keys/' + activeKey), { questions: list });
         }
-    }
-
-    window.editQAItem = (idx) => {
-        const qList = currentData[activeKey].questions;
-        const newQ = prompt("Edit Q:", qList[idx].q); const newA = prompt("Edit A:", qList[idx].a);
-        if(newQ && newA) { qList[idx] = { q: newQ, a: newA }; window.firebaseDB.update(window.firebaseDB.ref(window.firebaseDB.db, 'lab_keys/' + activeKey), { questions: qList }); }
     };
-
-    window.deleteQAItem = (idx) => {
+    window.editQAItem = (i) => {
+        const list = window.currentData[activeKey].questions;
+        const q = prompt("Q:", list[i].q), a = prompt("A:", list[i].a);
+        if(q && a) { list[i] = { q, a }; window.firebaseDB.update(window.firebaseDB.ref(window.firebaseDB.db, 'lab_keys/' + activeKey), { questions: list }); }
+    };
+    window.deleteQAItem = (i) => {
         if(confirm("Delete?")) {
-            const qList = currentData[activeKey].questions;
-            qList.splice(idx, 1);
-            window.firebaseDB.update(window.firebaseDB.ref(window.firebaseDB.db, 'lab_keys/' + activeKey), { questions: qList });
+            const list = window.currentData[activeKey].questions;
+            list.splice(i, 1);
+            window.firebaseDB.update(window.firebaseDB.ref(window.firebaseDB.db, 'lab_keys/' + activeKey), { questions: list });
         }
     };
-
     window.setFrameColor = () => {
         const c = prompt("1: Red, 2: Blue, 3: Yellow, 4: Green");
         const colors = { "1":"red", "2":"blue", "3":"yellow", "4":"green" };
         if(colors[c]) window.firebaseDB.update(window.firebaseDB.ref(window.firebaseDB.db, 'lab_keys/' + activeKey), { color: colors[c] });
     };
-
-    window.toggleAns = (idx) => { const box = document.getElementById(`ans-${idx}`); box.style.display = (box.style.display === 'block') ? 'none' : 'block'; };
-    window.copyCode = (idx) => { navigator.clipboard.writeText(document.getElementById(`text-${idx}`).innerText).then(() => showMsg("Code Copied!")); };
-    window.closeQA = () => { document.getElementById('qa-modal').style.display = 'none'; activeKey = null; };
 </script>
 
 </body>
