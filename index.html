@@ -8,7 +8,6 @@
     <script type="module" src="./admin-logic.js"></script>
     
     <style>
-        /* [Keeping your existing CSS Styles here...] */
         :root { --primary: #3b82f6; --secondary: #10b981; --text: #1f2937; --bg: #ffffff; --danger: #ef4444; }
         html { scroll-behavior: smooth; }
         body { font-family: 'Inter', sans-serif; margin: 0; background: var(--bg); color: var(--text); padding-bottom: 50px; overflow-x: hidden; }
@@ -42,6 +41,17 @@
         .secure-btn { background: #111827; color: #ffffff; }
         .mini-btn { padding: 4px 8px; border-radius: 4px; border: none; font-size: 10px; cursor: pointer; font-weight: bold; }
         .backup-item { display: flex; justify-content: space-between; align-items: center; padding: 10px; border: 1px solid #eee; margin-bottom: 8px; border-radius: 10px; }
+        
+        /* --- NEW CSS FOR CARD IMAGE THUMBNAIL --- */
+        .card-thumbnail {
+            width: 80px;
+            height: 80px;
+            border-radius: 12px;
+            object-fit: cover;
+            border: 1px solid #e5e7eb;
+            margin-left: 15px; /* Adds space between text and image */
+        }
+
         @media (max-width: 500px) { .grid { grid-template-columns: 1fr; } }
     </style>
 </head>
@@ -135,7 +145,8 @@
                     if(n && l) window.firebaseDB.push(window.firebaseDB.dbRef, { name: n, link: l, type: 'normal' });
                 } else if(choice === "2") {
                     const n = prompt("Subject Name:");
-                    if(n) window.firebaseDB.push(window.firebaseDB.dbRef, { name: n, questions: [], type: 'qa', color: 'blue' });
+                    // Add imageUrl as an empty string by default
+                    if(n) window.firebaseDB.push(window.firebaseDB.dbRef, { name: n, questions: [], type: 'qa', color: 'blue', imageUrl: '' });
                 }
             };
             grid.appendChild(addCard);
@@ -147,12 +158,27 @@
             card.className = 'card';
             const isQA = item.type === 'qa';
             
-            card.innerHTML = `
-                <div style="display:flex; justify-content:space-between;">
+            // --- MODIFIED HTML FOR CARD CONTENT TO SUPPORT OPTIONAL IMAGE ---
+            // If it's a QA type and has an imageUrl, we display the image next to the text.
+            let cardContentHtml = `
+                <div style="flex: 1;">
                     <strong>${item.name}</strong>
-                    <div class="spinner"></div>
+                    <p style="font-size:11px; color:${isQA ? '#10b981' : '#9ca3af'}; font-weight:800; margin: 5px 0 0 0;">
+                        ${isQA ? 'VIEW REPOSITORY' : 'OPEN PDF'}
+                    </p>
                 </div>
-                <p style="font-size:11px; color:${isQA ? '#10b981' : '#9ca3af'}; font-weight:800;">${isQA ? 'VIEW REPOSITORY' : 'OPEN PDF'}</p>
+                <div class="spinner"></div>
+            `;
+
+            if (isQA && item.imageUrl) {
+                cardContentHtml += `<img src="${item.imageUrl}" class="card-thumbnail" alt="thumbnail">`;
+            }
+
+            // We wrap the above content in a flexbox container for alignment
+            card.innerHTML = `
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    ${cardContentHtml}
+                </div>
             `;
             
             card.onclick = () => {
@@ -163,7 +189,24 @@
             if(window.isAdmin) {
                 const controls = document.createElement('div');
                 controls.className = 'admin-controls';
-                controls.innerHTML = `<button class="adm-btn edit-btn">Edit</button><button class="adm-btn del-btn">Delete</button>`;
+                
+                // --- ADDED "Set Image" BUTTON IN CONTROLS ---
+                let adminButtonsHtml = ``;
+                if (isQA) {
+                    adminButtonsHtml += `<button class="adm-btn secure-btn image-btn" style="background:#4b5563;">Set Image</button>`;
+                }
+                adminButtonsHtml += `<button class="adm-btn edit-btn">Edit</button><button class="adm-btn del-btn">Delete</button>`;
+                
+                controls.innerHTML = adminButtonsHtml;
+
+                // Wire up the new "Set Image" button
+                if (isQA) {
+                    controls.querySelector('.image-btn').onclick = (e) => {
+                        e.stopPropagation(); // Don't open the modal
+                        updateCardImage(key, item.imageUrl);
+                    };
+                }
+
                 controls.querySelector('.edit-btn').onclick = (e) => {
                     e.stopPropagation();
                     if(isQA) openQA(key);
