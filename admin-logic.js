@@ -77,12 +77,3 @@ window.restoreBackup = async (id) => {
 window.deleteBackup = async (id) => {
     if(confirm("Delete backup?")) await remove(ref(db, 'backups/' + id));
 };
-
-// --- NEW FUNCTION TO UPDATE IMAGE ---
-window.updateCardImage = (key, currentImageUrl) => {
-    const newImageUrl = prompt("Enter new image URL (leave empty to remove):", currentImageUrl || "");
-    if (newImageUrl !== null) { // If user didn't click 'cancel'
-        window.firebaseDB.update(window.firebaseDB.ref(window.firebaseDB.db, 'lab_keys/' + key), { imageUrl: newImageUrl });
-        window.showMsg("Image updated!");
-    }
-};
