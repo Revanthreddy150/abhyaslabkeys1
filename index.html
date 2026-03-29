@@ -6,25 +6,13 @@
     <title>ADITYALABKEYS | HD Repository</title>
     
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getDatabase, ref, set, onValue, push, remove, update, get } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyDAheWdYiiEBUHgbokK7kDPjMEEk7fngYQ",
-            authDomain: "abhyaslabkeys.firebaseapp.com",
-            databaseURL: "https://abhyaslabkeys-default-rtdb.firebaseio.com",
-            projectId: "abhyaslabkeys",
-            storageBucket: "abhyaslabkeys.firebasestorage.app",
-            messagingSenderId: "782150849318",
-            appId: "1:782150849318:web:79710f1e99b32644c567e7",
-            measurementId: "G-K4FM6QY4HY"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const db = getDatabase(app);
+        import { db, ref, set, onValue, push, remove, update, get } from './firebase-config.js';
+        
+        // Define references
         const dbRef = ref(db, 'lab_keys');
         const backupRef = ref(db, 'backups');
         
+        // Attach to window so the rest of your non-module functions can see them
         window.firebaseDB = { db, dbRef, backupRef, set, onValue, push, remove, update, ref, get };
     </script>
     
@@ -81,7 +69,6 @@
         
         .copy-btn { background: #10b981; color: white; border: none; padding: 10px; border-radius: 8px; cursor: pointer; width: 100%; font-weight: 700; margin-top: 10px; }
 
-        /* Admin Controls */
         .admin-controls { margin-top: 15px; display: flex; gap: 8px; border-top: 1px solid #eee; padding-top: 12px; }
         .adm-btn { flex: 1; border: none; padding: 8px; border-radius: 8px; font-weight: 800; cursor: pointer; font-size: 11px; }
         .edit-btn { background: #dbeafe; color: #1e40af; }
@@ -164,7 +151,6 @@
         setTimeout(() => { t.style.display = 'none'; }, 2000);
     }
 
-    // Admin Login Logic
     document.getElementById('admin-trigger').onclick = () => {
         clickCount++;
         if(clickCount === 5) {
@@ -184,7 +170,6 @@
                 clearInterval(checkFB);
                 const { db, ref, onValue } = window.firebaseDB;
                 
-                // Fetch live passwords from Admin node
                 onValue(ref(db, 'passwords'), (ps) => { if(ps.exists()) dbPasswords = ps.val(); });
 
                 onValue(window.firebaseDB.dbRef, (snapshot) => {
