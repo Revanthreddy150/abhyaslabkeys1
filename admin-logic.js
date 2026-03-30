@@ -1,54 +1,73 @@
 // admin-logic.js
 import { db, ref, set, onValue, push, remove, update, get } from './firebase-config.js';
 
-// Admin State
+// Admin State - Should be toggled to true by your admin.html script upon successful login
 window.isAdmin = false;
-window.dbPasswords = { main: "adcrjylab@123", vault: "admin@123" };
-let clickCount = 0;
 
 // Export DB tools for the main app
-window.firebaseDB = { db, dbRef: ref(db, 'lab_keys'), backupRef: ref(db, 'backups'), set, onValue, push, remove, update, ref, get };
+window.firebaseDB = { 
+    db, 
+    dbRef: ref(db, 'lab_keys'), 
+    backupRef: ref(db, 'backups'), 
+    set, 
+    onValue, 
+    push, 
+    remove, 
+    update, 
+    ref, 
+    get 
+};
 
-// Listen for password changes from DB
-onValue(ref(db, 'passwords'), (ps) => { 
-    if(ps.exists()) window.dbPasswords = ps.val(); 
-});
-
-// Admin Login Trigger
-window.handleAdminTrigger = () => {
-    clickCount++;
-    if(clickCount === 5) {
-        if(prompt("Password:") === window.dbPasswords.main) {
-            window.isAdmin = true;
-            document.getElementById('admin-main-tools').style.display = 'block';
-            window.showMsg("Logged in as Admin");
-            window.render(); // Re-render to show admin buttons
+/**
+ * SECURE DATA ACCESS
+ * Called from admin.html or a "Secure" button.
+ * Since passwords are handled externally, this just opens the modal.
+ */
+window.openSecureData = () => {
+    if (window.isAdmin) {
+        const modal = document.getElementById('secure-modal');
+        if (modal) {
+            modal.style.display = 'block';
+            window.loadBackups();
         }
-        clickCount = 0;
+    } else {
+        alert("Access Denied: Please login via Admin Panel.");
     }
 };
 
-window.openSecureData = () => {
-    if(prompt("2nd Step Password:") === window.dbPasswords.vault) {
-        document.getElementById('secure-modal').style.display = 'block';
-        window.loadBackups();
-    } else alert("Wrong Password!");
-};
-
+/**
+ * BACKUP MANAGEMENT
+ */
 window.createBackup = async () => {
-    await push(window.firebaseDB.backupRef, { 
-        date: new Date().toLocaleString(), 
-        snapshot: window.currentData 
-    });
-    window.showMsg("Backup Saved!");
+    if (!window.isAdmin) return;
+    
+    try {
+        await push(window.firebaseDB.backupRef, { 
+            date: new Date().toLocaleString(), 
+            snapshot: window.currentData 
+        });
+        window.showMsg("Backup Saved!");
+    } catch (error) {
+        console.error("Backup failed:", error);
+        window.showMsg("Backup Error", "red");
+    }
 };
 
 window.loadBackups = () => {
+    if (!window.isAdmin) return;
+
     const listDiv = document.getElementById('backup-list');
+    if (!listDiv) return;
+
     onValue(window.firebaseDB.backupRef, (snapshot) => {
         const backups = snapshot.val();
         listDiv.innerHTML = "";
-        if(!backups) return listDiv.innerHTML = "<p style='text-align:center'>No backups found.</p>";
+        
+        if (!backups) {
+            listDiv.innerHTML = "<p style='text-align:center'>No backups found.</p>";
+            return;
+        }
+
         Object.keys(backups).reverse().forEach(id => {
             const b = backups[id];
             const div = document.createElement('div');
@@ -56,7 +75,7 @@ window.loadBackups = () => {
             div.innerHTML = `
                 <div style="font-size:12px; font-weight:bold;">${b.date}</div>
                 <div style="display:flex; gap:5px;">
-                    <button class="mini-btn edit-btn" onclick="restoreBackup('${id}')">RETAKE</button>
+                    <button class="mini-btn edit-btn" onclick="restoreBackup('${id}')">RESTORE</button>
                     <button class="mini-btn del-btn" onclick="deleteBackup('${id}')">×</button>
                 </div>`;
             listDiv.appendChild(div);
@@ -65,15 +84,21 @@ window.loadBackups = () => {
 };
 
 window.restoreBackup = async (id) => {
-    if(confirm("Overwrite current live data?")) {
-        const snap = await get(ref(db, 'backups/' + id + '/snapshot'));
-        if(snap.exists()) { 
+    if (!window.isAdmin) return;
+
+    if (confirm("Overwrite current live data with this backup?")) {
+        const snap = await get(ref(db, `backups/${id}/snapshot`));
+        if (snap.exists()) { 
             await set(ref(db, 'lab_keys'), snap.val()); 
-            window.showMsg("Restored!"); 
+            window.showMsg("Data Restored!"); 
+            if (window.render) window.render();
         }
     }
 };
 
 window.deleteBackup = async (id) => {
-    if(confirm("Delete backup?")) await remove(ref(db, 'backups/' + id));
+    if (!window.isAdmin) return;
+    if (confirm("Delete this backup permanently?")) {
+        await remove(ref(db, 'backups/' + id));
+    }
 };
