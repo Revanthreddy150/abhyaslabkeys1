@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ADITYALABKEYS | HD Repository</title>
     
+    <!-- Load logic first -->
     <script type="module" src="./admin-logic.js"></script>
     
     <style>
-        /* [Keeping your existing CSS Styles here...] */
         :root { --primary: #3b82f6; --secondary: #10b981; --text: #1f2937; --bg: #ffffff; --danger: #ef4444; }
         html { scroll-behavior: smooth; }
         body { font-family: 'Inter', sans-serif; margin: 0; background: var(--bg); color: var(--text); padding-bottom: 50px; overflow-x: hidden; }
@@ -20,9 +20,10 @@
         .card { background: white; padding: 25px; border-radius: 18px; border: 1px solid #e5e7eb; transition: all 0.3s; cursor: pointer; position: relative; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
         .card:active { transform: scale(0.96); }
         .spinner { display: none; width: 18px; height: 18px; border: 2px solid #e2e8f0; border-top: 2px solid var(--secondary); border-radius: 50%; animation: spin 0.8s linear infinite; }
+        .card.loading { pointer-events: none; opacity: 0.7; }
         .card.loading .spinner { display: block; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        #toast { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0, 0, 0, 0.9); color: white; padding: 16px 32px; border-radius: 50px; z-index: 5000; }
+        #toast { display: none; position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: rgba(0, 0, 0, 0.9); color: white; padding: 12px 24px; border-radius: 50px; z-index: 5000; font-weight: bold; }
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 1000; overflow-y: auto; padding: 20px; }
         .modal-wrapper { max-width: 600px; margin: 40px auto; padding: 12px; border-radius: 35px; }
         .modal-content { background: white; border-radius: 25px; padding: 30px; position: relative; }
@@ -34,13 +35,13 @@
         .qa-question { font-weight: 700; color: var(--primary); cursor: pointer; flex: 1; }
         .qa-ans-box { display: none; background: #f8fafc; padding: 15px; border-radius: 12px; margin-top: 10px; border: 1px solid #e2e8f0; }
         .qa-code { font-family: monospace; white-space: pre-wrap; font-size: 13px; }
-        .copy-btn { background: #10b981; color: white; border: none; padding: 10px; border-radius: 8px; cursor: pointer; width: 100%; font-weight: 700; }
+        .copy-btn { background: #10b981; color: white; border: none; padding: 10px; border-radius: 8px; cursor: pointer; width: 100%; font-weight: 700; margin-top: 10px; }
         .admin-controls { margin-top: 15px; display: flex; gap: 8px; border-top: 1px solid #eee; padding-top: 12px; }
         .adm-btn { flex: 1; border: none; padding: 8px; border-radius: 8px; font-weight: 800; cursor: pointer; font-size: 11px; }
         .edit-btn { background: #dbeafe; color: #1e40af; }
         .del-btn { background: #fee2e2; color: #b91c1c; }
         .secure-btn { background: #111827; color: #ffffff; }
-        .mini-btn { padding: 4px 8px; border-radius: 4px; border: none; font-size: 10px; cursor: pointer; font-weight: bold; }
+        .mini-btn { padding: 4px 8px; border-radius: 4px; border: none; font-size: 10px; cursor: pointer; font-weight: bold; margin-left: 5px; }
         .backup-item { display: flex; justify-content: space-between; align-items: center; padding: 10px; border: 1px solid #eee; margin-bottom: 8px; border-radius: 10px; }
         @media (max-width: 500px) { .grid { grid-template-columns: 1fr; } }
     </style>
@@ -51,10 +52,12 @@
 
 <div class="container">
     <div class="hero">
+        <!-- Click 'Lab Keys' 5 times to trigger login -->
         <h1>Abhyas<br><span id="admin-trigger" onclick="handleAdminTrigger()">Lab Keys</span></h1>
         <p style="color:#6b7280; font-weight: 500;">Cloud-Synced HD Repository.</p>
         <div id="admin-main-tools" style="display:none; margin-top: 10px;">
-            <button class="adm-btn secure-btn" onclick="openSecureData()">🛡️ 2nd Step Secure Data</button>
+            <button class="adm-btn secure-btn" onclick="openSecureData()">🛡️ Backup Vault</button>
+            <button class="adm-btn del-btn" onclick="location.reload()" style="max-width: 80px;">Logout</button>
         </div>
     </div>
 
@@ -70,6 +73,7 @@
     <div class="grid" id="main-grid"></div>
 </div>
 
+<!-- Q&A Modal -->
 <div id="qa-modal" class="modal">
     <div class="modal-wrapper" id="modal-wrapper">
         <div class="modal-content">
@@ -84,6 +88,7 @@
     </div>
 </div>
 
+<!-- Backup Modal -->
 <div id="secure-modal" class="modal">
     <div class="modal-wrapper frame-green">
         <div class="modal-content">
@@ -98,6 +103,22 @@
 <script>
     window.currentData = {};
     let activeKey = null;
+    let clickCount = 0;
+
+    // --- ADMIN TRIGGER (The Secret Knock) ---
+    window.handleAdminTrigger = () => {
+        clickCount++;
+        if (clickCount >= 5) {
+            const pass = prompt("Admin Password:");
+            if (pass === "admin123") { // CHANGE YOUR PASSWORD HERE
+                window.isAdmin = true;
+                document.getElementById('admin-main-tools').style.display = 'block';
+                window.showMsg("Admin Mode Active");
+                window.render(); // Redraw grid with admin buttons
+            }
+            clickCount = 0;
+        }
+    };
 
     window.showMsg = (text) => {
         const t = document.getElementById('toast');
@@ -112,7 +133,7 @@
                 window.firebaseDB.onValue(window.firebaseDB.dbRef, (snapshot) => {
                     window.currentData = snapshot.val() || {};
                     document.getElementById('loading-text').style.display = 'none';
-                    render();
+                    window.render();
                     if(activeKey) openQA(activeKey);
                 });
             }
@@ -123,13 +144,14 @@
         const grid = document.getElementById('main-grid');
         grid.innerHTML = '';
 
+        // Only show "Create New" card if Admin is true
         if(window.isAdmin) {
             const addCard = document.createElement('div');
             addCard.className = 'card';
-            addCard.style.cssText = "border:2px dashed #ccc; text-align:center;";
-            addCard.innerHTML = "<strong>+ Create New</strong>";
+            addCard.style.cssText = "border:2px dashed #3b82f6; text-align:center; background:#eff6ff;";
+            addCard.innerHTML = "<strong style='color:#1e40af'>+ Create New Item</strong>";
             addCard.onclick = () => {
-                const choice = prompt("1: Normal PDF\n2: Repository (Q&A)");
+                const choice = prompt("1: PDF Link\n2: Q&A Repository");
                 if(choice === "1") {
                     const n = prompt("Name:"), l = prompt("URL:");
                     if(n && l) window.firebaseDB.push(window.firebaseDB.dbRef, { name: n, link: l, type: 'normal' });
@@ -148,11 +170,13 @@
             const isQA = item.type === 'qa';
             
             card.innerHTML = `
-                <div style="display:flex; justify-content:space-between;">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
                     <strong>${item.name}</strong>
                     <div class="spinner"></div>
                 </div>
-                <p style="font-size:11px; color:${isQA ? '#10b981' : '#9ca3af'}; font-weight:800;">${isQA ? 'VIEW REPOSITORY' : 'OPEN PDF'}</p>
+                <p style="font-size:11px; color:${isQA ? '#10b981' : '#3b82f6'}; font-weight:800; margin-top:10px;">
+                    ${isQA ? 'VIEW REPOSITORY' : 'OPEN PDF'}
+                </p>
             `;
             
             card.onclick = () => {
@@ -160,21 +184,23 @@
                 else window.open(item.link, '_blank');
             };
 
+            // Admin buttons inside cards
             if(window.isAdmin) {
                 const controls = document.createElement('div');
                 controls.className = 'admin-controls';
-                controls.innerHTML = `<button class="adm-btn edit-btn">Edit</button><button class="adm-btn del-btn">Delete</button>`;
+                controls.innerHTML = `<button class="adm-btn edit-btn">Rename</button><button class="adm-btn del-btn">Delete</button>`;
+                
                 controls.querySelector('.edit-btn').onclick = (e) => {
                     e.stopPropagation();
-                    if(isQA) openQA(key);
-                    else {
-                        const n = prompt("New Name:", item.name), l = prompt("New Link:", item.link);
-                        if(n && l) window.firebaseDB.update(window.firebaseDB.ref(window.firebaseDB.db, 'lab_keys/' + key), { name: n, link: l });
-                    }
+                    const newName = prompt("Rename to:", item.name);
+                    if(newName) window.firebaseDB.update(window.firebaseDB.ref(window.firebaseDB.db, 'lab_keys/' + key), { name: newName });
                 };
+                
                 controls.querySelector('.del-btn').onclick = (e) => {
                     e.stopPropagation();
-                    if(confirm("Delete?")) window.firebaseDB.remove(window.firebaseDB.ref(window.firebaseDB.db, 'lab_keys/' + key));
+                    if(confirm("Permanently delete " + item.name + "?")) {
+                        window.firebaseDB.remove(window.firebaseDB.ref(window.firebaseDB.db, 'lab_keys/' + key));
+                    }
                 };
                 card.appendChild(controls);
             }
@@ -185,13 +211,17 @@
     function openQA(key) {
         activeKey = key;
         const item = window.currentData[key];
+        if(!item) return;
+        
         document.getElementById('modal-title').innerText = item.name;
         document.getElementById('admin-qa-tools').style.display = window.isAdmin ? 'block' : 'none';
         document.getElementById('modal-wrapper').className = 'modal-wrapper frame-' + (item.color || 'blue');
         
         const container = document.getElementById('qa-container');
         container.innerHTML = '';
-        (item.questions || []).forEach((pair, index) => {
+        
+        const questions = item.questions || [];
+        questions.forEach((pair, index) => {
             const div = document.createElement('div');
             div.className = 'qa-item';
             div.innerHTML = `
@@ -208,34 +238,50 @@
         document.getElementById('qa-modal').style.display = 'block';
     }
 
-    // Modal Helpers
-    window.toggleAns = (i) => { const b = document.getElementById(`ans-${i}`); b.style.display = b.style.display === 'block' ? 'none' : 'block'; };
-    window.copyCode = (i) => { navigator.clipboard.writeText(document.getElementById(`text-${i}`).innerText); window.showMsg("Copied!"); };
-    window.closeQA = () => { document.getElementById('qa-modal').style.display = 'none'; activeKey = null; };
+    window.toggleAns = (i) => { 
+        const b = document.getElementById(`ans-${i}`); 
+        b.style.display = b.style.display === 'block' ? 'none' : 'block'; 
+    };
+    window.copyCode = (i) => { 
+        navigator.clipboard.writeText(document.getElementById(`text-${i}`).innerText); 
+        window.showMsg("Code Copied!"); 
+    };
+    window.closeQA = () => { 
+        document.getElementById('qa-modal').style.display = 'none'; 
+        activeKey = null; 
+    };
 
     // Admin CRUD Helpers
     window.addQuestion = () => {
-        const q = prompt("Q:"), a = prompt("A:");
+        const q = prompt("Question Text:");
+        const a = prompt("Answer/Code:");
         if(q && a) {
             const list = window.currentData[activeKey].questions || [];
             list.push({ q, a });
             window.firebaseDB.update(window.firebaseDB.ref(window.firebaseDB.db, 'lab_keys/' + activeKey), { questions: list });
         }
     };
+
     window.editQAItem = (i) => {
         const list = window.currentData[activeKey].questions;
-        const q = prompt("Q:", list[i].q), a = prompt("A:", list[i].a);
-        if(q && a) { list[i] = { q, a }; window.firebaseDB.update(window.firebaseDB.ref(window.firebaseDB.db, 'lab_keys/' + activeKey), { questions: list }); }
+        const q = prompt("Edit Question:", list[i].q);
+        const a = prompt("Edit Answer:", list[i].a);
+        if(q && a) { 
+            list[i] = { q, a }; 
+            window.firebaseDB.update(window.firebaseDB.ref(window.firebaseDB.db, 'lab_keys/' + activeKey), { questions: list }); 
+        }
     };
+
     window.deleteQAItem = (i) => {
-        if(confirm("Delete?")) {
+        if(confirm("Remove this question?")) {
             const list = window.currentData[activeKey].questions;
             list.splice(i, 1);
             window.firebaseDB.update(window.firebaseDB.ref(window.firebaseDB.db, 'lab_keys/' + activeKey), { questions: list });
         }
     };
+
     window.setFrameColor = () => {
-        const c = prompt("1: Red, 2: Blue, 3: Yellow, 4: Green");
+        const c = prompt("Choose Color Number:\n1: Red\n2: Blue\n3: Yellow\n4: Green");
         const colors = { "1":"red", "2":"blue", "3":"yellow", "4":"green" };
         if(colors[c]) window.firebaseDB.update(window.firebaseDB.ref(window.firebaseDB.db, 'lab_keys/' + activeKey), { color: colors[c] });
     };
