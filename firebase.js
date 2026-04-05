@@ -1,6 +1,5 @@
-// firebase-config.js
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { getDatabase, ref, set, onValue, push, remove, update, get } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+import { getDatabase, ref, set, onValue, push, remove, update } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyDAheWdYiiEBUHgbokK7kDPjMEEk7fngYQ",
@@ -13,9 +12,9 @@ const firebaseConfig = {
     measurementId: "G-K4FM6QY4HY"
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
+export const db = getDatabase(app);
+export const dbRef = ref(db, 'lab_keys');
 
-// Export everything needed by the main app
-export { db, ref, set, onValue, push, remove, update, get };
+// Exporting helper functions for easier use in other files
+export { ref, set, onValue, push, remove, update };
