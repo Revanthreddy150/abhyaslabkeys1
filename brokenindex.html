@@ -115,48 +115,66 @@
         const item = currentData[activeKey];
         const date = new Date().toLocaleDateString();
         
+        // Helper function for Watermark
+        const addWatermark = (pdfDoc) => {
+            pdfDoc.saveGraphicsState();
+            pdfDoc.setGState(new pdfDoc.GState({opacity: 0.1})); // Very light opacity
+            pdfDoc.setFontSize(60);
+            pdfDoc.setFont("helvetica", "bold");
+            pdfDoc.setTextColor(150, 150, 150);
+            // Draw watermark at a 45 degree angle
+            pdfDoc.text("USEAS LAB", 45, 180, { angle: 45 });
+            pdfDoc.restoreGraphicsState();
+        };
+
+        // Initialize first page watermark
+        addWatermark(doc);
+
         // PDF Header
         doc.setFontSize(22);
-        doc.setTextColor(59, 130, 246); // Primary Blue
+        doc.setTextColor(59, 130, 246);
         doc.text(item.name, 20, 20);
         
         doc.setFontSize(10);
         doc.setTextColor(100, 116, 139);
         doc.text(`Generated on: ${date} | Repository: ABHYAS LAB KEYS`, 20, 28);
-        doc.line(20, 32, 190, 32); // Horizontal line
+        doc.setDrawColor(200, 200, 200);
+        doc.line(20, 32, 190, 32);
 
         let yPos = 45;
-        const pageHeight = 280;
+        const pageHeight = 270;
 
         (item.questions || []).forEach((pair, index) => {
-            // Add Question
+            // Check page overflow before writing Question
+            if (yPos > pageHeight) { 
+                doc.addPage(); 
+                addWatermark(doc); 
+                yPos = 20; 
+            }
+
             doc.setFontSize(12);
-            doc.setFont(undefined, 'bold');
+            doc.setFont("helvetica", 'bold');
             doc.setTextColor(31, 41, 55);
             
             const qLines = doc.splitTextToSize(`${index + 1}. ${pair.q}`, 170);
-            
-            // Check page overflow
-            if (yPos + (qLines.length * 7) > pageHeight) { doc.addPage(); yPos = 20; }
-            
             doc.text(qLines, 20, yPos);
             yPos += (qLines.length * 7) + 2;
 
-            // Add Answer (Code block style)
+            // Check page overflow before writing Answer
+            const aLines = doc.splitTextToSize(pair.a, 165);
+            if (yPos + (aLines.length * 5) > pageHeight) { 
+                doc.addPage(); 
+                addWatermark(doc); 
+                yPos = 20; 
+            }
+
             doc.setFontSize(10);
             doc.setFont('courier', 'normal');
             doc.setTextColor(55, 65, 81);
             
-            const aLines = doc.splitTextToSize(pair.a, 160);
-            
-            // Background for code
-            doc.setFillColor(241, 245, 249);
-            doc.rect(18, yPos - 4, 174, (aLines.length * 5) + 6, 'F');
-            
-            if (yPos + (aLines.length * 5) > pageHeight) { doc.addPage(); yPos = 20; }
-            
+            // No Background Box - just text
             doc.text(aLines, 22, yPos);
-            yPos += (aLines.length * 5) + 15;
+            yPos += (aLines.length * 5) + 12;
         });
 
         if (mode === 'preview') {
@@ -167,7 +185,7 @@
         }
     };
 
-    // --- ANIMATION ---
+    // --- UI LOGIC ---
     function performFlyAnimation(sourceId, buttonId) {
         const sourceEl = document.getElementById(sourceId);
         const btnEl = document.getElementById(buttonId);
