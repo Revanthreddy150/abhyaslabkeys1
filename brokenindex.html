@@ -3,72 +3,214 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Abhyas Lab Keys | Student Portal</title>
+    <title>ADITYALABKEYS | HD Repository</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
     <style>
-        :root { --primary: #3b82f6; --secondary: #10b981; --bg: #f8fafc; }
-        body { font-family: 'Inter', sans-serif; background: var(--bg); margin: 0; padding: 20px; }
-        .container { max-width: 900px; margin: 0 auto; }
-        .header { text-align: center; margin-bottom: 40px; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; }
+        :root { --primary: #3b82f6; --secondary: #10b981; --text: #1f2937; --bg: #f8f9fa; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Inter', sans-serif; margin: 0; background: var(--bg); color: var(--text); padding-bottom: 50px; }
         
-        .card { 
-            background: white; border-radius: 15px; overflow: hidden; 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05); transition: 0.3s; cursor: pointer;
-        }
-        .card:hover { transform: translateY(-5px); }
-        .card img { width: 100%; height: 150px; object-fit: cover; background: #e2e8f0; }
-        .card-info { padding: 15px; text-align: center; }
-        .card-info strong { display: block; font-size: 1.1rem; color: #1e293b; }
+        .container { padding: 40px 20px; max-width: 900px; margin: 0 auto; }
+        .hero h1 { font-size: 2.8rem; margin: 0; line-height: 1.1; color: var(--primary); font-weight: 800; }
         
-        .loading-overlay { 
-            display: none; position: fixed; inset: 0; background: rgba(255,255,255,0.8);
-            justify-content: center; align-items: center; z-index: 100;
+        /* New Custom Card Styles */
+        .custom-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border: 1px solid #eef2f7;
+            padding: 20px;
+            transition: transform 0.2s;
         }
+        .custom-card:hover { transform: translateY(-3px); }
+
+        .lang-logo {
+            width: 45px; height: 45px;
+            background-color: #f0f4f8;
+            border-radius: 8px;
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        .btn-view-code {
+            border: 1px solid #dee2e6;
+            color: #495057;
+            font-weight: 600;
+            font-size: 0.9rem;
+            border-radius: 8px;
+            padding: 10px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            transition: 0.2s;
+        }
+        .btn-view-code:hover { background: #f8f9fa; border-color: var(--primary); color: var(--primary); }
+
+        /* Existing Modal & UI Styles */
+        #toast { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0, 0, 0, 0.9); color: white; padding: 16px 32px; border-radius: 50px; z-index: 3000; font-weight: 600; }
+        #qa-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 1000; overflow-y: auto; padding: 20px; }
+        .modal-wrapper { max-width: 600px; margin: 40px auto; padding: 12px; border-radius: 35px; }
+        .modal-content { background: white; border-radius: 25px; padding: 30px; position: relative; }
+        .frame-red { background: #ef4444; } .frame-blue { background: #3b82f6; } .frame-yellow { background: #f59e0b; } .frame-green { background: #10b981; }
+        .close-modal { position: absolute; right: 20px; top: 20px; font-size: 24px; cursor: pointer; color: #9ca3af; }
+        .qa-item { border-bottom: 1px solid #f3f4f6; padding: 15px 0; }
+        .qa-question { font-weight: 700; color: var(--primary); cursor: pointer; }
+        .qa-ans-box { display: none; background: #f8fafc; padding: 15px; border-radius: 12px; margin-top: 10px; border: 1px solid #e2e8f0; }
+        .qa-code { font-family: monospace; white-space: pre-wrap; font-size: 13px; color: #374151; }
+        .copy-btn { background: #10b981; color: white; border: none; padding: 10px; border-radius: 8px; cursor: pointer; width: 100%; font-weight: 700; margin-top: 10px; }
+        
+        /* Spinner for loading state */
+        .spinner-inline { width: 1rem; height: 1rem; border: 2px solid currentColor; border-right-color: transparent; border-radius: 50%; animation: spinner-border .75s linear infinite; display: none; margin-right: 8px; }
+        .loading .spinner-inline { display: inline-block; }
+        .loading .bi-code-slash { display: none; }
     </style>
 </head>
 <body>
 
+<div id="toast"></div>
+
 <div class="container">
-    <div class="header">
-        <h1 style="color: var(--primary);">Abhyas Lab Keys</h1>
-        <p>Your Cloud-Synced Repository</p>
+    <div class="hero mb-4">
+        <h1>Abhyas<br><span style="color: #6b7280; font-size: 1.5rem;">Lab Keys Repository</span></h1>
     </div>
-    <div class="grid" id="main-grid"></div>
+
+    <div id="loading-text" class="text-center text-muted p-5">Fetching Repository...</div>
+    
+    <div class="row g-4" id="main-grid"></div>
 </div>
 
-<div id="loader" class="loading-overlay">Opening Document...</div>
+<div id="qa-modal">
+    <div class="modal-wrapper" id="modal-wrapper">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeQA()">&times;</span>
+            <h2 id="modal-title" style="margin:0 0 15px 0; color: var(--primary);">Questions</h2>
+            <div id="qa-container"></div>
+        </div>
+    </div>
+</div>
 
 <script type="module">
-    import { dbRef, onValue } from './firebase.js';
+    import { db, ref, onValue } from "./firebase-config.js";
 
-    const grid = document.getElementById('main-grid');
-    const loader = document.getElementById('loader');
+    let currentData = {};
+    let activeKey = null;
 
+    function showMsg(text) {
+        const t = document.getElementById('toast');
+        t.innerText = text;
+        t.style.display = 'block';
+        setTimeout(() => { t.style.display = 'none'; }, 2000);
+    }
+
+    const dbRef = ref(db, 'lab_keys');
     onValue(dbRef, (snapshot) => {
-        const data = snapshot.val() || {};
+        currentData = snapshot.val() || {};
+        document.getElementById('loading-text').style.display = 'none';
+        render();
+        if(activeKey) openQA(activeKey);
+    });
+
+    function render() {
+        const grid = document.getElementById('main-grid');
         grid.innerHTML = '';
-        
-        Object.keys(data).forEach(key => {
-            const item = data[key];
-            const card = document.createElement('div');
-            card.className = 'card';
-            card.innerHTML = `
-                <img src="${item.img || 'https://via.placeholder.com/300x150?text=No+Preview'}" alt="Preview">
-                <div class="card-info">
-                    <strong>${item.name}</strong>
-                    <small style="color:gray;">Tap to View PDF</small>
+
+        Object.keys(currentData).forEach((key) => {
+            const item = currentData[key];
+            const isQA = item.type === 'qa';
+            
+            // Define Logo (can be dynamic based on item.lang or similar)
+            const logoUrl = item.logo || "https://upload.wikimedia.org/wikipedia/commons/1/18/C_Programming_Language.svg";
+
+            const col = document.createElement('div');
+            col.className = 'col-12 col-md-6 col-lg-4';
+            
+            col.innerHTML = `
+                <div class="custom-card">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="lang-logo me-3">
+                            <img src="${logoUrl}" width="28" alt="Logo">
+                        </div>
+                        <h6 class="mb-0 fw-bold text-dark text-uppercase">${item.name}</h6>
+                    </div>
+
+                    <div class="progress mb-2" style="height: 6px; border-radius: 10px;">
+                        <div class="progress-bar" style="width: 100%; background-color: ${isQA ? '#10b981' : '#3b82f6'};"></div>
+                    </div>
+
+                    <div class="text-end mb-3">
+                        <small class="text-muted">${isQA ? 'Interactive Code' : 'PDF Document'}</small>
+                    </div>
+
+                    <button class="btn-view-code" id="btn-${key}">
+                        <div class="spinner-inline"></div>
+                        <i class="bi bi-code-slash me-2"></i> 
+                        ${isQA ? 'VIEW CODE' : 'OPEN PDF'}
+                    </button>
                 </div>
             `;
-            card.onclick = () => {
-                loader.style.display = 'flex';
-                setTimeout(() => {
-                    window.open(item.link, '_blank');
-                    loader.style.display = 'none';
-                }, 1000);
+            
+            const btn = col.querySelector(`#btn-${key}`);
+            btn.onclick = () => {
+                if(isQA) {
+                    openQA(key);
+                } else {
+                    btn.classList.add('loading');
+                    setTimeout(() => {
+                        window.open(item.link, '_blank');
+                        btn.classList.remove('loading');
+                    }, 600);
+                }
             };
-            grid.appendChild(card);
+            grid.appendChild(col);
         });
-    });
+    }
+
+    function openQA(key) {
+        activeKey = key;
+        const item = currentData[key];
+        const wrapper = document.getElementById('modal-wrapper');
+        const container = document.getElementById('qa-container');
+        
+        document.getElementById('modal-title').innerText = item.name;
+        wrapper.className = 'modal-wrapper frame-' + (item.color || 'blue');
+        
+        container.innerHTML = '';
+        (item.questions || []).forEach((pair, index) => {
+            const div = document.createElement('div');
+            div.className = 'qa-item';
+            div.innerHTML = `
+                <div class="qa-question" id="q-text-${index}" onclick="toggleAns(${index})"></div>
+                <div class="qa-ans-box" id="ans-${index}">
+                    <div class="qa-code" id="text-${index}"></div>
+                    <button class="copy-btn" id="copy-btn-${index}">COPY CODE</button>
+                </div>
+            `;
+            div.querySelector(`#q-text-${index}`).textContent = pair.q;
+            div.querySelector(`#text-${index}`).textContent = pair.a;
+            container.appendChild(div);
+            div.querySelector(`#copy-btn-${index}`).onclick = () => copyCode(index);
+        });
+        document.getElementById('qa-modal').style.display = 'block';
+    }
+
+    window.toggleAns = (idx) => {
+        const box = document.getElementById(`ans-${idx}`);
+        box.style.display = (box.style.display === 'block') ? 'none' : 'block';
+    };
+
+    const copyCode = (idx) => {
+        const code = document.getElementById(`text-${idx}`).textContent;
+        navigator.clipboard.writeText(code).then(() => showMsg("Code Copied!"));
+    };
+
+    window.closeQA = () => {
+        document.getElementById('qa-modal').style.display = 'none';
+        activeKey = null;
+    };
 </script>
+
 </body>
 </html>
