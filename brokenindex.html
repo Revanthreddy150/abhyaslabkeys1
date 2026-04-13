@@ -29,12 +29,30 @@
         .qa-item { border-bottom: 1px solid #f3f4f6; padding: 15px 0; }
         .qa-question { font-weight: 700; color: var(--primary); cursor: pointer; flex: 1; }
         .qa-ans-box { display: none; background: #f8fafc; padding: 15px; border-radius: 12px; margin-top: 10px; border: 1px solid #e2e8f0; }
-        .qa-code { font-family: monospace; white-space: pre-wrap; font-size: 13px; color: #374151; background: #f1f5f9; padding: 15px; border-radius: 12px; overflow-x: auto; margin-top: 10px; border: 1px solid #cbd5e1; }
+        .qa-code { font-family: monospace; white-space: pre-wrap; font-size: 13px; color: #374151; background: #f1f5f9; padding: 15px; border-radius: 12px; overflow-x: auto; margin-top: 10px; border: 1px solid #cbd5e1; position: relative; }
         
         .btn-group { display: flex; gap: 10px; margin-top: 15px; }
-        .copy-btn { background: #10b981; color: white; border: none; padding: 14px; border-radius: 12px; cursor: pointer; flex: 2; font-weight: 700; transition: 0.2s; }
+        .copy-btn { background: #10b981; color: white; border: none; padding: 14px; border-radius: 12px; cursor: pointer; flex: 2; font-weight: 700; transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         .share-btn { background: #6366f1; color: white; border: none; padding: 14px; border-radius: 12px; cursor: pointer; flex: 1; font-weight: 700; transition: 0.2s; }
-        .copy-btn:active, .share-btn:active { transform: scale(0.95); opacity: 0.9; }
+        .copy-btn:active { transform: scale(0.9); }
+
+        /* Animation Classes */
+        .flying-code {
+            position: fixed;
+            z-index: 9999;
+            background: var(--secondary);
+            color: white;
+            padding: 10px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 10px;
+            pointer-events: none;
+            opacity: 0.8;
+            transition: all 0.6s cubic-bezier(0.6, -0.28, 0.735, 0.045);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .btn-success { background: #059669 !important; transform: scale(1.05); }
 
         #share-view { background: #f3f4f6; z-index: 4000; }
         .share-container { max-width: 650px; margin: 40px auto; background: white; padding: 35px; border-radius: 30px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); border: 1px solid #e5e7eb; }
@@ -83,7 +101,7 @@
         <h3 id="shared-q" style="color:#1f2937; line-height: 1.4; margin-bottom: 15px;"></h3>
         <div class="qa-code" id="shared-a"></div>
         <div class="btn-group">
-            <button class="copy-btn" onclick="copySharedCode()">COPY CODE</button>
+            <button class="copy-btn" id="shared-copy-btn" onclick="copySharedCode()">COPY CODE</button>
             <button class="share-btn" style="background:#64748b;" onclick="window.location.href=window.location.pathname">BACK TO HOME</button>
         </div>
     </div>
@@ -95,6 +113,40 @@
     let currentData = {};
     let activeKey = null;
 
+    // --- Flying Animation Function ---
+    function animateCopy(sourceId, targetBtnId) {
+        const source = document.getElementById(sourceId);
+        const target = document.getElementById(targetBtnId);
+        const sRect = source.getBoundingClientRect();
+        const tRect = target.getBoundingClientRect();
+
+        const flyer = document.createElement('div');
+        flyer.className = 'flying-code';
+        flyer.innerText = "{...}";
+        flyer.style.top = sRect.top + 'px';
+        flyer.style.left = sRect.left + 'px';
+        flyer.style.width = sRect.width + 'px';
+        flyer.style.height = (sRect.height > 100 ? 100 : sRect.height) + 'px';
+        
+        document.body.appendChild(flyer);
+
+        target.classList.add('btn-success');
+
+        requestAnimationFrame(() => {
+            flyer.style.top = (tRect.top + tRect.height/2) + 'px';
+            flyer.style.left = (tRect.left + tRect.width/2) + 'px';
+            flyer.style.width = '20px';
+            flyer.style.height = '20px';
+            flyer.style.opacity = '0';
+            flyer.style.transform = 'scale(0.1) rotate(45deg)';
+        });
+
+        setTimeout(() => {
+            flyer.remove();
+            target.classList.remove('btn-success');
+        }, 600);
+    }
+
     function showMsg(text) {
         const t = document.getElementById('toast');
         t.innerText = text;
@@ -102,7 +154,6 @@
         setTimeout(() => { t.style.display = 'none'; }, 2000);
     }
 
-    // --- Optimized Share Logic using Base64 ---
     function checkShareLink() {
         const params = new URLSearchParams(window.location.search);
         const data = params.get('data');
@@ -113,31 +164,24 @@
                 document.getElementById('share-view').style.display = 'block';
                 document.getElementById('shared-q').innerText = decoded.q;
                 document.getElementById('shared-a').innerText = decoded.a;
-            } catch (e) {
-                console.error("Invalid share link");
-            }
+            } catch (e) { console.error("Invalid share link"); }
         }
     }
 
     window.shareCode = (idx) => {
         const q = document.getElementById(`q-text-${idx}`).textContent;
         const a = document.getElementById(`text-${idx}`).textContent;
-        
-        // Encode data to Base64 to shorten the link
         const payload = btoa(JSON.stringify({ q, a }));
         const shareUrl = `${window.location.origin}${window.location.pathname}?data=${payload}`;
-        
-        navigator.clipboard.writeText(shareUrl).then(() => {
-            showMsg("Short Link Copied!");
-        });
+        navigator.clipboard.writeText(shareUrl).then(() => showMsg("Short Link Copied!"));
     };
 
     window.copySharedCode = () => {
         const code = document.getElementById('shared-a').innerText;
+        animateCopy('shared-a', 'shared-copy-btn');
         navigator.clipboard.writeText(code).then(() => showMsg("Code Copied!"));
     };
 
-    // --- Firebase Logic ---
     const dbRef = ref(db, 'lab_keys');
     onValue(dbRef, (snapshot) => {
         currentData = snapshot.val() || {};
@@ -149,13 +193,11 @@
     function render() {
         const grid = document.getElementById('main-grid');
         grid.innerHTML = '';
-
         Object.keys(currentData).forEach((key) => {
             const item = currentData[key];
             const card = document.createElement('div');
             card.className = 'card';
             const isQA = item.type === 'qa';
-            
             card.innerHTML = `
                 <div style="display:flex; justify-content:space-between; align-items:flex-start;">
                     <strong>${item.name}</strong>
@@ -165,12 +207,10 @@
                     ${isQA ? 'VIEW REPOSITORY' : 'OPEN PDF'}
                 </p>
             `;
-            
             card.onclick = () => {
                 if(card.classList.contains('loading')) return;
-                if(isQA) {
-                    openQA(key);
-                } else {
+                if(isQA) openQA(key);
+                else {
                     card.classList.add('loading');
                     setTimeout(() => {
                         window.open(item.link, '_blank');
@@ -187,10 +227,8 @@
         const item = currentData[key];
         const wrapper = document.getElementById('modal-wrapper');
         const container = document.getElementById('qa-container');
-        
         document.getElementById('modal-title').innerText = item.name;
         wrapper.className = 'modal-wrapper frame-' + (item.color || 'blue');
-        
         container.innerHTML = '';
         (item.questions || []).forEach((pair, index) => {
             const div = document.createElement('div');
@@ -208,7 +246,6 @@
             div.querySelector(`#q-text-${index}`).textContent = pair.q;
             div.querySelector(`#text-${index}`).textContent = pair.a;
             container.appendChild(div);
-
             div.querySelector(`#copy-btn-${index}`).onclick = () => copyCode(index);
         });
         document.getElementById('qa-modal').style.display = 'block';
@@ -221,6 +258,7 @@
 
     const copyCode = (idx) => {
         const code = document.getElementById(`text-${idx}`).textContent;
+        animateCopy(`text-${idx}`, `copy-btn-${idx}`);
         navigator.clipboard.writeText(code).then(() => showMsg("Code Copied!"));
     };
 
@@ -229,9 +267,7 @@
         activeKey = null;
     };
 
-    // Run check on start
     checkShareLink();
 </script>
-
 </body>
 </html>
