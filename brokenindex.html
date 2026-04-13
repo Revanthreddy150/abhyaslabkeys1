@@ -4,10 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ADITYALABKEYS | HD Repository</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #3b82f6; --secondary: #10b981; --text: #1f2937; --bg: #ffffff; }
+        :root { --primary: #3b82f6; --secondary: #10b981; --text: #1f2937; --bg: #ffffff; --dark-card: #1e293b; }
         html { scroll-behavior: smooth; }
         body { font-family: 'Inter', sans-serif; margin: 0; background: var(--bg); color: var(--text); padding-bottom: 50px; }
+        
+        /* UI Components */
         .container { padding: 40px 20px; max-width: 800px; margin: 0 auto; }
         .hero h1 { font-size: 2.8rem; margin: 0; line-height: 1.1; color: var(--primary); }
         .feature-box { background: #f9fafb; padding: 25px; border-radius: 20px; margin: 25px 0; border: 1px solid #f3f4f6; }
@@ -15,34 +18,33 @@
         .card { background: white; padding: 25px; border-radius: 18px; border: 1px solid #e5e7eb; transition: 0.3s; cursor: pointer; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
         .card:active { transform: scale(0.96); background: #f9fafb; }
         
-        /* Modal & UI Elements */
-        #toast { display: none; position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: rgba(0, 0, 0, 0.9); color: white; padding: 12px 24px; border-radius: 50px; z-index: 5000; font-weight: 600; }
+        /* Modals & Overlays */
+        #toast { display: none; position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: rgba(0, 0, 0, 0.9); color: white; padding: 12px 24px; border-radius: 50px; z-index: 9999; font-weight: 600; }
         #qa-modal, #share-view { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 1000; overflow-y: auto; }
-        #share-view { display: none; padding: 20px; box-sizing: border-box; }
+        #share-view { padding: 20px; box-sizing: border-box; background: #f8fafc; }
         
         .modal-wrapper { max-width: 700px; margin: 20px auto; padding: 10px; border-radius: 30px; }
         .modal-content { background: white; border-radius: 25px; padding: 25px; position: relative; }
         .frame-red { background: #ef4444; } .frame-blue { background: #3b82f6; } .frame-yellow { background: #f59e0b; } .frame-green { background: #10b981; }
         
+        /* Code & Compiler Styling */
         .qa-item { border-bottom: 1px solid #f3f4f6; padding: 15px 0; }
         .qa-question { font-weight: 700; color: var(--primary); cursor: pointer; margin-bottom: 8px; }
-        .qa-ans-box { display: none; background: #1e293b; padding: 15px; border-radius: 12px; margin-top: 10px; }
-        .qa-code { font-family: 'Fira Code', monospace; white-space: pre-wrap; font-size: 13px; color: #e2e8f0; overflow-x: auto; }
+        .qa-ans-box { display: none; background: var(--dark-card); padding: 20px; border-radius: 15px; margin-top: 10px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.2); }
+        .qa-code { font-family: 'Fira Code', monospace; white-space: pre-wrap; font-size: 14px; color: #e2e8f0; overflow-x: auto; line-height: 1.5; }
         
-        /* Buttons */
         .btn-group { display: flex; gap: 10px; margin-top: 15px; }
-        .btn { flex: 1; border: none; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: 700; transition: 0.2s; color: white; text-align: center; }
+        .btn { flex: 1; border: none; padding: 14px; border-radius: 12px; cursor: pointer; font-weight: 700; transition: 0.2s; color: white; display: flex; align-items: center; justify-content: center; }
         .copy-btn { background: #10b981; }
         .share-btn { background: #6366f1; }
         .run-btn { background: #f59e0b; }
         .close-btn { background: #ef4444; margin-top: 20px; width: 100%; }
         
-        /* Compiler Output */
-        .output-box { background: #000; color: #10b981; padding: 15px; border-radius: 8px; margin-top: 15px; font-family: monospace; min-height: 40px; border-left: 4px solid #f59e0b; display: none; }
-        .spinner { width: 18px; height: 18px; border: 2px solid #ffffff; border-top: 2px solid transparent; border-radius: 50%; animation: spin 0.8s linear infinite; display: inline-block; margin-right: 5px; vertical-align: middle; }
+        .output-box { background: #000; color: #10b981; padding: 15px; border-radius: 10px; margin-top: 15px; font-family: 'Fira Code', monospace; font-size: 13px; border-left: 4px solid #f59e0b; display: none; white-space: pre-wrap; }
+        .spinner { width: 18px; height: 18px; border: 2px solid #fff; border-top: 2px solid transparent; border-radius: 50%; animation: spin 0.8s linear infinite; margin-right: 8px; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        @media (max-width: 500px) { .grid { grid-template-columns: 1fr; } .hero h1 { font-size: 2.2rem; } }
+        @media (max-width: 500px) { .grid { grid-template-columns: 1fr; } .hero h1 { font-size: 2.2rem; } .btn-group { flex-direction: column; } }
     </style>
 </head>
 <body>
@@ -58,12 +60,12 @@
     <div class="feature-box">
         <ul style="list-style:none; padding:0; margin: 0; font-weight: 600;">
             <li>✦ Resource Efficiency</li>
-            <li style="margin: 10px 0;">✦ Real-Time Compiler Support</li>
-            <li>✦ Direct Code Sharing</li>
+            <li style="margin: 10px 0;">✦ Universal Code Compiler</li>
+            <li>✦ Instant Program Sharing</li>
         </ul>
     </div>
 
-    <div id="loading-text" style="text-align:center; color:gray; padding: 20px;">Fetching Repository...</div>
+    <div id="loading-text" style="text-align:center; color:gray; padding: 20px;">Establishing Connection...</div>
     <div class="grid" id="main-grid"></div>
 </div>
 
@@ -72,25 +74,25 @@
         <div class="modal-content">
             <h2 id="modal-title" style="margin:0 0 15px 0; color: var(--primary);">Questions</h2>
             <div id="qa-container"></div>
-            <button class="btn close-btn" onclick="closeQA()">CLOSE REPOSITORY</button>
+            <button class="btn close-btn" onclick="closeQA()">BACK TO DASHBOARD</button>
         </div>
     </div>
 </div>
 
 <div id="share-view">
-    <div style="max-width:700px; margin: 0 auto;">
-        <h1 style="color: var(--primary); text-align: center;">Abhyas Lab Keys</h1>
-        <div class="modal-content" style="border: 1px solid #e5e7eb; box-shadow: 0 10px 25px rgba(0,0,0,0.1);">
-            <h3 id="shared-q-title" style="color: var(--primary); margin-top:0;"></h3>
+    <div style="max-width:700px; margin: 0 auto; padding-top: 30px;">
+        <h1 style="color: var(--primary); text-align: center; margin-bottom: 30px;">USEAS LAB PORTAL</h1>
+        <div class="modal-content" style="border: 1px solid #e5e7eb; box-shadow: 0 20px 40px rgba(0,0,0,0.1);">
+            <h3 id="shared-q-title" style="color: var(--primary); margin-top:0; font-size: 1.4rem;"></h3>
             <div class="qa-ans-box" style="display:block;">
                 <div class="qa-code" id="shared-code-text"></div>
             </div>
             <div class="btn-group">
-                <button class="btn copy-btn" id="shared-copy-btn">COPY</button>
-                <button class="btn run-btn" id="shared-run-btn">RUN CODE</button>
+                <button class="btn copy-btn" id="shared-copy-btn">COPY CODE</button>
+                <button class="btn run-btn" id="shared-run-btn">COMPILE & RUN</button>
             </div>
-            <div id="shared-output" class="output-box"></div>
-            <button class="btn close-btn" onclick="location.href=window.location.pathname">VIEW ALL PROGRAMS</button>
+            <div id="output-shared" class="output-box"></div>
+            <button class="btn close-btn" onclick="location.href=window.location.pathname">VIEW ALL EXPERIMENTS</button>
         </div>
     </div>
 </div>
@@ -99,22 +101,19 @@
     import { db, ref, onValue } from "./firebase-config.js";
 
     let currentData = {};
-    let activeKey = null;
 
     const showMsg = (text) => {
         const t = document.getElementById('toast');
-        t.innerText = text;
-        t.style.display = 'block';
+        t.innerText = text; t.style.display = 'block';
         setTimeout(() => { t.style.display = 'none'; }, 2000);
     };
 
-    // --- Database Initialization ---
+    // --- Core Data Fetching ---
     const dbRef = ref(db, 'lab_keys');
     onValue(dbRef, (snapshot) => {
         currentData = snapshot.val() || {};
         document.getElementById('loading-text').style.display = 'none';
         
-        // Handle Routing
         const params = new URLSearchParams(window.location.search);
         const labId = params.get('id');
         const qIdx = params.get('q');
@@ -122,12 +121,11 @@
         if (labId && qIdx !== null && currentData[labId]) {
             renderShareView(labId, qIdx);
         } else {
-            render();
+            renderMainGrid();
         }
     });
 
-    // --- Main Rendering ---
-    function render() {
+    function renderMainGrid() {
         const grid = document.getElementById('main-grid');
         grid.innerHTML = '';
         Object.keys(currentData).forEach((key) => {
@@ -135,24 +133,17 @@
             const card = document.createElement('div');
             card.className = 'card';
             const isQA = item.type === 'qa';
-            
             card.innerHTML = `
-                <div style="display:flex; justify-content:space-between; align-items:flex-start;">
-                    <strong>${item.name}</strong>
-                </div>
-                <p style="font-size:11px; color:${isQA ? '#10b981' : '#9ca3af'}; font-weight:800; margin: 5px 0 0 0;">
-                    ${isQA ? 'VIEW REPOSITORY' : 'OPEN PDF'}
-                </p>
-            `;
-            
+                <strong>${item.name}</strong>
+                <p style="font-size:11px; color:${isQA ? '#10b981' : '#9ca3af'}; font-weight:800; margin: 8px 0 0 0;">
+                    ${isQA ? 'VIEW REPOSITORY' : 'DOWNLOAD PDF'}
+                </p>`;
             card.onclick = () => isQA ? openQA(key) : window.open(item.link, '_blank');
             grid.appendChild(card);
         });
     }
 
-    // --- Modal View ---
     function openQA(key) {
-        activeKey = key;
         const item = currentData[key];
         const container = document.getElementById('qa-container');
         document.getElementById('modal-title').innerText = item.name;
@@ -163,7 +154,7 @@
             const div = document.createElement('div');
             div.className = 'qa-item';
             div.innerHTML = `
-                <div class="qa-question" onclick="toggleAns(${index})">${pair.q}</div>
+                <div class="qa-question" onclick="toggleAns(${index})">Q${index+1}: ${pair.q}</div>
                 <div class="qa-ans-box" id="ans-${index}">
                     <div class="qa-code" id="text-${index}">${pair.a}</div>
                     <div class="btn-group">
@@ -172,21 +163,18 @@
                         <button class="btn share-btn" onclick="shareQuestion('${key}', ${index})">SHARE</button>
                     </div>
                     <div id="output-ans-${index}" class="output-box"></div>
-                </div>
-            `;
+                </div>`;
             container.appendChild(div);
         });
         document.getElementById('qa-modal').style.display = 'block';
         document.getElementById('main-container').style.display = 'none';
     }
 
-    // --- Shared View Implementation ---
     function renderShareView(labId, qIdx) {
         const item = currentData[labId];
         const pair = item.questions[qIdx];
         document.getElementById('main-container').style.display = 'none';
         document.getElementById('share-view').style.display = 'block';
-        
         document.getElementById('shared-q-title').innerText = pair.q;
         document.getElementById('shared-code-text').innerText = pair.a;
         
@@ -194,11 +182,10 @@
             navigator.clipboard.writeText(pair.a);
             showMsg("Code Copied!");
         };
-        
-        document.getElementById('shared-run-btn').onclick = () => runCode(labId, qIdx, 'shared');
+        document.getElementById('shared-run-btn').onclick = (e) => runCode(labId, qIdx, 'shared', e);
     }
 
-    // --- Helper Functions ---
+    // --- Utilities ---
     window.toggleAns = (idx) => {
         const box = document.getElementById(`ans-${idx}`);
         box.style.display = (box.style.display === 'block') ? 'none' : 'block';
@@ -210,8 +197,8 @@
     };
 
     window.shareQuestion = (labId, qIdx) => {
-        const shareUrl = `${window.location.origin}${window.location.pathname}?id=${labId}&q=${qIdx}`;
-        navigator.clipboard.writeText(shareUrl).then(() => showMsg("Link Copied to Share!"));
+        const url = `${window.location.origin}${window.location.pathname}?id=${labId}&q=${qIdx}`;
+        navigator.clipboard.writeText(url).then(() => showMsg("Share link copied!"));
     };
 
     window.closeQA = () => {
@@ -219,18 +206,18 @@
         document.getElementById('main-container').style.display = 'block';
     };
 
-    // --- Compiler Logic (Judge0 API) ---
-    window.runCode = async (labKey, qIdx, outputTarget) => {
+    // --- FIXED COMPILER LOGIC ---
+    window.runCode = async (labKey, qIdx, targetId, event) => {
         const code = currentData[labKey].questions[qIdx].a;
-        const outputDiv = document.getElementById(`output-${outputTarget}`);
-        const runBtn = event.currentTarget;
+        const outputDiv = document.getElementById(`output-${targetId}`);
+        const btn = event.currentTarget;
         
         outputDiv.style.display = 'block';
-        outputDiv.innerHTML = `<div class="spinner"></div> Compiling...`;
-        runBtn.disabled = true;
+        outputDiv.innerHTML = `<div class="spinner"></div> Compiling & Running...`;
+        btn.disabled = true;
 
-        // Auto-detect language (simple check)
-        let langId = 71; // Default Python
+        // Detection & Language ID for Judge0
+        let langId = 71; // Python
         if (code.includes('#include')) langId = 50; // C
         if (code.includes('public class')) langId = 62; // Java
 
@@ -238,22 +225,24 @@
             const response = await fetch("https://judge0-ce.p.rapidapi.com/submissions?base64_encoded=false&wait=true", {
                 method: "POST",
                 headers: {
-                    "x-rapidapi-key": "REPLACE_WITH_FREE_RAPID_API_KEY", // Get free key from rapidapi.com
+                    "x-rapidapi-key": "YOUR_RAPID_API_KEY", // <--- PUT YOUR KEY HERE
                     "x-rapidapi-host": "judge0-ce.p.rapidapi.com",
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
                     source_code: code,
                     language_id: langId,
+                    stdin: "5 10" // Example default input so scanf doesn't hang
                 })
             });
 
             const result = await response.json();
-            outputDiv.innerText = result.stdout || result.stderr || result.compile_output || "Execution finished (No Output).";
+            const finalOutput = result.stdout || result.stderr || result.compile_output || "Execution Success (No Output).";
+            outputDiv.innerText = `> Output:\n${finalOutput}`;
         } catch (err) {
-            outputDiv.innerText = "Error connecting to compiler.";
+            outputDiv.innerText = "Error: Could not reach compiler server.";
         } finally {
-            runBtn.disabled = false;
+            btn.disabled = false;
         }
     };
 </script>
