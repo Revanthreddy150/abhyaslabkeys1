@@ -4,97 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ADITYALABKEYS | HD Repository</title>
-    
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getDatabase, ref, set, onValue, push, remove, update } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyDAheWdYiiEBUHgbokK7kDPjMEEk7fngYQ",
-            authDomain: "abhyaslabkeys.firebaseapp.com",
-            databaseURL: "https://abhyaslabkeys-default-rtdb.firebaseio.com",
-            projectId: "abhyaslabkeys",
-            storageBucket: "abhyaslabkeys.firebasestorage.app",
-            messagingSenderId: "782150849318",
-            appId: "1:782150849318:web:79710f1e99b32644c567e7",
-            measurementId: "G-K4FM6QY4HY"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const db = getDatabase(app);
-        const dbRef = ref(db, 'lab_keys');
-        window.firebaseDB = { db, dbRef, set, onValue, push, remove, update, ref };
-    </script>
-    
     <style>
+        /* [Existing Styles Kept for UI Consistency] */
         :root { --primary: #3b82f6; --secondary: #10b981; --text: #1f2937; --bg: #ffffff; }
         html { scroll-behavior: smooth; }
         body { font-family: 'Inter', sans-serif; margin: 0; background: var(--bg); color: var(--text); padding-bottom: 50px; overflow-x: hidden; }
-
         .container { padding: 40px 20px; max-width: 800px; margin: 0 auto; }
         .hero h1 { font-size: 2.8rem; margin: 0; line-height: 1.1; color: var(--primary); }
-        #admin-trigger { color: var(--secondary); cursor: pointer; user-select: none; display: inline-block; }
-
         .feature-box { background: #f9fafb; padding: 25px; border-radius: 20px; margin: 25px 0; border: 1px solid #f3f4f6; }
         .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin: 30px 0; }
-        
-        /* Card Styling */
-        .card { 
-            background: white; padding: 25px; border-radius: 18px; border: 1px solid #e5e7eb;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; position: relative;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
-        }
+        .card { background: white; padding: 25px; border-radius: 18px; border: 1px solid #e5e7eb; transition: 0.3s; cursor: pointer; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
         .card:active { transform: scale(0.96); background: #f9fafb; }
-        
-        /* Loading Spinner */
-        .spinner {
-            display: none; width: 18px; height: 18px; border: 2px solid #e2e8f0;
-            border-top: 2px solid var(--secondary); border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-        }
+        .spinner { display: none; width: 18px; height: 18px; border: 2px solid #e2e8f0; border-top: 2px solid var(--secondary); border-radius: 50%; animation: spin 0.8s linear infinite; }
         .card.loading .spinner { display: block; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
-        /* Custom Toast */
-        #toast {
-            display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            background: rgba(0, 0, 0, 0.9); color: white; padding: 16px 32px; border-radius: 50px;
-            z-index: 3000; font-weight: 600; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-        }
-
-        /* Modal / QA Windows */
-        #qa-modal { 
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: rgba(0,0,0,0.7); z-index: 1000; overflow-y: auto; padding: 20px; 
-        }
+        #toast { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0, 0, 0, 0.9); color: white; padding: 16px 32px; border-radius: 50px; z-index: 3000; font-weight: 600; text-align: center; }
+        #qa-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 1000; overflow-y: auto; padding: 20px; }
         .modal-wrapper { max-width: 600px; margin: 40px auto; padding: 12px; border-radius: 35px; transition: 0.3s; }
         .modal-content { background: white; border-radius: 25px; padding: 30px; position: relative; }
-        
-        /* Modal Frame Colors */
-        .frame-red { background: #ef4444; } .frame-blue { background: #3b82f6; }
-        .frame-yellow { background: #f59e0b; } .frame-green { background: #10b981; }
-
+        .frame-red { background: #ef4444; } .frame-blue { background: #3b82f6; } .frame-yellow { background: #f59e0b; } .frame-green { background: #10b981; }
         .close-modal { position: absolute; right: 20px; top: 20px; font-size: 24px; cursor: pointer; color: #9ca3af; }
-        
-        /* Q&A List */
         .qa-item { border-bottom: 1px solid #f3f4f6; padding: 15px 0; }
-        .qa-header { display: flex; justify-content: space-between; align-items: center; }
         .qa-question { font-weight: 700; color: var(--primary); cursor: pointer; flex: 1; }
         .qa-ans-box { display: none; background: #f8fafc; padding: 15px; border-radius: 12px; margin-top: 10px; border: 1px solid #e2e8f0; }
         .qa-code { font-family: monospace; white-space: pre-wrap; font-size: 13px; color: #374151; }
-        
-        .copy-btn { 
-            background: #10b981; color: white; border: none; padding: 10px; 
-            border-radius: 8px; cursor: pointer; width: 100%; font-weight: 700; margin-top: 10px;
-        }
-
-        /* Admin Controls */
-        .admin-controls { margin-top: 15px; display: flex; gap: 8px; border-top: 1px solid #eee; padding-top: 12px; }
-        .adm-btn { flex: 1; border: none; padding: 8px; border-radius: 8px; font-weight: 800; cursor: pointer; font-size: 11px; }
-        .edit-btn { background: #dbeafe; color: #1e40af; }
-        .del-btn { background: #fee2e2; color: #b91c1c; }
-        .mini-btn { padding: 4px 8px; border-radius: 4px; border: none; font-size: 10px; cursor: pointer; font-weight: bold; margin-left: 5px; }
-
+        .copy-btn { background: #10b981; color: white; border: none; padding: 10px; border-radius: 8px; cursor: pointer; width: 100%; font-weight: 700; margin-top: 10px; }
         @media (max-width: 500px) { .grid { grid-template-columns: 1fr; } .hero h1 { font-size: 2.2rem; } }
     </style>
 </head>
@@ -104,7 +38,7 @@
 
 <div class="container">
     <div class="hero">
-        <h1>Abhyas<br><span id="admin-trigger">Lab Keys</span></h1>
+        <h1>Abhyas<br><span>Lab Keys</span></h1>
         <p style="color:#6b7280; font-weight: 500;">Cloud-Synced HD Repository.</p>
     </div>
 
@@ -125,23 +59,15 @@
         <div class="modal-content">
             <span class="close-modal" onclick="closeQA()">&times;</span>
             <h2 id="modal-title" style="margin:0 0 15px 0; color: var(--primary);">Questions</h2>
-            
-            <div id="admin-qa-tools" style="display:none; margin-bottom: 20px; padding: 15px; background: #f8fafc; border-radius: 15px; border: 1px dashed #cbd5e1;">
-                <div style="display:flex; gap: 10px;">
-                    <button class="adm-btn edit-btn" onclick="addQuestion()">+ New Question</button>
-                    <button class="adm-btn edit-btn" style="background:#e0e7ff" onclick="setFrameColor()">Change Color</button>
-                </div>
-            </div>
-
             <div id="qa-container"></div>
         </div>
     </div>
 </div>
 
-<script>
+<script type="module">
+    import { db, ref, onValue } from "./firebase-config.js";
+
     let currentData = {};
-    let clickCount = 0;
-    let isAdmin = false;
     let activeKey = null;
 
     function showMsg(text) {
@@ -151,57 +77,18 @@
         setTimeout(() => { t.style.display = 'none'; }, 2000);
     }
 
-    // Admin Login Logic
-    document.getElementById('admin-trigger').onclick = () => {
-        clickCount++;
-        if(clickCount === 5) {
-            if(prompt("Password:") === "adcrjylab@123") {
-                isAdmin = true;
-                showMsg("Logged in as Admin");
-                render();
-            }
-            clickCount = 0;
-        }
-    };
-
-    // Database Sync
-    window.onload = () => {
-        const checkFB = setInterval(() => {
-            if(window.firebaseDB) {
-                clearInterval(checkFB);
-                const { dbRef, onValue } = window.firebaseDB;
-                onValue(dbRef, (snapshot) => {
-                    currentData = snapshot.val() || {};
-                    document.getElementById('loading-text').style.display = 'none';
-                    render();
-                    if(activeKey) openQA(activeKey);
-                });
-            }
-        }, 100);
-    };
+    // Fetch Data
+    const dbRef = ref(db, 'lab_keys');
+    onValue(dbRef, (snapshot) => {
+        currentData = snapshot.val() || {};
+        document.getElementById('loading-text').style.display = 'none';
+        render();
+        if(activeKey) openQA(activeKey);
+    });
 
     function render() {
         const grid = document.getElementById('main-grid');
-        const fragment = document.createDocumentFragment();
-
-        if(isAdmin) {
-            const addCard = document.createElement('div');
-            addCard.className = 'card';
-            addCard.style.cssText = "border:2px dashed #ccc; text-align:center;";
-            addCard.innerHTML = "<strong>+ Create New</strong>";
-            addCard.onclick = () => {
-                const choice = prompt("1: Normal PDF (File)\n2: Repository (Q&A)");
-                if(choice === "1") {
-                    const n = prompt("Name:");
-                    const l = prompt("URL:");
-                    if(n && l) window.firebaseDB.push(window.firebaseDB.dbRef, { name: n, link: l, type: 'normal' });
-                } else if(choice === "2") {
-                    const n = prompt("Subject Name:");
-                    if(n) window.firebaseDB.push(window.firebaseDB.dbRef, { name: n, questions: [], type: 'qa', color: 'blue' });
-                }
-            };
-            fragment.appendChild(addCard);
-        }
+        grid.innerHTML = '';
 
         Object.keys(currentData).forEach((key) => {
             const item = currentData[key];
@@ -221,7 +108,6 @@
             
             card.onclick = () => {
                 if(card.classList.contains('loading')) return;
-                
                 if(isQA) {
                     openQA(key);
                 } else {
@@ -229,41 +115,13 @@
                     setTimeout(() => {
                         window.open(item.link, '_blank');
                         card.classList.remove('loading');
-                    }, 1200);
+                    }, 800);
                 }
             };
-
-            if(isAdmin) {
-                const controls = document.createElement('div');
-                controls.className = 'admin-controls';
-                controls.innerHTML = `<button class="adm-btn edit-btn">Edit</button><button class="adm-btn del-btn">Delete</button>`;
-                
-                controls.querySelector('.edit-btn').onclick = (e) => {
-                    e.stopPropagation();
-                    if(isQA) {
-                        openQA(key);
-                        showMsg("Editor Opened");
-                    } else {
-                        const newN = prompt("New Name:", item.name);
-                        const newL = prompt("New Link:", item.link);
-                        if(newN && newL) window.firebaseDB.update(window.firebaseDB.ref(window.firebaseDB.db, 'lab_keys/' + key), { name: newN, link: newL });
-                    }
-                };
-
-                controls.querySelector('.del-btn').onclick = (e) => {
-                    e.stopPropagation();
-                    if(confirm("Delete this?")) window.firebaseDB.remove(window.firebaseDB.ref(window.firebaseDB.db, 'lab_keys/' + key));
-                };
-                card.appendChild(controls);
-            }
-            fragment.appendChild(card);
+            grid.appendChild(card);
         });
-
-        grid.innerHTML = '';
-        grid.appendChild(fragment);
     }
 
-    // --- Modal Logic ---
     function openQA(key) {
         activeKey = key;
         const item = currentData[key];
@@ -271,7 +129,6 @@
         const container = document.getElementById('qa-container');
         
         document.getElementById('modal-title').innerText = item.name;
-        document.getElementById('admin-qa-tools').style.display = isAdmin ? 'block' : 'none';
         wrapper.className = 'modal-wrapper frame-' + (item.color || 'blue');
         
         container.innerHTML = '';
@@ -279,67 +136,30 @@
             const div = document.createElement('div');
             div.className = 'qa-item';
             div.innerHTML = `
-                <div class="qa-header">
-                    <div class="qa-question" onclick="toggleAns(${index})">${pair.q}</div>
-                    ${isAdmin ? `
-                        <div>
-                            <button class="mini-btn edit-btn" onclick="editQAItem(${index})">Edit</button>
-                            <button class="mini-btn del-btn" onclick="deleteQAItem(${index})">×</button>
-                        </div>
-                    ` : ''}
-                </div>
+                <div class="qa-question" id="q-text-${index}" onclick="toggleAns(${index})"></div>
                 <div class="qa-ans-box" id="ans-${index}">
-                    <div class="qa-code" id="text-${index}">${pair.a}</div>
-                    <button class="copy-btn" onclick="copyCode(${index})">COPY CODE</button>
+                    <div class="qa-code" id="text-${index}"></div>
+                    <button class="copy-btn" id="copy-btn-${index}">COPY CODE</button>
                 </div>
             `;
+            div.querySelector(`#q-text-${index}`).textContent = pair.q;
+            div.querySelector(`#text-${index}`).textContent = pair.a;
             container.appendChild(div);
+
+            // Manual event binding for copy button
+            div.querySelector(`#copy-btn-${index}`).onclick = () => copyCode(index);
         });
         document.getElementById('qa-modal').style.display = 'block';
     }
-
-    function addQuestion() {
-        const q = prompt("Question:");
-        const a = prompt("Answer/Code:");
-        if(q && a) {
-            const qList = currentData[activeKey].questions || [];
-            qList.push({ q, a });
-            window.firebaseDB.update(window.firebaseDB.ref(window.firebaseDB.db, 'lab_keys/' + activeKey), { questions: qList });
-            showMsg("Added");
-        }
-    }
-
-    window.editQAItem = (idx) => {
-        const qList = currentData[activeKey].questions;
-        const newQ = prompt("Edit Q:", qList[idx].q);
-        const newA = prompt("Edit A:", qList[idx].a);
-        if(newQ && newA) {
-            qList[idx] = { q: newQ, a: newA };
-            window.firebaseDB.update(window.firebaseDB.ref(window.firebaseDB.db, 'lab_keys/' + activeKey), { questions: qList });
-        }
-    };
-
-    window.deleteQAItem = (idx) => {
-        if(confirm("Delete question?")) {
-            const qList = currentData[activeKey].questions;
-            qList.splice(idx, 1);
-            window.firebaseDB.update(window.firebaseDB.ref(window.firebaseDB.db, 'lab_keys/' + activeKey), { questions: qList });
-        }
-    };
-
-    window.setFrameColor = () => {
-        const c = prompt("1: Red, 2: Blue, 3: Yellow, 4: Green");
-        const colors = { "1":"red", "2":"blue", "3":"yellow", "4":"green" };
-        if(colors[c]) window.firebaseDB.update(window.firebaseDB.ref(window.firebaseDB.db, 'lab_keys/' + activeKey), { color: colors[c] });
-    };
 
     window.toggleAns = (idx) => {
         const box = document.getElementById(`ans-${idx}`);
         box.style.display = (box.style.display === 'block') ? 'none' : 'block';
     };
 
-    window.copyCode = (idx) => {
-        navigator.clipboard.writeText(document.getElementById(`text-${idx}`).innerText).then(() => showMsg("Code Copied!"));
+    const copyCode = (idx) => {
+        const code = document.getElementById(`text-${idx}`).textContent;
+        navigator.clipboard.writeText(code).then(() => showMsg("Code Copied!"));
     };
 
     window.closeQA = () => {
