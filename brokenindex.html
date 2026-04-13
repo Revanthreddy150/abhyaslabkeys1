@@ -7,41 +7,39 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
     <style>
         :root { --primary: #3b82f6; --secondary: #10b981; --text: #1f2937; --bg: #ffffff; --dark-card: #1e293b; }
-        html { scroll-behavior: smooth; }
         body { font-family: 'Inter', sans-serif; margin: 0; background: var(--bg); color: var(--text); padding-bottom: 50px; }
-        
         .container { padding: 40px 20px; max-width: 800px; margin: 0 auto; }
-        .hero h1 { font-size: 2.8rem; margin: 0; line-height: 1.1; color: var(--primary); }
-        .feature-box { background: #f9fafb; padding: 25px; border-radius: 20px; margin: 25px 0; border: 1px solid #f3f4f6; }
+        .hero h1 { font-size: 2.8rem; margin: 0; color: var(--primary); }
+        .feature-box { background: #f9fafb; padding: 20px; border-radius: 20px; margin: 25px 0; border: 1px solid #f3f4f6; }
         .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin: 30px 0; }
-        .card { background: white; padding: 25px; border-radius: 18px; border: 1px solid #e5e7eb; transition: 0.3s; cursor: pointer; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
-        .card:active { transform: scale(0.96); background: #f9fafb; }
+        .card { background: white; padding: 25px; border-radius: 18px; border: 1px solid #e5e7eb; transition: 0.3s; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .card:active { transform: scale(0.96); }
         
-        #toast { display: none; position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: rgba(0, 0, 0, 0.9); color: white; padding: 12px 24px; border-radius: 50px; z-index: 9999; font-weight: 600; }
+        /* Modals */
+        #toast { display: none; position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #000; color: #fff; padding: 12px 24px; border-radius: 50px; z-index: 9999; }
         #qa-modal, #share-view { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 1000; overflow-y: auto; }
-        #share-view { padding: 20px; box-sizing: border-box; background: #f8fafc; }
+        #share-view { padding: 20px; background: #f8fafc; }
         
-        .modal-wrapper { max-width: 700px; margin: 20px auto; padding: 10px; border-radius: 30px; }
-        .modal-content { background: white; border-radius: 25px; padding: 25px; position: relative; }
-        .frame-red { background: #ef4444; } .frame-blue { background: #3b82f6; } .frame-yellow { background: #f59e0b; } .frame-green { background: #10b981; }
-        
+        .modal-content { max-width: 700px; margin: 20px auto; background: white; border-radius: 25px; padding: 25px; position: relative; border: 1px solid #eee; }
         .qa-item { border-bottom: 1px solid #f3f4f6; padding: 15px 0; }
-        .qa-question { font-weight: 700; color: var(--primary); cursor: pointer; margin-bottom: 8px; }
+        .qa-question { font-weight: 700; color: var(--primary); cursor: pointer; }
         .qa-ans-box { display: none; background: var(--dark-card); padding: 20px; border-radius: 15px; margin-top: 10px; }
-        .qa-code { font-family: 'Fira Code', monospace; white-space: pre-wrap; font-size: 14px; color: #e2e8f0; overflow-x: auto; line-height: 1.5; }
+        .qa-code { font-family: 'Fira Code', monospace; white-space: pre-wrap; font-size: 14px; color: #e2e8f0; overflow-x: auto; }
         
+        /* Buttons */
         .btn-group { display: flex; gap: 10px; margin-top: 15px; }
-        .btn { flex: 1; border: none; padding: 14px; border-radius: 12px; cursor: pointer; font-weight: 700; transition: 0.2s; color: white; display: flex; align-items: center; justify-content: center; }
+        .btn { flex: 1; border: none; padding: 14px; border-radius: 12px; cursor: pointer; font-weight: 700; color: white; }
         .copy-btn { background: #10b981; }
         .share-btn { background: #6366f1; }
         .run-btn { background: #f59e0b; }
-        .close-btn { background: #ef4444; margin-top: 20px; width: 100%; }
+        .close-btn { background: #ef4444; width: 100%; margin-top: 20px; }
         
-        .output-box { background: #000; color: #10b981; padding: 15px; border-radius: 10px; margin-top: 15px; font-family: 'Fira Code', monospace; font-size: 13px; border-left: 4px solid #f59e0b; display: none; white-space: pre-wrap; }
-        .spinner { width: 18px; height: 18px; border: 2px solid #fff; border-top: 2px solid transparent; border-radius: 50%; animation: spin 0.8s linear infinite; margin-right: 8px; }
+        /* Output Terminal */
+        .output-box { background: #000; color: #10b981; padding: 15px; border-radius: 10px; margin-top: 15px; font-family: 'Fira Code', monospace; display: none; border-left: 4px solid #f59e0b; }
+        .loader { width: 18px; height: 18px; border: 2px solid #fff; border-top: 2px solid transparent; border-radius: 50%; animation: spin 1s linear infinite; display: inline-block; vertical-align: middle; margin-right: 8px; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        @media (max-width: 500px) { .grid { grid-template-columns: 1fr; } .hero h1 { font-size: 2.2rem; } .btn-group { flex-direction: column; } }
+        @media (max-width: 500px) { .grid { grid-template-columns: 1fr; } .btn-group { flex-direction: column; } }
     </style>
 </head>
 <body>
@@ -51,45 +49,41 @@
 <div id="main-container" class="container">
     <div class="hero">
         <h1>Abhyas<br><span>Lab Keys</span></h1>
-        <p style="color:#6b7280; font-weight: 500;">Cloud-Synced HD Repository.</p>
+        <p style="color:#6b7280;">Online Educational Repository & Compiler.</p>
     </div>
-
     <div class="feature-box">
         <ul style="list-style:none; padding:0; margin: 0; font-weight: 600;">
-            <li>✦ Full-Stack Resource Portal</li>
-            <li style="margin: 10px 0;">✦ Auto-Fix Compiler (Includes Headers)</li>
-            <li>✦ Real-Time Code Sharing</li>
+            <li>✦ Instant Code Compilation</li>
+            <li style="margin:10px 0;">✦ Zero Setup Required</li>
+            <li>✦ Shareable Lab URLs</li>
         </ul>
     </div>
-
-    <div id="loading-text" style="text-align:center; color:gray; padding: 20px;">Connecting to Repository...</div>
+    <div id="loading-text" style="text-align:center; padding: 20px;">Fetching Labs...</div>
     <div class="grid" id="main-grid"></div>
 </div>
 
 <div id="qa-modal">
-    <div class="modal-wrapper" id="modal-wrapper">
-        <div class="modal-content">
-            <h2 id="modal-title" style="margin:0 0 15px 0; color: var(--primary);">Questions</h2>
-            <div id="qa-container"></div>
-            <button class="btn close-btn" onclick="closeQA()">BACK TO HOME</button>
-        </div>
+    <div class="modal-content">
+        <h2 id="modal-title" style="color: var(--primary);">Questions</h2>
+        <div id="qa-container"></div>
+        <button class="btn close-btn" onclick="closeQA()">CLOSE</button>
     </div>
 </div>
 
 <div id="share-view">
-    <div style="max-width:700px; margin: 0 auto; padding-top: 30px;">
-        <h1 style="color: var(--primary); text-align: center; margin-bottom: 20px;">USEAS LAB PORTAL</h1>
-        <div class="modal-content" style="border: 1px solid #e5e7eb; box-shadow: 0 20px 40px rgba(0,0,0,0.1);">
-            <h3 id="shared-q-title" style="color: var(--primary); margin-top:0;"></h3>
+    <div style="max-width:700px; margin: 0 auto; padding-top: 20px;">
+        <h1 style="text-align: center; color: var(--primary);">USEAS LAB PORTAL</h1>
+        <div class="modal-content" style="box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+            <h3 id="shared-q-title"></h3>
             <div class="qa-ans-box" style="display:block;">
                 <div class="qa-code" id="shared-code-text"></div>
             </div>
             <div class="btn-group">
-                <button class="btn copy-btn" id="shared-copy-btn">COPY CODE</button>
-                <button class="btn run-btn" id="shared-run-btn">COMPILE & RUN</button>
+                <button class="btn copy-btn" id="shared-copy-btn">COPY</button>
+                <button class="btn run-btn" id="shared-run-btn">RUN CODE</button>
             </div>
             <div id="output-shared" class="output-box"></div>
-            <button class="btn close-btn" onclick="location.href=window.location.pathname">EXPLORE MORE</button>
+            <button class="btn close-btn" onclick="location.href=window.location.pathname">BACK TO HOME</button>
         </div>
     </div>
 </div>
@@ -99,35 +93,31 @@
 
     let currentData = {};
 
-    const showMsg = (text) => {
+    const showMsg = (msg) => {
         const t = document.getElementById('toast');
-        t.innerText = text; t.style.display = 'block';
-        setTimeout(() => { t.style.display = 'none'; }, 2000);
+        t.innerText = msg; t.style.display = 'block';
+        setTimeout(() => t.style.display = 'none', 2000);
     };
 
-    const dbRef = ref(db, 'lab_keys');
-    onValue(dbRef, (snapshot) => {
+    onValue(ref(db, 'lab_keys'), (snapshot) => {
         currentData = snapshot.val() || {};
         document.getElementById('loading-text').style.display = 'none';
         
         const params = new URLSearchParams(window.location.search);
-        const labId = params.get('id'), qIdx = params.get('q');
-
-        if (labId && qIdx !== null && currentData[labId]) {
-            renderShareView(labId, qIdx);
+        if (params.get('id') && params.get('q')) {
+            renderShareView(params.get('id'), params.get('q'));
         } else {
-            renderMainGrid();
+            renderMain();
         }
     });
 
-    function renderMainGrid() {
+    function renderMain() {
         const grid = document.getElementById('main-grid');
         grid.innerHTML = '';
-        Object.keys(currentData).forEach((key) => {
-            const item = currentData[key];
+        Object.keys(currentData).forEach(key => {
             const card = document.createElement('div');
             card.className = 'card';
-            card.innerHTML = `<strong>${item.name}</strong><p style="font-size:11px; color:#10b981; font-weight:800; margin: 8px 0 0 0;">VIEW LAB</p>`;
+            card.innerHTML = `<strong>${currentData[key].name}</strong><br><small style="color:#10b981">OPEN REPOSITORY</small>`;
             card.onclick = () => openQA(key);
             grid.appendChild(card);
         });
@@ -137,22 +127,20 @@
         const item = currentData[key];
         const container = document.getElementById('qa-container');
         document.getElementById('modal-title').innerText = item.name;
-        document.getElementById('modal-wrapper').className = 'modal-wrapper frame-' + (item.color || 'blue');
-        
         container.innerHTML = '';
-        (item.questions || []).forEach((pair, index) => {
+        item.questions.forEach((pair, i) => {
             const div = document.createElement('div');
             div.className = 'qa-item';
             div.innerHTML = `
-                <div class="qa-question" onclick="toggleAns(${index})">${pair.q}</div>
-                <div class="qa-ans-box" id="ans-${index}">
-                    <div class="qa-code" id="text-${index}">${pair.a}</div>
+                <div class="qa-question" onclick="toggleAns(${i})">${pair.q}</div>
+                <div class="qa-ans-box" id="ans-${i}">
+                    <div class="qa-code" id="text-${i}">${pair.a}</div>
                     <div class="btn-group">
-                        <button class="btn copy-btn" onclick="copyCode(${index})">COPY</button>
-                        <button class="btn run-btn" onclick="runCode('${key}', ${index}, 'ans-${index}')">RUN</button>
-                        <button class="btn share-btn" onclick="shareQuestion('${key}', ${index})">SHARE</button>
+                        <button class="btn copy-btn" onclick="copyCode(${i})">COPY</button>
+                        <button class="btn run-btn" onclick="runCode('${key}', ${i}, 'ans-${i}')">RUN</button>
+                        <button class="btn share-btn" onclick="shareQ('${key}', ${i})">SHARE</button>
                     </div>
-                    <div id="output-ans-${index}" class="output-box"></div>
+                    <div id="output-ans-${i}" class="output-box"></div>
                 </div>`;
             container.appendChild(div);
         });
@@ -161,7 +149,7 @@
     }
 
     function renderShareView(labId, qIdx) {
-        const item = currentData[labId], pair = item.questions[qIdx];
+        const pair = currentData[labId].questions[qIdx];
         document.getElementById('main-container').style.display = 'none';
         document.getElementById('share-view').style.display = 'block';
         document.getElementById('shared-q-title').innerText = pair.q;
@@ -170,19 +158,20 @@
         document.getElementById('shared-run-btn').onclick = () => runCode(labId, qIdx, 'shared');
     }
 
-    window.toggleAns = (idx) => {
-        const box = document.getElementById(`ans-${idx}`);
-        box.style.display = (box.style.display === 'block') ? 'none' : 'block';
+    window.toggleAns = (i) => {
+        const b = document.getElementById(`ans-${i}`);
+        b.style.display = b.style.display === 'block' ? 'none' : 'block';
     };
 
-    window.copyCode = (idx) => {
-        const code = document.getElementById(`text-${idx}`).textContent;
-        navigator.clipboard.writeText(code).then(() => showMsg("Code Copied!"));
+    window.copyCode = (i) => {
+        navigator.clipboard.writeText(document.getElementById(`text-${i}`).textContent);
+        showMsg("Copied!");
     };
 
-    window.shareQuestion = (labId, qIdx) => {
-        const url = `${window.location.origin}${window.location.pathname}?id=${labId}&q=${qIdx}`;
-        navigator.clipboard.writeText(url).then(() => showMsg("Link Copied!"));
+    window.shareQ = (id, q) => {
+        const url = `${window.location.origin}${window.location.pathname}?id=${id}&q=${q}`;
+        navigator.clipboard.writeText(url);
+        showMsg("Share link copied!");
     };
 
     window.closeQA = () => {
@@ -190,46 +179,41 @@
         document.getElementById('main-container').style.display = 'block';
     };
 
-    // --- ENHANCED COMPILER WITH AUTO-HEADER & INPUT ---
-    window.runCode = async (labKey, qIdx, targetId) => {
+    // --- PISTON API COMPILER (NO KEY NEEDED) ---
+    window.runCode = async (labKey, qIdx, target) => {
         let code = currentData[labKey].questions[qIdx].a;
-        const outputDiv = document.getElementById(`output-${targetId}`);
+        const out = document.getElementById(`output-${target}`);
         
-        // Handle input for scanf/input()
-        const userInput = prompt("Enter input for the program (if any, separate by space):", "10 20");
+        // Handle scanf input
+        const stdin = prompt("Enter input for program (e.g. 10 20):", "");
         
-        outputDiv.style.display = 'block';
-        outputDiv.innerHTML = `<div class="spinner"></div> Running...`;
+        out.style.display = 'block';
+        out.innerHTML = `<div class="loader"></div> Compiling...`;
 
-        let langId = 71; // Python
-        if (code.includes('main') || code.includes('printf')) {
-            langId = 50; // C
-            // AUTO-FIX: Add missing header if not found
-            if (!code.includes('<stdio.h>')) {
-                code = "#include <stdio.h>\n" + code;
-            }
+        let lang = "python";
+        let version = "3.10.0";
+
+        if (code.includes("#include") || code.includes("printf") || code.includes("main")) {
+            lang = "c"; version = "10.2.0";
+            if (!code.includes("<stdio.h>")) code = "#include <stdio.h>\n" + code;
+        } else if (code.includes("public class")) {
+            lang = "java"; version = "15.0.2";
         }
-        if (code.includes('public class')) langId = 62; // Java
 
         try {
-            const response = await fetch("https://judge0-ce.p.rapidapi.com/submissions?base64_encoded=false&wait=true", {
+            const res = await fetch("https://emkc.org/api/v2/piston/execute", {
                 method: "POST",
-                headers: {
-                    "x-rapidapi-key": "YOUR_RAPID_API_KEY", 
-                    "x-rapidapi-host": "judge0-ce.p.rapidapi.com",
-                    "Content-Type": "application/json"
-                },
                 body: JSON.stringify({
-                    source_code: code,
-                    language_id: langId,
-                    stdin: userInput || ""
+                    language: lang,
+                    version: version,
+                    files: [{ content: code }],
+                    stdin: stdin || ""
                 })
             });
-
-            const result = await response.json();
-            outputDiv.innerText = result.stdout || result.stderr || result.compile_output || "Success (No Output).";
-        } catch (err) {
-            outputDiv.innerText = "Compiler Error. Check your API key.";
+            const data = await res.json();
+            out.innerText = data.run.stdout || data.run.stderr || "Success (No Output).";
+        } catch (e) {
+            out.innerText = "Error connecting to compiler.";
         }
     };
 </script>
