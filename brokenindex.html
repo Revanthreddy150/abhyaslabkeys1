@@ -17,19 +17,29 @@
         .spinner { display: none; width: 18px; height: 18px; border: 2px solid #e2e8f0; border-top: 2px solid var(--secondary); border-radius: 50%; animation: spin 0.8s linear infinite; }
         .card.loading .spinner { display: block; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        #toast { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0, 0, 0, 0.9); color: white; padding: 16px 32px; border-radius: 50px; z-index: 3000; font-weight: 600; text-align: center; }
-        #qa-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 1000; overflow-y: auto; padding: 20px; }
+        
+        #toast { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0, 0, 0, 0.9); color: white; padding: 16px 32px; border-radius: 50px; z-index: 5000; font-weight: 600; text-align: center; }
+        
+        /* Modal Styles */
+        #qa-modal, #share-view { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 1000; overflow-y: auto; padding: 20px; box-sizing: border-box;}
         .modal-wrapper { max-width: 600px; margin: 40px auto; padding: 12px; border-radius: 35px; transition: 0.3s; }
         .modal-content { background: white; border-radius: 25px; padding: 30px; position: relative; }
         .frame-red { background: #ef4444; } .frame-blue { background: #3b82f6; } .frame-yellow { background: #f59e0b; } .frame-green { background: #10b981; }
         .close-modal { position: absolute; right: 20px; top: 20px; font-size: 24px; cursor: pointer; color: #9ca3af; }
+        
         .qa-item { border-bottom: 1px solid #f3f4f6; padding: 15px 0; }
         .qa-question { font-weight: 700; color: var(--primary); cursor: pointer; flex: 1; }
         .qa-ans-box { display: none; background: #f8fafc; padding: 15px; border-radius: 12px; margin-top: 10px; border: 1px solid #e2e8f0; }
-        .qa-code { font-family: monospace; white-space: pre-wrap; font-size: 13px; color: #374151; }
+        .qa-code { font-family: monospace; white-space: pre-wrap; font-size: 13px; color: #374151; background: #f1f5f9; padding: 10px; border-radius: 8px; overflow-x: auto; }
+        
         .btn-group { display: flex; gap: 10px; margin-top: 10px; }
         .copy-btn { background: #10b981; color: white; border: none; padding: 12px; border-radius: 8px; cursor: pointer; flex: 2; font-weight: 700; }
-        .share-btn { background: #3b82f6; color: white; border: none; padding: 12px; border-radius: 8px; cursor: pointer; flex: 1; font-weight: 700; }
+        .share-btn { background: #6366f1; color: white; border: none; padding: 12px; border-radius: 8px; cursor: pointer; flex: 1; font-weight: 700; }
+
+        /* Share Page Specific */
+        #share-view { background: #f3f4f6; z-index: 4000; }
+        .share-container { max-width: 600px; margin: 50px auto; background: white; padding: 30px; border-radius: 25px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+
         @media (max-width: 500px) { .grid { grid-template-columns: 1fr; } .hero h1 { font-size: 2.2rem; } }
     </style>
 </head>
@@ -37,22 +47,24 @@
 
 <div id="toast"></div>
 
-<div class="container">
-    <div class="hero">
-        <h1>Abhyas<br><span>Lab Keys</span></h1>
-        <p style="color:#6b7280; font-weight: 500;">Cloud-Synced HD Repository.</p>
-    </div>
+<div id="app-shell">
+    <div class="container">
+        <div class="hero">
+            <h1>Abhyas<br><span>Lab Keys</span></h1>
+            <p style="color:#6b7280; font-weight: 500;">Cloud-Synced HD Repository.</p>
+        </div>
 
-    <div class="feature-box">
-        <ul style="list-style:none; padding:0; margin: 0; font-weight: 600;">
-            <li>✦ Resource Efficiency</li>
-            <li style="margin: 10px 0;">✦ Easy to access programs</li>
-            <li>✦ Real-Time Updates</li>
-        </ul>
-    </div>
+        <div class="feature-box">
+            <ul style="list-style:none; padding:0; margin: 0; font-weight: 600;">
+                <li>✦ Resource Efficiency</li>
+                <li style="margin: 10px 0;">✦ Easy to access programs</li>
+                <li>✦ Real-Time Updates</li>
+            </ul>
+        </div>
 
-    <div id="loading-text" style="text-align:center; color:gray; padding: 20px;">Fetching Repository...</div>
-    <div class="grid" id="main-grid"></div>
+        <div id="loading-text" style="text-align:center; color:gray; padding: 20px;">Fetching Repository...</div>
+        <div class="grid" id="main-grid"></div>
+    </div>
 </div>
 
 <div id="qa-modal">
@@ -61,6 +73,19 @@
             <span class="close-modal" onclick="closeQA()">&times;</span>
             <h2 id="modal-title" style="margin:0 0 15px 0; color: var(--primary);">Questions</h2>
             <div id="qa-container"></div>
+        </div>
+    </div>
+</div>
+
+<div id="share-view">
+    <div class="share-container">
+        <h1 style="color:var(--primary); margin-top:0;">USEAS LAB</h1>
+        <hr style="border:0; border-top:1px solid #eee; margin: 20px 0;">
+        <h3 id="shared-q" style="color:#374151;"></h3>
+        <div class="qa-code" id="shared-a" style="margin: 20px 0; max-height: 400px; overflow-y: auto;"></div>
+        <div class="btn-group">
+            <button class="copy-btn" onclick="copySharedCode()">COPY CODE</button>
+            <button class="share-btn" style="background:#6b7280;" onclick="location.href=location.pathname">BACK TO HOME</button>
         </div>
     </div>
 </div>
@@ -78,24 +103,42 @@
         setTimeout(() => { t.style.display = 'none'; }, 2000);
     }
 
-    // Fetch Data
+    // --- Share Logic ---
+    function checkShareLink() {
+        const params = new URLSearchParams(window.location.search);
+        if (params.has('q') && params.has('a')) {
+            document.getElementById('app-shell').style.display = 'none';
+            document.getElementById('share-view').style.display = 'block';
+            document.getElementById('shared-q').innerText = decodeURIComponent(params.get('q'));
+            document.getElementById('shared-a').innerText = decodeURIComponent(params.get('a'));
+        }
+    }
+
+    window.shareCode = (idx) => {
+        const question = document.getElementById(`q-text-${idx}`).textContent;
+        const answer = document.getElementById(`text-${idx}`).textContent;
+        
+        // Create shareable URL
+        const baseUrl = window.location.origin + window.location.pathname;
+        const shareUrl = `${baseUrl}?q=${encodeURIComponent(question)}&a=${encodeURIComponent(answer)}`;
+        
+        navigator.clipboard.writeText(shareUrl).then(() => {
+            showMsg("Share Link Copied to Clipboard!");
+        });
+    };
+
+    window.copySharedCode = () => {
+        const code = document.getElementById('shared-a').innerText;
+        navigator.clipboard.writeText(code).then(() => showMsg("Code Copied!"));
+    };
+
+    // --- Firebase & Rendering ---
     const dbRef = ref(db, 'lab_keys');
     onValue(dbRef, (snapshot) => {
         currentData = snapshot.val() || {};
         document.getElementById('loading-text').style.display = 'none';
         render();
-        
-        // Handle direct linking from URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const labId = urlParams.get('lab');
-        const qIdx = urlParams.get('q');
-
-        if (labId && currentData[labId]) {
-            openQA(labId);
-            if (qIdx !== null) {
-                setTimeout(() => toggleAns(qIdx), 500); // Small delay to allow modal to render
-            }
-        }
+        if(activeKey) openQA(activeKey);
     });
 
     function render() {
@@ -153,7 +196,7 @@
                     <div class="qa-code" id="text-${index}"></div>
                     <div class="btn-group">
                         <button class="copy-btn" id="copy-btn-${index}">COPY CODE</button>
-                        <button class="share-btn" id="share-btn-${index}">SHARE</button>
+                        <button class="share-btn" onclick="shareCode(${index})">SHARE</button>
                     </div>
                 </div>
             `;
@@ -162,20 +205,13 @@
             container.appendChild(div);
 
             div.querySelector(`#copy-btn-${index}`).onclick = () => copyCode(index);
-            div.querySelector(`#share-btn-${index}`).onclick = () => shareCode(key, index);
         });
         document.getElementById('qa-modal').style.display = 'block';
     }
 
     window.toggleAns = (idx) => {
         const box = document.getElementById(`ans-${idx}`);
-        if(!box) return;
-        const isOpening = box.style.display !== 'block';
-        box.style.display = isOpening ? 'block' : 'none';
-        
-        if (isOpening) {
-            box.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
+        box.style.display = (box.style.display === 'block') ? 'none' : 'block';
     };
 
     const copyCode = (idx) => {
@@ -183,22 +219,13 @@
         navigator.clipboard.writeText(code).then(() => showMsg("Code Copied!"));
     };
 
-    const shareCode = (labKey, idx) => {
-        // Creates a link like: yoursite.com/?lab=java_lab&q=0
-        const baseUrl = window.location.origin + window.location.pathname;
-        const shareUrl = `${baseUrl}?lab=${labKey}&q=${idx}`;
-        
-        navigator.clipboard.writeText(shareUrl).then(() => {
-            showMsg("Share Link Copied!");
-        });
-    };
-
     window.closeQA = () => {
         document.getElementById('qa-modal').style.display = 'none';
         activeKey = null;
-        // Clean URL when closing modal
-        window.history.replaceState({}, document.title, window.location.pathname);
     };
+
+    // Initialize share check on load
+    checkShareLink();
 </script>
 
 </body>
