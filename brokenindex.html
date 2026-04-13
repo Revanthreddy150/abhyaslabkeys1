@@ -33,10 +33,52 @@
         .qa-code { font-family: 'Courier New', monospace; white-space: pre-wrap; font-size: 13px; color: #374151; background: #f1f5f9; padding: 15px; border-radius: 12px; overflow-x: auto; margin-top: 10px; border: 1px solid #cbd5e1; position: relative; }
         
         .btn-group { display: flex; gap: 10px; margin-top: 15px; }
-        .pdf-actions { display: flex; gap: 10px; margin-bottom: 20px; background: #f1f5f9; padding: 15px; border-radius: 15px; }
+        .pdf-actions { display: flex; gap: 10px; margin-bottom: 20px; background: #f1f5f9; padding: 15px; border-radius: 15px; overflow: hidden; }
+        
+        /* --- NEW ANIMATIONS --- */
+        .pdf-btn { 
+            background: #1f2937; color: white; border: none; padding: 10px; border-radius: 8px; 
+            cursor: pointer; font-size: 12px; font-weight: 600; flex: 1; position: relative; overflow: hidden;
+            display: flex; align-items: center; justify-content: center; gap: 5px;
+        }
+
+        /* Shine Ray Effect */
+        .shine-btn::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -150%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transform: rotate(45deg);
+            animation: fullShine 3s infinite;
+        }
+
+        @keyframes fullShine {
+            0% { left: -150%; }
+            20% { left: 150%; }
+            100% { left: 150%; }
+        }
+
+        /* Eye Blink Animation */
+        .eye-icon { display: inline-block; animation: eyeBlink 3s infinite; }
+        @keyframes eyeBlink {
+            0%, 45%, 55%, 100% { transform: scaleY(1); opacity: 1; }
+            50% { transform: scaleY(0.1); opacity: 0.5; }
+        }
+
+        /* Download Bounce Animation */
+        .download-btn { transition: 0.3s; }
+        .download-btn:hover { background: #dc2626 !important; }
+        .dl-icon { display: inline-block; animation: dlBounce 1.5s infinite; }
+        @keyframes dlBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(3px); }
+        }
+
         .copy-btn { background: #10b981; color: white; border: none; padding: 14px; border-radius: 12px; cursor: pointer; flex: 2; font-weight: 700; transition: 0.3s; position: relative; }
         .share-btn { background: #6366f1; color: white; border: none; padding: 14px; border-radius: 12px; cursor: pointer; flex: 1; font-weight: 700; }
-        .pdf-btn { background: #1f2937; color: white; border: none; padding: 10px; border-radius: 8px; cursor: pointer; font-size: 12px; font-weight: 600; flex: 1; }
 
         .flyer-snippet { position: fixed; z-index: 9999; background: #f1f5f9; border: 1px solid var(--secondary); color: #374151; padding: 10px; border-radius: 8px; font-family: monospace; font-size: 10px; pointer-events: none; box-shadow: 0 10px 25px rgba(0,0,0,0.2); transition: all 0.7s cubic-bezier(0.5, 0, 0.1, 1); overflow: hidden; white-space: pre; }
         .btn-active-state { background: #059669 !important; transform: scale(1.05); }
@@ -78,8 +120,12 @@
             <h2 id="modal-title" style="margin:0 0 5px 0; color: var(--primary);">Questions</h2>
             
             <div class="pdf-actions">
-                <button class="pdf-btn" onclick="window.generatePDF('preview')">👁️ PREVIEW PDF</button>
-                <button class="pdf-btn" style="background:#ef4444;" onclick="window.generatePDF('download')">📥 DOWNLOAD PDF</button>
+                <button class="pdf-btn shine-btn" onclick="window.generatePDF('preview')">
+                    <span class="eye-icon">👁️</span> PREVIEW PDF
+                </button>
+                <button class="pdf-btn download-btn" style="background:#ef4444;" onclick="window.generatePDF('download')">
+                    <span class="dl-icon">📥</span> DOWNLOAD PDF
+                </button>
             </div>
 
             <div id="qa-container"></div>
@@ -115,22 +161,17 @@
         const item = currentData[activeKey];
         const date = new Date().toLocaleDateString();
         
-        // Helper function for Watermark
         const addWatermark = (pdfDoc) => {
             pdfDoc.saveGraphicsState();
-            pdfDoc.setGState(new pdfDoc.GState({opacity: 0.1})); // Very light opacity
+            pdfDoc.setGState(new pdfDoc.GState({opacity: 0.1}));
             pdfDoc.setFontSize(60);
             pdfDoc.setFont("helvetica", "bold");
             pdfDoc.setTextColor(150, 150, 150);
-            // Draw watermark at a 45 degree angle
             pdfDoc.text("USEAS LAB", 45, 180, { angle: 45 });
             pdfDoc.restoreGraphicsState();
         };
 
-        // Initialize first page watermark
         addWatermark(doc);
-
-        // PDF Header
         doc.setFontSize(22);
         doc.setTextColor(59, 130, 246);
         doc.text(item.name, 20, 20);
@@ -145,34 +186,19 @@
         const pageHeight = 270;
 
         (item.questions || []).forEach((pair, index) => {
-            // Check page overflow before writing Question
-            if (yPos > pageHeight) { 
-                doc.addPage(); 
-                addWatermark(doc); 
-                yPos = 20; 
-            }
-
+            if (yPos > pageHeight) { doc.addPage(); addWatermark(doc); yPos = 20; }
             doc.setFontSize(12);
             doc.setFont("helvetica", 'bold');
             doc.setTextColor(31, 41, 55);
-            
             const qLines = doc.splitTextToSize(`${index + 1}. ${pair.q}`, 170);
             doc.text(qLines, 20, yPos);
             yPos += (qLines.length * 7) + 2;
 
-            // Check page overflow before writing Answer
             const aLines = doc.splitTextToSize(pair.a, 165);
-            if (yPos + (aLines.length * 5) > pageHeight) { 
-                doc.addPage(); 
-                addWatermark(doc); 
-                yPos = 20; 
-            }
-
+            if (yPos + (aLines.length * 5) > pageHeight) { doc.addPage(); addWatermark(doc); yPos = 20; }
             doc.setFontSize(10);
             doc.setFont('courier', 'normal');
             doc.setTextColor(55, 65, 81);
-            
-            // No Background Box - just text
             doc.text(aLines, 22, yPos);
             yPos += (aLines.length * 5) + 12;
         });
