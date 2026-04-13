@@ -20,7 +20,6 @@
         
         #toast { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0, 0, 0, 0.9); color: white; padding: 16px 32px; border-radius: 50px; z-index: 5000; font-weight: 600; text-align: center; }
         
-        /* Modal Styles */
         #qa-modal, #share-view { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 1000; overflow-y: auto; padding: 20px; box-sizing: border-box;}
         .modal-wrapper { max-width: 600px; margin: 40px auto; padding: 12px; border-radius: 35px; transition: 0.3s; }
         .modal-content { background: white; border-radius: 25px; padding: 30px; position: relative; }
@@ -30,17 +29,17 @@
         .qa-item { border-bottom: 1px solid #f3f4f6; padding: 15px 0; }
         .qa-question { font-weight: 700; color: var(--primary); cursor: pointer; flex: 1; }
         .qa-ans-box { display: none; background: #f8fafc; padding: 15px; border-radius: 12px; margin-top: 10px; border: 1px solid #e2e8f0; }
-        .qa-code { font-family: monospace; white-space: pre-wrap; font-size: 13px; color: #374151; background: #f1f5f9; padding: 10px; border-radius: 8px; overflow-x: auto; }
+        .qa-code { font-family: monospace; white-space: pre-wrap; font-size: 13px; color: #374151; background: #f1f5f9; padding: 15px; border-radius: 12px; overflow-x: auto; margin-top: 10px; border: 1px solid #cbd5e1; }
         
-        .btn-group { display: flex; gap: 10px; margin-top: 10px; }
-        .copy-btn { background: #10b981; color: white; border: none; padding: 12px; border-radius: 8px; cursor: pointer; flex: 2; font-weight: 700; }
-        .share-btn { background: #6366f1; color: white; border: none; padding: 12px; border-radius: 8px; cursor: pointer; flex: 1; font-weight: 700; }
+        .btn-group { display: flex; gap: 10px; margin-top: 15px; }
+        .copy-btn { background: #10b981; color: white; border: none; padding: 14px; border-radius: 12px; cursor: pointer; flex: 2; font-weight: 700; transition: 0.2s; }
+        .share-btn { background: #6366f1; color: white; border: none; padding: 14px; border-radius: 12px; cursor: pointer; flex: 1; font-weight: 700; transition: 0.2s; }
+        .copy-btn:active, .share-btn:active { transform: scale(0.95); opacity: 0.9; }
 
-        /* Share Page Specific */
         #share-view { background: #f3f4f6; z-index: 4000; }
-        .share-container { max-width: 600px; margin: 50px auto; background: white; padding: 30px; border-radius: 25px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .share-container { max-width: 650px; margin: 40px auto; background: white; padding: 35px; border-radius: 30px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); border: 1px solid #e5e7eb; }
 
-        @media (max-width: 500px) { .grid { grid-template-columns: 1fr; } .hero h1 { font-size: 2.2rem; } }
+        @media (max-width: 500px) { .grid { grid-template-columns: 1fr; } .hero h1 { font-size: 2.2rem; } .share-container { margin: 10px; padding: 20px; } }
     </style>
 </head>
 <body>
@@ -79,13 +78,13 @@
 
 <div id="share-view">
     <div class="share-container">
-        <h1 style="color:var(--primary); margin-top:0;">USEAS LAB</h1>
-        <hr style="border:0; border-top:1px solid #eee; margin: 20px 0;">
-        <h3 id="shared-q" style="color:#374151;"></h3>
-        <div class="qa-code" id="shared-a" style="margin: 20px 0; max-height: 400px; overflow-y: auto;"></div>
+        <h1 style="color:var(--primary); margin:0; font-size: 2rem;">USEAS LAB</h1>
+        <div style="height: 2px; background: #f3f4f6; margin: 20px 0;"></div>
+        <h3 id="shared-q" style="color:#1f2937; line-height: 1.4; margin-bottom: 15px;"></h3>
+        <div class="qa-code" id="shared-a"></div>
         <div class="btn-group">
             <button class="copy-btn" onclick="copySharedCode()">COPY CODE</button>
-            <button class="share-btn" style="background:#6b7280;" onclick="location.href=location.pathname">BACK TO HOME</button>
+            <button class="share-btn" style="background:#64748b;" onclick="window.location.href=window.location.pathname">BACK TO HOME</button>
         </div>
     </div>
 </div>
@@ -103,27 +102,33 @@
         setTimeout(() => { t.style.display = 'none'; }, 2000);
     }
 
-    // --- Share Logic ---
+    // --- Optimized Share Logic using Base64 ---
     function checkShareLink() {
         const params = new URLSearchParams(window.location.search);
-        if (params.has('q') && params.has('a')) {
-            document.getElementById('app-shell').style.display = 'none';
-            document.getElementById('share-view').style.display = 'block';
-            document.getElementById('shared-q').innerText = decodeURIComponent(params.get('q'));
-            document.getElementById('shared-a').innerText = decodeURIComponent(params.get('a'));
+        const data = params.get('data');
+        if (data) {
+            try {
+                const decoded = JSON.parse(atob(data));
+                document.getElementById('app-shell').style.display = 'none';
+                document.getElementById('share-view').style.display = 'block';
+                document.getElementById('shared-q').innerText = decoded.q;
+                document.getElementById('shared-a').innerText = decoded.a;
+            } catch (e) {
+                console.error("Invalid share link");
+            }
         }
     }
 
     window.shareCode = (idx) => {
-        const question = document.getElementById(`q-text-${idx}`).textContent;
-        const answer = document.getElementById(`text-${idx}`).textContent;
+        const q = document.getElementById(`q-text-${idx}`).textContent;
+        const a = document.getElementById(`text-${idx}`).textContent;
         
-        // Create shareable URL
-        const baseUrl = window.location.origin + window.location.pathname;
-        const shareUrl = `${baseUrl}?q=${encodeURIComponent(question)}&a=${encodeURIComponent(answer)}`;
+        // Encode data to Base64 to shorten the link
+        const payload = btoa(JSON.stringify({ q, a }));
+        const shareUrl = `${window.location.origin}${window.location.pathname}?data=${payload}`;
         
         navigator.clipboard.writeText(shareUrl).then(() => {
-            showMsg("Share Link Copied to Clipboard!");
+            showMsg("Short Link Copied!");
         });
     };
 
@@ -132,7 +137,7 @@
         navigator.clipboard.writeText(code).then(() => showMsg("Code Copied!"));
     };
 
-    // --- Firebase & Rendering ---
+    // --- Firebase Logic ---
     const dbRef = ref(db, 'lab_keys');
     onValue(dbRef, (snapshot) => {
         currentData = snapshot.val() || {};
@@ -224,7 +229,7 @@
         activeKey = null;
     };
 
-    // Initialize share check on load
+    // Run check on start
     checkShareLink();
 </script>
 
