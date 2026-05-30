@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Essentials 2 2026 Module 3 - Exam Key</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 850px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            border-bottom: 3px solid #9b59b6;
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+        }
+        .question-block {
+            margin-bottom: 35px;
+            padding: 20px;
+            border-left: 5px solid #9b59b6;
+            background-color: #fafafa;
+            border-radius: 0 8px 8px 0;
+        }
+        .question-text {
+            font-size: 1.1em;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        .code-block {
+            background-color: #2d3748;
+            color: #f7fafc;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: 'Courier New', Courier, monospace;
+            white-space: pre-wrap;
+            margin: 15px 0;
+        }
+        .options-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        .options-list li {
+            padding: 10px 15px;
+            margin: 8px 0;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            background-color: #fff;
+        }
+        .options-list li.correct {
+            background-color: #c6f6d5;
+            border-color: #48bb78;
+            color: #22543d;
+            font-weight: bold;
+            position: relative;
+        }
+        .options-list li.correct::after {
+            content: " ✓ (Correct Answer)";
+            font-size: 0.9em;
+            color: #38a169;
+            margin-left: 10px;
+        }
+        .inline-code {
+            background-color: #edf2f7;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.95em;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Python Essentials 2 2026 Module 3 - Exam Key</h1>
+
+    <div class="question-block">
+        <div class="question-text">Question 1: A data structure described as <i>LIFO</i> is actually a:</div>
+        <ul class="options-list">
+            <li class="correct">stack</li>
+            <li>heap</li>
+            <li>list</li>
+            <li>tree</li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">Question 2: If the class's constructor is declared as below, which one of the assignments is valid?</div>
+        <div class="code-block">class Class:
+    def __init__(self):
+        pass</div>
+        <ul class="options-list">
+            <li class="correct">object = Class()</li>
+            <li>object = Class(self)</li>
+            <li>object = Class(object)</li>
+            <li>object = Class</li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">Question 3: If there is a superclass named <b>A</b> and a subclass named <b>B</b>, which one of the presented invocations should you put instead of the comment?</div>
+        <div class="code-block">class A:
+    def __init__(self):
+        self.a = 1
+
+class B(A):
+    def __init__(self):
+        # Put selected line here.
+        self.b = 2</div>
+        <ul class="options-list">
+            <li class="correct">A.__init__(self)</li>
+            <li>A.__init__()</li>
+            <li>__init__()</li>
+            <li>A.__init__(1)</li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">Question 4: What will be the effect of running the following code?</div>
+        <div class="code-block">class A:
+    def __init__(self, v):
+        self.__a = v + 1
+
+a = A(0)
+print(a.__a)</div>
+        <ul class="options-list">
+            <li class="correct">The code will raise an AttributeError exception</li>
+            <li>0</li>
+            <li>1</li>
+            <li>2</li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">Question 5: What will be the output of the following code?</div>
+        <div class="code-block">class A:
+    def __init__(self, v = 1):
+        self.v = v
+
+    def set(self, v):
+        self.v = v
+        return v
+
+a = A()
+print(a.set(a.v + 1))</div>
+        <ul class="options-list">
+            <li class="correct">2</li>
+            <li>1</li>
+            <li>3</li>
+            <li>0</li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">Question 6: What will be the output of the following code?</div>
+        <div class="code-block">class A:
+    X = 0
+    def __init__(self, v = 0):
+        self.Y = v
+        A.X += v
+
+a = A()
+b = A(1)
+c = A(2)
+print(c.X)</div>
+        <ul class="options-list">
+            <li class="correct">3</li>
+            <li>1</li>
+            <li>2</li>
+            <li>0</li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">Question 7: What will be the output of the following code?</div>
+        <div class="code-block">class A:
+    A = 1
+
+print(hasattr(A, 'A'))</div>
+        <ul class="options-list">
+            <li class="correct">True</li>
+            <li>False</li>
+            <li>0</li>
+            <li>1</li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">Question 8: What will be the result of executing the following code?</div>
+        <div class="code-block">class A:
+    def __init__(self):
+        pass
+
+a = A(1)
+print(hasattr(a, 'A'))</div>
+        <ul class="options-list">
+            <li class="correct">it will raise an exception</li>
+            <li>1</li>
+            <li>True</li>
+            <li>False</li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">Question 9: What will be the result of executing the following code?</div>
+        <div class="code-block">class A:
+    def __str__(self):
+        return 'a'
+
+class B(A):
+    def __str__(self):
+        return 'b'
+
+class C(B):
+    pass
+
+o = C()
+print(o)</div>
+        <ul class="options-list">
+            <li class="correct">it will print b</li>
+            <li>it will print a</li>
+            <li>it will print c</li>
+            <li>it will raise an exception</li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">Question 10: What will be the result of executing the following code?</div>
+        <div class="code-block">class A:
+    pass
+
+class B(A):
+    pass
+
+class C(B):
+    pass
+
+print(issubclass(C, A))</div>
+        <ul class="options-list">
+            <li class="correct">it will print True</li>
+            <li>it will print False</li>
+            <li>it will print 1</li>
+            <li>it will raise an exception</li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">Question 11: What will be the result of executing the following code?</div>
+        <div class="code-block">class A:
+    def a(self):
+        print('a')
+
+class B:
+    def a(self):
+        print('b')
+
+class C(B,A):
+    def c(self):
+        self.a()
+
+o = C()
+o.c()</div>
+        <ul class="options-list">
+            <li class="correct">it will print b</li>
+            <li>it will print a</li>
+            <li>it will print c</li>
+            <li>it will raise an exception</li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">Question 12: What will be the result of executing the following code?</div>
+        <div class="code-block">class A:
+    def __str__(self):
+        return 'a'
+
+class B:
+    def __str__(self):
+        return 'b'
+
+class C(A, B):
+    pass
+
+o = C()
+print(o)</div>
+        <ul class="options-list">
+            <li class="correct">it will print a</li>
+            <li>it will print b</li>
+            <li>it will print c</li>
+            <li>it will raise an exception</li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">Question 13: What will be the result of executing the following code?</div>
+        <div class="code-block">class A:
+    v = 2
+
+class B(A):
+    v = 1
+
+class C(B):
+    pass
+
+o = C()
+print(o.v)</div>
+        <ul class="options-list">
+            <li class="correct">it will print 1</li>
+            <li>it will print 2</li>
+            <li>it will print an empty line</li>
+            <li>it will raise an exception</li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">Question 14: What will be the result of executing the following code?</div>
+        <div class="code-block">def f(x):
+    try:
+        x = x / x
+    except:
+        print("a",end='')
+    else:
+        print("b",end='')
+    finally:
+        print("c",end='')
+
+f(1)
+f(0)</div>
+        <ul class="options-list">
+            <li class="correct">it will print bcac</li>
+            <li>it will print bcbc</li>
+            <li>it will print acac</li>
+            <li>it will raise an unhandled exception</li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">Question 15: What will be the result of executing the following code?</div>
+        <div class="code-block">try:
+    raise Exception(1,2,3)
+except Exception as e:
+    print(len(e.args))</div>
+        <ul class="options-list">
+            <li class="correct">it will print 3</li>
+            <li>it will print 2</li>
+            <li>it will print 1</li>
+            <li>it will raise an unhandled exception</li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">Question 16: What will be the result of executing the following code?</div>
+        <div class="code-block">class Ex(Exception):
+    def __init__(self, msg):
+        Exception.__init__(self, msg + msg)
+        self.args = (msg,)
+
+try:
+    raise Ex('ex')
+except Ex as e:
+    print(e)
+except Exception as e:
+    print(e)</div>
+        <ul class="options-list">
+            <li class="correct">it will print ex</li>
+            <li>it will print exex</li>
+            <li>it will print an empty line</li>
+            <li>it will raise an unhandled exception</li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">Question 17: What will be the result of executing the following code?</div>
+        <div class="code-block">class I:
+    def __init__(self):
+        self.s = 'abc'
+        self.i = 0
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        if self.i == len(self.s):
+            raise StopIteration
+        v = self.s[self.i]
+        self.i += 1
+        return v
+
+for x in I():
+    print(x,end='')</div>
+        <ul class="options-list">
+            <li class="correct">it will print abc</li>
+            <li>it will print 0</li>
+            <li>it will raise an handled exception</li>
+            <li>it will raise an unhandled exception</li>
+        </ul>
+    </div>
+
+</div>
+
+</body>
+</html>
