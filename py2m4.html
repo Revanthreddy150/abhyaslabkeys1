@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Essentials 2 2026 Module 4 - Exam Key</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 850px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            border-bottom: 3px solid #1abc9c;
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+        }
+        .question-block {
+            margin-bottom: 35px;
+            padding: 20px;
+            border-left: 5px solid #1abc9c;
+            background-color: #fafafa;
+            border-radius: 0 8px 8px 0;
+        }
+        .question-text {
+            font-size: 1.1em;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        .code-block {
+            background-color: #2d3748;
+            color: #f7fafc;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: 'Courier New', Courier, monospace;
+            white-space: pre-wrap;
+            margin: 15px 0;
+        }
+        .options-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        .options-list li {
+            padding: 10px 15px;
+            margin: 8px 0;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            background-color: #fff;
+        }
+        .options-list li.correct {
+            background-color: #c6f6d5;
+            border-color: #48bb78;
+            color: #22543d;
+            font-weight: bold;
+            position: relative;
+        }
+        .options-list li.correct::after {
+            content: " ✓ (Correct Answer)";
+            font-size: 0.9em;
+            color: #38a169;
+            margin-left: 10px;
+        }
+        .inline-code {
+            background-color: #edf2f7;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.95em;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Python Essentials 2 2026 Module 4 - Exam Key</h1>
+
+    <div class="question-block">
+        <div class="question-text">Question 1: What keyword would you use to define an anonymous function?</div>
+        <ul class="options-list">
+            <li class="correct">lambda</li>
+            <li>def</li>
+            <li>afun</li>
+            <li>yield</li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">Question 2: Select the <u>true</u> statements. (Select <u>two</u> answers)</div>
+        <ul class="options-list">
+            <li class="correct">The lambda function can accept any number of arguments</li>
+            <li class="correct">The lambda function can evaluate only one expression</li>
+            <li>The lambda function can accept a maximum of two arguments</li>
+            <li>The lambda function can evaluate multiple expressions</li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">Question 3: Look at the code below:</div>
+        <div class="code-block">my_list = [1, 2, 3]
+# Insert line of code here.
+print(foo)</div>
+        <p>Which snippet would you insert in order for the program to output the following result (tuple):<br><span class="inline-code">(1, 4, 27)</span></p>
+        <ul class="options-list">
+            <li class="correct">foo = tuple(map(lambda x: x**x, my_list))</li>
+            <li>foo = list(map(lambda x: x**x, my_list))</li>
+            <li>foo = tuple(map(lambda x: x*x, my_list))</li>
+            <li>foo = list(map(lambda x: x*x, my_list))</li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">Question 4: Look at the code below:</div>
+        <div class="code-block">my_tuple = (0, 1, 2, 3, 4, 5, 6)
+# Insert line of code here.
+print(foo)</div>
+        <p>Which snippet would you insert in order for the program to output the following result (list):<br><span class="inline-code">[2, 3, 4, 5, 6]</span></p>
+        <ul class="options-list">
+            <li class="correct">foo = list(filter(lambda x: x-0 and x-1, my_tuple))</li>
+            <li>foo = tuple(filter(lambda x: x-0 and x-1, my_tuple))</li>
+            <li>foo = tuple(filter(lambda x: x&gt;1, my_tuple))</li>
+            <li>foo = list(filter(lambda x: x==0 and x==1, my_tuple))</li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">Question 5: What is the expected result of executing the following code?</div>
+        <div class="code-block">def I():
+    s = 'abcdef'
+    for c in s[::2]:
+        yield c
+
+for x in I():
+    print(x, end='')</div>
+        <ul class="options-list">
+            <li class="correct">It will print ace</li>
+            <li>It will print bdf</li>
+            <li>It will print abcdef</li>
+            <li>It will print an empty line</li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">Question 6: What is the expected result of executing the following code?</div>
+        <div class="code-block">def fun(n):
+    s = '+'
+    for i in range(n):
+        s += s
+        yield s
+
+for x in fun(2):
+    print(x, end='')</div>
+        <ul class="options-list">
+            <li class="correct">It will print ++++++</li>
+            <li>It will print +</li>
+            <li>It will print ++</li>
+            <li>It will print +++</li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">Question 7: What is the expected result of executing the following code?</div>
+        <div class="code-block">def o(p):
+    def q():
+        return '*' * p
+    return q
+
+r = o(1)
+s = o(2)
+print(r() + s())</div>
+        <ul class="options-list">
+            <li class="correct">It will print ***</li>
+            <li>It will print ++</li>
+            <li>It will print *</li>
+            <li>It will print ****</li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">Question 8: Which of the following open modes allow you to perform <b>read</b> operations? (Select <u>two</u> answers)</div>
+        <ul class="options-list">
+            <li class="correct">r</li>
+            <li class="correct">r+</li>
+            <li>w</li>
+            <li>a</li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">Question 9: What is the meaning of the value represented by <span class="inline-code">errno.EEXIST</span>?</div>
+        <ul class="options-list">
+            <li class="correct">File exists</li>
+            <li>File doesn't exist</li>
+            <li>Bad file number</li>
+            <li>Permission denied</li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">Question 10: What is the expected result of the following code?</div>
+        <div class="code-block">b = bytearray(3)
+print(b)</div>
+        <ul class="options-list">
+            <li class="correct">bytearray(b'\x00\x00\x00')</li>
+            <li>bytearray(0, 0, 0)</li>
+            <li>bytearray(b'3')</li>
+            <li>3</li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">Question 11: What is the expected result of the following code?</div>
+        <div class="code-block">import os
+
+os.mkdir('pictures')
+os.chdir('pictures')
+os.mkdir('thumbnails')
+os.chdir('thumbnails')
+os.mkdir('tmp')
+os.chdir('../')
+
+print(os.getcwd())</div>
+        <ul class="options-list">
+            <li class="correct">It prints the path to the pictures directory</li>
+            <li>It prints the path to the thumbnails directory</li>
+            <li>It prints the path to the tmp directory</li>
+            <li>It prints the path to the root directory</li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">Question 12: What is the expected result of the following code?</div>
+        <div class="code-block">import os
+
+os.mkdir('thumbnails')
+os.chdir('thumbnails')
+
+sizes = ['small', 'medium', 'large']
+
+for size in sizes:
+    os.mkdir(size)
+
+print(os.listdir())</div>
+        <ul class="options-list">
+            <li class="correct">['large', 'small', 'medium']</li>
+            <li>['.', 'large', 'small', 'medium']</li>
+            <li>['.', '..', 'large', 'small', 'medium']</li>
+            <li>[]</li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">Question 13: What is the expected result of the following code?</div>
+        <div class="code-block">from datetime import date
+
+date_1 = date(1992, 1, 16)
+date_2 = date(1991, 2, 5)
+
+print(date_1 - date_2)</div>
+        <ul class="options-list">
+            <li class="correct">345 days, 0:00:00</li>
+            <li>345 days</li>
+            <li>345</li>
+            <li>345, 0:00:00</li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">Question 14: What is the expected result of the following code?</div>
+        <div class="code-block">from datetime import datetime
+
+datetime = datetime(2019, 11, 27, 11, 27, 22)
+print(datetime.strftime('%y/%B/%d %H:%M:%S'))</div>
+        <ul class="options-list">
+            <li class="correct">19/November/27 11:27:22</li>
+            <li>2019/Nov/27 11:27:22</li>
+            <li>2019/11/27 11:27:22</li>
+            <li>19/11/27 11:27:22</li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">Question 15: Which program will produce the following output?</div>
+        <div class="code-block">Mo Tu We Th Fr Sa Su</div>
+        <ul class="options-list">
+            <li class="correct">A: import calendar; print(calendar.weekheader(2))</li>
+            <li>B: import calendar; print(calendar.weekheader())</li>
+            <li>C: import calendar; print(calendar.weekheader(3))</li>
+            <li>D: import calendar; print(calendar.week)</li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">Question 16: What is the expected result of the following code?</div>
+        <div class="code-block">import calendar
+
+c = calendar.Calendar()
+
+for weekday in c.iterweekdays():
+    print(weekday, end=" ")</div>
+        <ul class="options-list">
+            <li class="correct">0 1 2 3 4 5 6</li>
+            <li>1 2 3 4 5 6 7</li>
+            <li>Mo Tu We Th Fr Sa Su</li>
+            <li>Su Mo Tu We Th Fr Sa</li>
+        </ul>
+    </div>
+
+</div>
+
+</body>
+</html>
