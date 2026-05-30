@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Essentials - End of Course Survey Key</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 850px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            border-bottom: 3px solid #2980b9;
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+        }
+        .question-block {
+            margin-bottom: 35px;
+            padding: 20px;
+            border-left: 5px solid #2980b9;
+            background-color: #fafafa;
+            border-radius: 0 8px 8px 0;
+        }
+        .question-text {
+            font-size: 1.1em;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        .options-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        .options-list li {
+            padding: 10px 15px;
+            margin: 8px 0;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            background-color: #fff;
+        }
+        .options-list li.selected {
+            background-color: #d1ecf1;
+            border-color: #bee5eb;
+            color: #0c5460;
+            font-weight: bold;
+        }
+        .options-list li.selected::after {
+            content: " 🎯 (Selected Response)";
+            font-size: 0.9em;
+            color: #17a2b8;
+            margin-left: 10px;
+        }
+        /* Scale styling */
+        .scale-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 20px 0;
+            padding: 10px;
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+        }
+        .scale-label {
+            font-size: 0.9em;
+            color: #7f8c8d;
+            font-weight: bold;
+        }
+        .scale-box {
+            display: inline-block;
+            width: 35px;
+            height: 35px;
+            line-height: 35px;
+            text-align: center;
+            border: 1px solid #cbd5e0;
+            border-radius: 4px;
+            margin: 0 4px;
+            font-weight: bold;
+            color: #4a5568;
+        }
+        .scale-box.active {
+            background-color: #00bcd4;
+            color: #fff;
+            border-color: #00acc1;
+        }
+        /* Table / Matrix Styling */
+        .survey-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            background: #fff;
+        }
+        .survey-table th, .survey-table td {
+            border: 1px solid #e2e8f0;
+            padding: 12px;
+            text-align: center;
+        }
+        .survey-table th {
+            background-color: #f7fafc;
+            color: #4a5568;
+            font-size: 0.9em;
+        }
+        .survey-table td.statement {
+            text-align: left;
+            font-weight: 600;
+            background-color: #fcfcfc;
+            width: 40%;
+        }
+        .matrix-checked {
+            background-color: #e6fffa;
+            color: #319795;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Python Essentials - End of Course Survey Summary Key</h1>
+
+    <div class="question-block">
+        <div class="question-text">Question 1: Which of the following descriptions best characterizes you?</div>
+        <ul class="options-list">
+            <li class="selected">Student at a technical school</li>
+            <li>Student at a non-technical school</li>
+            <li>Instructor/Professor/Teacher</li>
+            <li>IT/Networking Professional</li>
+            <li>Entry-level IT/Networking Professional</li>
+            <li>Non-IT/Non-Networking Professional</li>
+            <li>None of the above</li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">Question 2: Please choose the option below that best describes your current goal or motivation for taking this course:</div>
+        <ul class="options-list">
+            <li>To explore a technology career</li>
+            <li class="selected">To enter or advance in a technology career</li>
+            <li>To gain knowledge and skills that can be applied in my current or future non-technology career</li>
+            <li>To further my education</li>
+            <li>For personal use (as a hobby or for home use)</li>
+            <li>Other</li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">Question 3: Please rate your overall experience with this course as a whole:</div>
+        <ul class="options-list">
+            <li>Very dissatisfied</li>
+            <li>Dissatisfied</li>
+            <li>Neutral</li>
+            <li>Satisfied</li>
+            <li class="selected">Very satisfied</li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">Question 4: Please rate your overall satisfaction with your instructor:</div>
+        <ul class="options-list">
+            <li>Very dissatisfied</li>
+            <li>Dissatisfied</li>
+            <li>Neutral</li>
+            <li>Satisfied</li>
+            <li class="selected">Very satisfied</li>
+            <li>Not Applicable</li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">Question 5: Please rate your confidence with the knowledge and skills you learned in this course:</div>
+        <ul class="options-list">
+            <li>Not at all confident</li>
+            <li>A little confident</li>
+            <li class="selected">Confident</li>
+            <li>Very confident</li>
+            <li>Completely confident</li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">Question 6: Please rate your motivation to do well in this course:</div>
+        <ul class="options-list">
+            <li>Not at all motivated</li>
+            <li>Slightly motivated</li>
+            <li class="selected">Motivated</li>
+            <li>Very motivated</li>
+            <li>Completely motivated</li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">Question 7: In thinking about the following statement, please select the answer most closely aligned to your feelings - Completing the course was worth the time and effort I invested:</div>
+        <ul class="options-list">
+            <li class="selected">Strongly agree</li>
+            <li>Agree</li>
+            <li>Somewhat agree</li>
+            <li>Disagree</li>
+            <li>Strongly disagree</li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">Question 8: To what extent did this course help you:</div>
+        <table class="survey-table">
+            <thead>
+                <tr>
+                    <th>Statement</th>
+                    <th>Very much</th>
+                    <th>Quite a bit</th>
+                    <th>Somewhat</th>
+                    <th>A little</th>
+                    <th>Not at all</th>
+                    <th>Unsure/NA</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="statement">Learn skills that can be used in your current or a future job</td>
+                    <td class="matrix-checked">✓ Selected</td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                </tr>
+                <tr>
+                    <td class="statement">Increase your value in the job market</td>
+                    <td class="matrix-checked">✓ Selected</td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                </tr>
+                <tr>
+                    <td class="statement">Obtain a new job or advance in your current job</td>
+                    <td class="matrix-checked">✓ Selected</td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                </tr>
+                <tr>
+                    <td class="statement">Further your education</td>
+                    <td class="matrix-checked">✓ Selected</td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">Question 9: Thinking about your entire experience with Cisco Networking Academy, how likely are you to recommend Cisco Networking Academy to others?</div>
+        <div class="scale-container">
+            <span class="scale-label">Not at all likely</span>
+            <div>
+                <span class="scale-box">0</span><span class="scale-box">1</span><span class="scale-box">2</span><span class="scale-box">3</span><span class="scale-box">4</span><span class="scale-box">5</span><span class="scale-box">6</span><span class="scale-box">7</span><span class="scale-box">8</span><span class="scale-box">9</span><span class="scale-box active">10</span>
+            </div>
+            <span class="scale-label">Extremely likely</span>
+        </div>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">Question 10: What could be improved most in Cisco Networking Academy? (select one)</div>
+        <ul class="options-list">
+            <li>Nothing - everything is great!</li>
+            <li>Types of courses offered</li>
+            <li class="selected">Course content</li>
+            <li>Course activities</li>
+            <li>Organization</li>
+            <li>Ease of use</li>
+            <li>Mobile experience</li>
+            <li>Performance</li>
+            <li>Translation</li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">Question 11: Having completed the course, how likely are you to take the PCAP™ - Certified Associate in Python Programming certification exam from the Python Institute?</div>
+        <div class="scale-container">
+            <span class="scale-label">Not at all likely</span>
+            <div>
+                <span class="scale-box">0</span><span class="scale-box">1</span><span class="scale-box">2</span><span class="scale-box">3</span><span class="scale-box">4</span><span class="scale-box">5</span><span class="scale-box">6</span><span class="scale-box">7</span><span class="scale-box">8</span><span class="scale-box">9</span><span class="scale-box active">10</span>
+            </div>
+            <span class="scale-label">Extremely likely</span>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
