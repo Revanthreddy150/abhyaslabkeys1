@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Essentials 2 - Final Test Exam Key</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 850px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            border-bottom: 3px solid #e74c3c;
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+        }
+        .question-block {
+            margin-bottom: 35px;
+            padding: 20px;
+            border-left: 5px solid #e74c3c;
+            background-color: #fafafa;
+            border-radius: 0 8px 8px 0;
+        }
+        .question-text {
+            font-size: 1.1em;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        .code-block {
+            background-color: #2d3748;
+            color: #f7fafc;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: 'Courier New', Courier, monospace;
+            white-space: pre-wrap;
+            margin: 15px 0;
+        }
+        .options-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        .options-list li {
+            padding: 10px 15px;
+            margin: 8px 0;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            background-color: #fff;
+        }
+        .options-list li.correct {
+            background-color: #c6f6d5;
+            border-color: #48bb78;
+            color: #22543d;
+            font-weight: bold;
+            position: relative;
+        }
+        .options-list li.correct::after {
+            content: " ✓ (Correct Answer)";
+            font-size: 0.9em;
+            color: #38a169;
+            margin-left: 10px;
+        }
+        .inline-code {
+            background-color: #edf2f7;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.95em;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Python Essentials 2 - Final Test Exam Key</h1>
+
+    <div class="question-block">
+        <div class="question-text">Question 1: Knowing that a function named <span class="inline-code">fun()</span> resides in a module named <span class="inline-code">mod</span>, and was imported using the following statement:</div>
+        <div class="code-block">from mod import fun</div>
+        <p>Choose the right way to invoke the fun() function:</p>
+        <ul class="options-list">
+            <li class="correct">fun()</li>
+            <li>mod.fun()</li>
+            <li>mod:fun()</li>
+            <li>mod::fun()</li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">Question 2: Given the Python code snippet below:</div>
+        <div class="code-block">import random
+print(len(dir(random)))</div>
+        <p>What will be the output of this code?</p>
+        <ul class="options-list">
+            <li>A list of attributes belonging to the random module.</li>
+            <li class="correct">The number of attributes in the random module.</li>
+            <li>A TypeError because dir cannot be used with modules.</li>
+            <li>The documentation string of the random module.</li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">Question 3: The compiled Python bytecode is stored in files which have their names ending with:</div>
+        <ul class="options-list">
+            <li class="correct">pyc</li>
+            <li>py</li>
+            <li>pyb</li>
+            <li>pc</li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">Question 4: Assuming that the following three files: <span class="inline-code">a.py</span>, <span class="inline-code">b.py</span>, and <span class="inline-code">c.py</span> reside in the same directory, what will be the output produced after running the <span class="inline-code">c.py</span> file?</div>
+        <div class="code-block"># file a.py
+print("a", end='')
+
+# file b.py
+import a
+print("b", end='')
+
+# file c.py
+print("c", end='')
+import a
+import b</div>
+        <ul class="options-list">
+            <li class="correct">cab</li>
+            <li>bc</li>
+            <li>bac</li>
+            <li>cba</li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">Question 5: If the following line of code is at the end of a Python script named <span class="inline-code">calculator.py</span>, what will be the output when this script is run directly?</div>
+        <div class="code-block">print(__name__)</div>
+        <ul class="options-list">
+            <li>_calculator_</li>
+            <li>calculator</li>
+            <li class="correct">__main__</li>
+            <li>main</li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">Question 6: Consider the following Python import statement in a script:</div>
+        <div class="code-block">from data.processing.analysis.v1 import compute_metrics as cm</div>
+        <p>What does this statement accomplish?</p>
+        <ul class="options-list">
+            <li class="correct">Imports the compute_metrics function from the v1.py script, which is part of the analysis subpackage in the processing package inside the data package, and renames it to cm.</li>
+            <li>Imports the v1 package from the analysis submodule, which is part of the processing function inside the data module, and renames it to compute_metrics.</li>
+            <li>Imports the data module from the processing package, which is part of the analysis subpackage inside the v1 package, and renames it to cm.</li>
+            <li>Imports the entire data package and renames it to compute_metrics, allowing all functions and classes within to be accessed using the prefix cm.</li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">Question 7: Given the following Python code segment:</div>
+        <div class="code-block">try:
+    # Code that may raise an exception
+    risky_call()
+except ValueError:
+    print("Caught ValueError")
+except TypeError:
+    print("Caught TypeError")
+except Exception:
+    print("Caught a different exception")</div>
+        <p>If an exception is raised within risky_call(), how many except: blocks can be executed?</p>
+        <ul class="options-list">
+            <li>One or more except: blocks will be executed.</li>
+            <li class="correct">Not more than one except: block will be executed.</li>
+            <li>None of the except: blocks will be executed.</li>
+            <li>Exactly one except: block will be executed.</li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">Question 8: Consider the following Python code:</div>
+        <div class="code-block">try:
+    raise Exception("An error occurred")
+except ValueError as ve:
+    print("ValueError:", str(ve))
+except BaseException as be:
+    print("BaseException:", str(be))
+except:
+    print("Caught some other exception")</div>
+        <p>What will be the output when this code is executed?</p>
+        <ul class="options-list">
+            <li>ValueError: An error occurred</li>
+            <li class="correct">BaseException: An error occurred</li>
+            <li>Caught some other exception</li>
+            <li>No output; an unhandled exception will terminate the program</li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">Question 9: Review the Python code below:</div>
+        <div class="code-block">try:
+    raise Exception("An error has occurred")
+except Exception:
+    print("a")
+except:
+    print("b")
+except BaseException:
+    print("c")</div>
+        <p>What will be the expected result when this code is executed?</p>
+        <ul class="options-list">
+            <li>The code will print "c"</li>
+            <li>The code will print "a"</li>
+            <li>The code will print "b"</li>
+            <li class="correct">The code will cause a syntax error</li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">Question 10: Analyze the Python statement below:</div>
+        <div class="code-block">with open('data.csv', 'r') as file:
+    for record in file:
+        pass</div>
+        <p>Which of the following statements is correct about the code above?</p>
+        <ul class="options-list">
+            <li class="correct">The code is valid because the open function with 'r' mode returns an iterable file object.</li>
+            <li>The code may be valid if record is predefined as a list before the loop.</li>
+            <li>The code is invalid because the open function with 'r' mode returns nothing.</li>
+            <li>The code is invalid because the open function with 'r' mode returns a non-iterable object.</li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">Question 11: Examine the Python assertion statement provided:</div>
+        <div class="code-block">assert var &gt; 0</div>
+        <p>What is the behavior of this code segment?</p>
+        <ul class="options-list">
+            <li class="correct">It will raise an AssertionError if var is less than or equal to 0.</li>
+            <li>It will raise an AssertionError if var is greater than 0.</li>
+            <li>It will do nothing regardless of the value of var.</li>
+            <li>It will output the value of var if it is greater than 0.</li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">Question 12: Given the Python code segment below:</div>
+        <div class="code-block">x = r"\"
+print(len(x))</div>
+        <p>What is the expected behavior when this code is executed?</p>
+        <ul class="options-list">
+            <li>The code will print 3, as the raw string treats backslashes as literal characters.</li>
+            <li>The code will print 1, as the triple backslash in a raw string represents a single backslash.</li>
+            <li class="correct">The code will cause a syntax error due to the unescaped sequence at the end of the raw string.</li>
+            <li>The code will print 4, as the raw string preserves the backslash elements within the string.</li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">Question 13: Given the Python code segment below:</div>
+        <div class="code-block">x = "\//"
+print(len(x))</div>
+        <p>What will be the output when the code is executed?</p>
+        <ul class="options-list">
+            <li>The code will output 4, as there are four characters in the string, with the backslash escaping the following forward slash.</li>
+            <li class="correct">The code will output 3, recognizing the sequence of two backslashes as a single escaped backslash and two forward slashes.</li>
+            <li>The code will output 2, as the double backslash represents a single backslash and the double forward slashes are combined.</li>
+            <li>The code will cause a syntax error due to an improper sequence of escape characters.</li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">Question 14: Consider the Python code provided below:</div>
+        <div class="code-block">print(chr(ord('a') + 1))</div>
+        <p>What will be the output of this code?</p>
+        <ul class="options-list">
+            <li class="correct">The code will print "b" as it takes the Unicode code point of 'a', adds 1, and converts it back to a character.</li>
+            <li>The code will print "A" because the addition operation converts the lowercase 'a' to an uppercase 'A' without changing its position in the alphabet.</li>
+            <li>The code will print "a" because the addition operation does not affect the character.</li>
+            <li>The code will cause a syntax error because you cannot add a number to a character's ord() value.</li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">Question 15: Consider the following Python code snippet:</div>
+        <div class="code-block">print(int("1.0"))</div>
+        <p>What will be the output when this code is executed?</p>
+        <ul class="options-list">
+            <li>The code will print 1 because it converts the string "1.0" to an integer.</li>
+            <li>The code will print 1.0 as it maintains the floating-point format.</li>
+            <li class="correct">The code will cause a ValueError because "1.0" is not a valid literal for the int() constructor without prior conversion to a float.</li>
+            <li>The code will cause a TypeError because strings cannot be converted to integers directly when they represent a float.</li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">Question 16: If the class constructor is declared in the following way:</div>
+        <div class="code-block">class Class:
+    def __init__(self, val=0):
+        pass</div>
+        <p>Which one of the assignments is <b>invalid</b>?</p>
+        <ul class="options-list">
+            <li class="correct">object = Class(1, 2)</li>
+            <li>object = Class(None)</li>
+            <li>object = Class(1)</li>
+            <li>object = Class()</li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">Question 17: Consider the Python class CustomNumber and the subsequent operations performed on its instance:</div>
+        <div class="code-block">class CustomNumber:
+    def __init__(self, value=1.5):
+        self.value = value
+
+    def increment(self, increase=2):
+        self.value -= increase
+        return self.value
+
+num_instance = CustomNumber()
+num_alias = num_instance
+num_alias.increment()
+
+print(num_instance.value)</div>
+        <p>What will be the output when the code is executed?</p>
+        <ul class="options-list">
+            <li>0.5</li>
+            <li class="correct">-0.5</li>
+            <li>3.5</li>
+            <li>A TypeError is raised.</li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">Question 18: What is the expected output of the following code?</div>
+        <div class="code-block">class A:
+    A = 1
+    def __init__(self):
+        self.a = 0
+
+print(hasattr(A, 'a'))</div>
+        <ul class="options-list">
+            <li class="correct">False</li>
+            <li>True</li>
+            <li>0</li>
+            <li>1</li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">Question 19: What will the following Python code output?</div>
+        <div class="code-block">class Parent:
+    pass
+
+class Uncle(Parent):
+    pass
+
+class Child(Uncle):
+    pass
+
+class Cousin(Parent):
+    pass
+
+print(issubclass(Child, Cousin), issubclass(Cousin, Uncle))</div>
+        <ul class="options-list">
+            <li>True, True</li>
+            <li>True, False</li>
+            <li>False, True</li>
+            <li class="correct">False, False</li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">Question 20: What is the sys.stdout stream in Python typically associated with?</div>
+        <ul class="options-list">
+            <li class="correct">The screen</li>
+            <li>The keyboard</li>
+            <li>A null device</li>
+            <li>The printer</li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">Question 21: What will be the result of running the following code?</div>
+        <div class="code-block">class A:
+    def __init__(self, v):
+        self.__a = v + 1
+
+class B(A):
+    def __init__(self, v):
+        super().__init__(v)
+        self.__a += 1
+
+b = B(0)
+print(b.A__a)</div>
+        <ul class="options-list">
+            <li>1</li>
+            <li>2</li>
+            <li>3</li>
+            <li class="correct">AttributeError is raised</li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">Question 22: What is the expected result of executing the following code?</div>
+        <div class="code-block">class A:
+    def __init__(self):
+        pass
+
+a = A(1)
+print(hasattr(a, 'A'))</div>
+        <ul class="options-list">
+            <li class="correct">The code will raise an exception</li>
+            <li>The code will print True</li>
+            <li>The code will print False</li>
+            <li>The code will print 1</li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">Question 23: What is the expected result of executing the following code?</div>
+        <div class="code-block">class A:
+    def a(self):
+        print('a')
+
+class B:
+    def a(self):
+        print('b')
+
+class C(B, A):
+    def c(self):
+        self.a()
+
+o = C()
+o.c()</div>
+        <ul class="options-list">
+            <li class="correct">The code will print b</li>
+            <li>The code will print c</li>
+            <li>The code will print a</li>
+            <li>The code will raise an exception</li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">Question 24: What is the expected result of executing the following code?</div>
+        <div class="code-block">try:
+    raise Exception(1, 2, 3, (4), "A",)
+except Exception as e:
+    print(len(e.args))</div>
+        <ul class="options-list">
+            <li class="correct">5</li>
+            <li>4</li>
+            <li>6</li>
+            <li>An exception will be raised</li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">Question 25: What is the expected result of executing the following code?</div>
+        <div class="code-block">def my_fun(n):
+    s = '+'
+    for i in range(n):
+        s += s
+        yield s
+
+for x in my_fun(2):
+    print(x, end='')</div>
+        <ul class="options-list">
+            <li class="correct">The code will print ++++++</li>
+            <li>The code will print +++</li>
+            <li>The code will print ++</li>
+            <li>The code will print +</li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">Question 26: What is the expected result of executing the following code?</div>
+        <div class="code-block">class I:
+    def __init__(self):
+        self.s = 'abc'
+        self.i = 0
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        if self.i == len(self.s):
+            raise StopIteration
+        v = self.s[self.i]
+        self.i += 1
+        return v
+
+for x in I():
+    print(x, end='')</div>
+        <ul class="options-list">
+            <li class="correct">The code will print abc</li>
+            <li>The code will print 012</li>
+            <li>The code will print cba</li>
+            <li>The code will print 210</li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">Question 27: What will be the output of the following code?</div>
+        <div class="code-block">def generate_pattern(n):
+    def create_pattern():
+        return '**' * n
+    return create_pattern
+
+pattern1 = generate_pattern(1)
+pattern2 = generate_pattern(2)
+print(pattern1() + pattern2())</div>
+        <ul class="options-list">
+            <li>**</li>
+            <li>***</li>
+            <li>****</li>
+            <li class="correct">******</li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">Question 28: If <span class="inline-code">s</span> is a stream opened in <i>read</i> mode, what will the following line of code do?</div>
+        <div class="code-block">q = s.read(-1)</div>
+        <ul class="options-list">
+            <li class="correct">It reads the entire contents of the stream s.</li>
+            <li>It reads nothing from the stream s.</li>
+            <li>It reads one character from the stream s.</li>
+            <li>It raises an error because a negative value is provided as an argument.</li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">Question 29: Assuming that the <span class="inline-code">open()</span> invocation has gone successfully, the following snippet:</div>
+        <div class="code-block">for x in open('file', 'rt'):
+    print(x)</div>
+        <p>will:</p>
+        <ul class="options-list">
+            <li class="correct">read the file line by line</li>
+            <li>read the file character by character</li>
+            <li>read the whole file at once</li>
+            <li>cause an exception</li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">Question 30: If you want to fill a byte array with data read in from a stream, which method can you use?</div>
+        <ul class="options-list">
+            <li class="correct">The readinto() method</li>
+            <li>The readbytes() method</li>
+            <li>The readfrom() method</li>
+            <li>The read() method</li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">Question 31: Which of the following commands would you use to check pip's version? (Select <u>two</u> answers)</div>
+        <ul class="options-list">
+            <li class="correct">pip --version</li>
+            <li class="correct">pip3 --version</li>
+            <li>pip version</li>
+            <li>pip-version</li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">Question 32: Which of the following commands can be used with pip to uninstall a specific Python package?</div>
+        <ul class="options-list">
+            <li class="correct">pip uninstall package_name</li>
+            <li>pip erase package_name</li>
+            <li>pip delete package_name</li>
+            <li>pip --remove package_name</li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">Question 33: Look at the following code:</div>
+        <div class="code-block">numbers = [0, 2, 7, 9, 10]
+# Insert line of code here.
+print(list(foo))</div>
+        <p>Which line would you insert in order for the program to produce the expected output:<br><span class="inline-code">[0, 4, 49, 81, 100]</span></p>
+        <ul class="options-list">
+            <li class="correct">foo = map(lambda num: num ** 2, numbers)</li>
+            <li>foo = filter(lambda num: num ** 2, numbers)</li>
+            <li>foo = lambda num: num ** 2, numbers</li>
+            <li>foo = lambda num: num * 2, numbers</li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">Question 34: Look at the following code:</div>
+        <div class="code-block">numbers = [i*i for i in range(5)]
+# Insert line of code here.
+print(foo)</div>
+        <p>Which line would you insert in order for the program to produce the expected output:<br><span class="inline-code">[1, 9]</span></p>
+        <ul class="options-list">
+            <li class="correct">foo = list(filter(lambda x: x % 2, numbers))</li>
+            <li>foo = list(map(lambda x: x % 2, numbers))</li>
+            <li>foo = list(filter(lambda x: x / 2, numbers))</li>
+            <li>foo = list(map(lambda x: x // 2, numbers))</li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">Question 35: Look at the code below:</div>
+        <div class="code-block">import random
+# Insert lines of code here.
+print(a, b, c)</div>
+        <p>Which lines of code would you insert so that it is possible for the program to output the following result:<br><span class="inline-code">6 82 0</span></p>
+        <ul class="options-list">
+            <li><b>A:</b> a = random.randrange(10, 100, 3); b = random.randint(0, 100); c = random.choice((0, 100, 3))</li>
+            <li><b>B:</b> a = random.choice((0, 100, 3)); b = random.randrange(10, 100, 3); c = random.randint(0, 100)</li>
+            <li class="correct"><b>C:</b> a = random.randint(0, 100); b = random.randrange(10, 100, 3); c = random.choice((0, 100, 3))</li>
+            <li><b>D:</b> a = random.randint(0, 100); b = random.choice((0, 100, 3)); c = random.randrange(10, 100, 3)</li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">Question 36: What is the expected result of the following code?</div>
+        <div class="code-block">import os
+os.mkdir('pictures')
+os.chdir('pictures')
+print(os.getcwd())</div>
+        <ul class="options-list">
+            <li class="correct">The code will print the path to the created directory</li>
+            <li>The code will print the name of the created directory</li>
+            <li>The code will print the content of the created directory</li>
+            <li>The code will print the owner of the created directory</li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">Question 37: What information can be read using the <span class="inline-code">uname</span> function provided by the <span class="inline-code">os</span> module? (Select <u>two</u> answers)</div>
+        <ul class="options-list">
+            <li class="correct">Operating system name</li>
+            <li class="correct">Hardware identifier</li>
+            <li>Last login date</li>
+            <li>Current path</li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">Question 38: What is the expected result of the following code?</div>
+        <div class="code-block">from datetime import datetime
+datetime_1 = datetime(2019, 11, 27, 11, 27, 22)
+datetime_2 = datetime(2019, 11, 27, 0, 0, 0)
+print(datetime_1 - datetime_2)</div>
+        <ul class="options-list">
+            <li class="correct">11:27:22</li>
+            <li>0 days, 11:27:22</li>
+            <li>11 hours, 27 minutes, 22 seconds</li>
+            <li>0 days</li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">Question 39: If you want to calculate the date that is 30 days after the current date, which of the following code snippets would you use?</div>
+        <ul class="options-list">
+            <li class="correct">current_date + timedelta(days=30)</li>
+            <li>current_date + timedelta(days=-30)</li>
+            <li>current_date + timedelta(30)</li>
+            <li>current_date + timedelta(-30)</li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">Question 40: What is the expected result of executing the following Python code?</div>
+        <div class="code-block">import calendar
+calendar.setfirstweekday(calendar.FRIDAY)
+print(calendar.weekheader(2))</div>
+        <ul class="options-list">
+            <li>It will only print the names of the first two days of the week starting with Friday.</li>
+            <li>It will only print the names of the days of the week from Friday to Sunday.</li>
+            <li>It will raise an error because calendar.weekheader() does not accept arguments.</li>
+            <li class="correct">It will print the names of all the days of the week in a shorter format.</li>
+        </ul>
+    </div>
+
+</div>
+
+</body>
+</html>
