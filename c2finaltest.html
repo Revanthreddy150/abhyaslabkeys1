@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C Programming Answer Key Portal</title>
+    <style>
+        :root {
+            --primary-color: #00bcd4;
+            --primary-hover: #0097a7;
+            --bg-color: #f5f7fb;
+            --card-bg: #ffffff;
+            --text-color: #2b3a4a;
+            --border-color: #e3e9f0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            display: flex;
+            height: 100vh;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Confetti Canvas Container */
+        #confetti-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 999;
+            display: none;
+        }
+
+        /* Left Navigation Sidebar */
+        .sidebar {
+            width: 340px;
+            background-color: var(--card-bg);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            padding: 24px;
+            box-shadow: 4px 0 10px rgba(0,0,0,0.02);
+            z-index: 10;
+        }
+
+        .sidebar h2 {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #788896;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            border-bottom: 2px solid var(--bg-color);
+            padding-bottom: 12px;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+
+        .grid-item {
+            background-color: #f8fafc;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 12px 0;
+            text-align: center;
+            font-weight: 600;
+            cursor: pointer;
+            color: #516375;
+            transition: all 0.2s ease;
+        }
+
+        .grid-item:hover {
+            background-color: #eef2f7;
+            border-color: #cbd5e1;
+        }
+
+        .grid-item.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+            box-shadow: 0 4px 10px rgba(0, 188, 212, 0.3);
+        }
+
+        /* Main Display Viewport */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background-color: var(--bg-color);
+            z-index: 5;
+        }
+
+        .question-container {
+            flex: 1;
+            padding: 40px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        /* Instagram Highlight Alert Box */
+        .insta-alert {
+            width: 100%;
+            max-width: 850px;
+            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+            color: white;
+            padding: 16px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-weight: 600;
+            font-size: 1.05rem;
+            display: none; 
+            align-items: center;
+            box-shadow: 0 6px 15px rgba(220, 39, 67, 0.2);
+            animation: fadeIn 0.4s ease;
+        }
+
+        .insta-alert svg {
+            margin-right: 12px;
+            flex-shrink: 0;
+        }
+
+        /* Congrats Overlay Message for Q50 */
+        .congrats-badge {
+            width: 100%;
+            max-width: 850px;
+            background: linear-gradient(135deg, #11998e, #38ef7d);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-weight: 700;
+            font-size: 1.2rem;
+            text-align: center;
+            display: none;
+            box-shadow: 0 10px 20px rgba(56, 239, 125, 0.2);
+            animation: bounceIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes bounceIn {
+            0% { opacity: 0; transform: scale(0.3); }
+            50% { opacity: 0.9; transform: scale(1.1); }
+            80% { transform: scale(0.9); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        .question-card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 40px;
+            width: 100%;
+            max-width: 850px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.03);
+            border: 1px solid rgba(227, 233, 240, 0.8);
+        }
+
+        .question-number {
+            font-size: 0.9rem;
+            color: var(--primary-color);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .question-text {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        /* Code Block Box Styling */
+        pre {
+            background-color: #1e293b;
+            color: #f8fafc;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Fira Code', Consolas, Monaco, monospace;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 25px;
+            overflow-x: auto;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        /* Multiple Choice Options CSS */
+        .options-list {
+            list-style: none;
+        }
+
+        .option-item {
+            padding: 16px 20px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            margin-bottom: 12px;
+            background-color: #fdfdfd;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            font-weight: 500;
+        }
+
+        .option-item::before {
+            content: "";
+            width: 18px;
+            height: 18px;
+            border: 2px solid #cbd5e1;
+            border-radius: 50%;
+            margin-right: 14px;
+            display: inline-block;
+            flex-shrink: 0;
+        }
+
+        /* Highlight Selected Key Style */
+        .option-item.correct {
+            background-color: #e6fbf7;
+            border-color: #a7f3d0;
+            color: #065f46;
+            font-weight: 600;
+        }
+
+        .option-item.correct::before {
+            border-color: #10b981;
+            background-color: #10b981;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>');
+            background-size: 12px;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        /* Action Bar Navigation Footer */
+        .footer-nav {
+            height: 80px;
+            background-color: var(--card-bg);
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 40px;
+        }
+
+        .btn {
+            padding: 12px 28px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-secondary {
+            background-color: #64748b;
+            color: white;
+        }
+
+        .btn-secondary:hover:not(:disabled) {
+            background-color: #475569;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background-color: var(--primary-hover);
+        }
+
+        .btn:disabled {
+            background-color: #f1f5f9;
+            color: #94a3b8;
+            cursor: not-allowed;
+            border: 1px solid var(--border-color);
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="confetti-canvas"></canvas>
+
+    <div class="sidebar">
+        <h2>Answer Key</h2>
+        <div class="grid-container" id="number-grid"></div>
+    </div>
+
+    <div class="main-content">
+        <div class="question-container">
+            <div class="insta-alert" id="insta-banner">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                <span>If exam complete msg me at insta one small process is left so thats way dont forget to msg me</span>
+            </div>
+
+            <div class="congrats-badge" id="congrats-banner">
+                🎉 Congratulations! You have reached the final question! 🌟🏆
+            </div>
+
+            <div class="question-card">
+                <span class="question-number" id="q-num-display">Question 1</span>
+                <div class="question-text" id="q-text-display">Loading question content...</div>
+                <pre id="code-block-container"></pre>
+                <ul class="options-list" id="options-display"></ul>
+            </div>
+        </div>
+
+        <div class="footer-nav">
+            <button class="btn btn-secondary" id="prev-btn" onclick="prevQuestion()">Previous</button>
+            <button class="btn btn-primary" id="next-btn" onclick="nextQuestion()">Next</button>
+        </div>
+    </div>
+
+    <script>
+        const quizData = [];
+        
+        // 1. Generate placeholders structures for 1 to 50
+        for (let i = 1; i <= 50; i++) {
+            quizData.push({
+                id: i,
+                question: `What happens if you try to compile and run the program text for Question ${i}?`,
+                code: `// Placeholder logic for item ${i}\n#include <stdio.h>\nint main() {\n    return 0;\n}`,
+                options: ["the program outputs 1", "the program outputs 2", "the program outputs 4", "the program outputs 8"],
+                correctIndex: 0
+            });
+        }
+
+        // 2. Load Real Dynamic Code Values
+        // Q1
+        quizData[0] = {
+            id: 1,
+            question: "Which of the following is a valid integer number (in the \"C\" language sense)?",
+            code: "",
+            options: ["3141592", "3,141592", "3_141_592", "3.141592"],
+            correctIndex: 0
+        };
+
+        // Q2
+        quizData[1] = {
+            id: 2,
+            question: "What happens if you try to compile and run this program?",
+            code: `#include <stdio.h>\n#include <string.h>\n\nstruct S {\n    char S[4];\n};\n\nint main(void) {\n    struct S S = { 'a', 'b' };\n\n    printf("%d", sizeof(S.S) - strlen(S.S) + S.S[3]);\n    return 0;\n}`,
+            options: ["the program outputs 2", "the program outputs 4", "the program outputs 1", "the program outputs 8"],
+            correctIndex: 0
+        };
+
+        // Q3
+        quizData[2] = {
+            id: 3,
+            question: "What happens if you try to compile and run this program?",
+            code: `#include <stdio.h>\n#include <string.h>\n#include <stdlib.h>\n\nstruct S {\n    char *S;\n};\n\nint main(void) {\n    struct S *S = (struct S *) malloc(sizeof(struct S));\n    S -> S = "abc";\n\n    printf("%d", strlen(S -> S + 2) + S -> S[3]);\n    free(S);\n    return 0;\n}`,
+            options: ["the program outputs 1", "the program outputs 4", "the program outputs 2", "the program outputs 8"],
+            correctIndex: 0
+        };
+
+        // Q4
+        quizData[3] = {
+            id: 4,
+            question: "What happens if you try to compile and run this program?",
+            code: `#include <stdio.h>\n\nstruct S {\n    int Var;\n    struct S *Str;\n};\n\nint main(void) {\n    struct S S[] = { { 8, NULL }, { 4, &S[0] }, { 2, &S[1] } };\n    printf("%d", S[2].Str->Str->Var);\n    return 0;\n}`,
+            options: ["the program outputs 8", "the program outputs 4", "the program outputs 1", "the program outputs 2"],
+            correctIndex: 0
+        };
+
+        // Q5
+        quizData[4] = {
+            id: 5,
+            question: "What happens if you try to compile and run this program?",
+            code: `#include <stdio.h>\n\nint fun(int *t) {\n    return *(++t);\n}\n\nint main(void) {\n    int arr[] = { 8, 4, 2, 1 };\n    printf("%d/n", fun(arr + 2));\n    return 0;\n}`,
+            options: ["the program outputs 1", "the program outputs 4", "the program outputs -1", "the program outputs 8"],
+            correctIndex: 0
+        };
+
+        // Q6
+        quizData[5] = {
+            id: 6,
+            question: "What happens if you try to compile and run this program?",
+            code: `#include <stdio.h>\n\nint fun(int t) {\n    return ++t;\n}\n\nint main(void) {\n    int arr[] = { 8, 4, 2, 1 };\n    printf("%d/n", fun(arr[3]) + arr[2]);\n    return 0;\n}`,
+            options: ["the program outputs 4", "the program outputs 2", "the program outputs 1", "the program outputs 8"],
+            correctIndex: 0
+        };
+
+        // Q7
+        quizData[6] = {
+            id: 7,
+            question: "What happens if you try to compile and run this program?",
+            code: `#include <stdio.h>\n\nint f(int v) {\n    v = 2 * v;\n    return v * v;\n}\n\nint main(void) {\n    int i = 2;\n    f(i);\n\n    printf("%d",i);\n    return 0;\n}`,
+            options: ["the program outputs 2", "the program outputs 4", "the program outputs 1", "the program outputs 8"],
+            correctIndex: 0
+        };
+
+        // Q8
+        quizData[7] = {
+            id: 8,
+            question: "What happens if you try to compile and run this program?",
+            code: `#include <stdio.h>\n\nstruct S {\n    int S[2];\n};\n\nvoid f(struct S S) {\n    S.S[0] = S.S[1] + 4;\n}\n\nint main(void) {\n    struct S S = { { 4, 8 } };\n    f(S);\n\n    printf("%d",S.S[1] / S.S[0]);\n    return 0;\n}`,
+            options: ["the program outputs 2", "the program outputs 4", "the program outputs 1", "the program outputs 8"],
+            correctIndex: 0
+        };
+
+        // Q9
+        quizData[8] = {
+            id: 9,
+            question: "What happens if you try to compile and run this program?",
+            code: `#include <stdio.h>\n\nstruct S {\n    int S[2];\n};\n\nvoid f(struct S *S) {\n    S->S[1] = S->S[0] + 2;\n}\n\nint main(void) {\n    struct S S = { { 4, 8 } }, *P = &S;\n    f(P);\n    printf("%d",S.S[1] / S.S[0]);\n    return 0;\n}`,
+            options: ["the program outputs 1", "the program outputs 4", "the program outputs 8", "the program outputs -1"],
+            correctIndex: 0
+        };
+
+        // Q10
+        quizData[9] = {
+            id: 10,
+            question: "What happens if you try to compile and run this program?",
+            code: `#include <stdio.h>\n\nint f(int t[][2]) {\n    return t[0][0] + t[0][1];\n}\n\nint main(void) {\n    int i, t[2][2] = { {0,4},{4,2} };\n    i = f(t);\n\n    printf("%d", i);\n    return 0;\n}`,
+            options: ["the program outputs 4", "the program outputs 1", "the program outputs 2", "the program outputs 8"],
+            correctIndex: 0
+        };
+
+        // Q11
+        quizData[10] = {
+            id: 11,
+            question: "What happens if you try to compile and run this program?",
+            code: `#include <stdio.h>\n#include <string.h>\nchar *f(int p, char *s) {\n  s[p + 1] = '/0';\n  return s + 1;\n}\n\nint main(void) {\n  char s[] = "ABCDEF";\n  int i = strlen(f(1, s + 2));\n\n  printf("%d/n", i);\n  return 0;\n}`,
+            options: ["the program outputs 1", "the program outputs 4", "the program outputs 2", "the program outputs 8"],
+            correctIndex: 0
+        };
+
+        // Q12
+        quizData[11] = {
+            id: 12,
+            question: "What happens if you try to compile and run this program?",
+            code: `#include <stdio.h>\nint main(void) {\n    char s[20];\n    FILE *f = fopen("data", "w");\n    int i = fputs("1248", f);\n    fclose(f);\n    f = fopen("data", "r");\n    fgets(s + 2, 4, f);\n    putchar(s[4]);\n    fclose(f);\n    return 0;\n}`,
+            options: ["the program outputs 4", "the program outputs 2", "the program outputs 1", "the program outputs 8"],
+            correctIndex: 0
+        };
+
+        // Q13
+        quizData[12] = {
+            id: 13,
+            question: "What happens if you try to compile and run this program?",
+            code: `#include <stdio.h>\n#define ABC 10\n#define XYZ ABC - 1\nint main(void) {\n    int i = 19;\n    i = i - XYZ;\n\n    printf("%d/n", i);\n    return 0;\n}`,
+            options: ["the program outputs 8", "the program outputs 4", "the program outputs 1", "the program outputs 2"],
+            correctIndex: 0
+        };
+
+        // Q14
+        quizData[13] = {
+            id: 14,
+            question: "What is the meaning of the following declaration?",
+            code: `void (*f)(int);`,
+            options: ["f is a pointer to function (int) returning void;", "the declaration is erroneous", "f is a function (int) returning pointer to void;", "f is a pointer to function (int) returning int;"],
+            correctIndex: 3
+        };
+
+        // Q15
+        quizData[14] = {
+            id: 15,
+            question: "Select the proper form for the following declaration:\nptr is a pointer to pointer to void",
+            code: ``,
+            options: ["void **ptr;", "void *ptr;", "void ptr;", "the declaration is invalid and cannot be coded in C"],
+            correctIndex: 2
+        };
+
+        // Q16
+        quizData[15] = {
+            id: 16,
+            question: "What happens if you try to compile and run this program?",
+            code: `#include <stdio.h>\n\nchar *f(char *p) {\n    return p++;\n}\n\nchar *g(char *p) {\n    return p += 2;\n}\n\nint main(void) {\n    char *s = "ABCDEFGHIJ";\n    char p = *f(g(f(s + 6)));\n\n    printf("%d", p - 'A');\n    return 0;\n}`,
+            options: ["the program outputs 8", "the program outputs 4", "the program outputs 1", "the program outputs 2"],
+            correctIndex: 0
+        };
+
+        // Q17
+        quizData[16] = {
+            id: 17,
+            question: "What is the value of the following integer literal?\n012",
+            code: ``,
+            options: ["10", "12", "18", "the literal is invalid"],
+            correctIndex: 0
+        };
+
+        // Q18
+        quizData[17] = {
+            id: 18,
+            question: "What is the value of the following integer literal?\n0x12",
+            code: ``,
+            options: ["18", "12", "10", "the literal is invalid"],
+            correctIndex: 0
+        };
+
+        // Q19
+        quizData[18] = {
+            id: 19,
+            question: "Which of the following strings is a legal variable name?",
+            code: ``,
+            options: ["Alpha_Omega", "Alpha-Omega", "Alpha:Omega", "Alpha@Omega"],
+            correctIndex: 0
+        };
+
+        // Q20
+        quizData[19] = {
+            id: 20,
+            question: "Which of the following are legal variable names?",
+            code: ``,
+            options: ["R2D2", "_R2D2_", "_2R2D_", "2R2D"],
+            correctIndices: [0, 1, 2] 
+        };
+
+        // Q21
+        quizData[20] = {
+            id: 21,
+            question: "Which of the following declarations is valid?",
+            code: ``,
+            options: ["int longint;", "int long;", "int int;", "int float;"],
+            correctIndex: 0
+        };
+
+        // Q22
+        quizData[21] = {
+            id: 22,
+            question: "What is the value of the x variable at the end of the following snippet?",
+            code: `int x = 1;\n\nx = x + 2 * x;\nx = x / 2 * x;\nx = x + 2 + x;`,
+            options: ["8", "4", "2", "1"],
+            correctIndex: 0
+        };
+
+        // Q23
+        quizData[22] = {
+            id: 23,
+            question: "What is the value of the x variable at the end of the following snippet?",
+            code: `int x = 1;\n\nx = x * x + 2;\nx = x / x * 2;\nx = x + 2 + x;`,
+            options: ["6", "8", "2", "4"],
+            correctIndex: 0
+        };
+
+        // Q24
+        quizData[23] = {
+            id: 24,
+            question: "Which of the following strings is a legal floating-point number (in the \"C\" language sense)?",
+            code: ``,
+            options: ["3.1415E92", "3.1415F92", "3.1415X92", "3.1415M92"],
+            correctIndex: 0
+        };
+
+        // Q25
+        quizData[24] = {
+            id: 25,
+            question: "What is the value of the following floating-point literal?\n-1E-1",
+            code: ``,
+            options: ["-0.1", "-1.0", "-0.01", "the literal is invalid"],
+            correctIndex: 0
+        };
+
+        // Q26
+        quizData[25] = {
+            id: 26,
+            question: "What is the value of the x variable at the end of the following snippet?",
+            code: `int x = 1, y = 2, z;\nz = x / y * --x * y++;`,
+            options: ["0", "1", "2", "4"],
+            correctIndex: 0
+        };
+
+        // Q27
+        quizData[26] = {
+            id: 27,
+            question: "What is the value of the x variable at the end of the following snippet?",
+            code: `int x;\nx = 'b' - 'a' * ('/' / '/');`,
+            options: ["the snippet is invalid and will cause compilation error", "0", "1", "2"],
+            correctIndex: 2
+        };
+
+        // Q28
+        quizData[27] = {
+            id: 28,
+            question: "What happens if you try to compile and run this program?",
+            code: `#include <stdio.h>\nint main(void) {\n    int a = -1, b = 1;\n    float i = 2.0, j = -2.0;\n\n    printf("%d/n", (a > b) + (b > a) + (i > j) + (j > i) + ('z' > 'a'));\n    return 0;\n}`,
+            options: ["the program outputs 3", "the program outputs 2", "the program outputs 1", "the program outputs 4"],
+            correctIndex: 0
+        };
+
+        // Q29
+        quizData[28] = {
+            id: 29,
+            question: "What happens if you try to compile and run this program?",
+            code: `#include <stdio.h>\nint main(void) {\n    int i = 0;\n    if(i = 1)\n        i = 2;\n    else\n        i = 3;\n\n    printf("%d/n", i);\n    return 0;\n}`,
+            options: ["the program outputs 2", "the program outputs 1", "the program outputs 3", "the program outputs 4"],
+            correctIndex: 0
+        };
+
+        // Q30
+        quizData[29] = {
+            id: 30,
+            question: "What happens if you try to compile and run this program?",
+            code: `#include <stdio.h>\nint main(void) {\n    float x = 3.0, y = 2.0;\n    int i = 1, j = 2;\n    x = (int)x / y + (float)i / j;\n\n    printf("%f", x);\n    return 0;\n}`,
+            options: ["the program outputs 2.000000", "the program outputs 1.000000", "the program outputs 0.000000", "the program outputs 3.000000"],
+            correctIndex: 0
+        };
+
+        // Q31
+        quizData[30] = {
+            id: 31,
+            question: "What happens if you try to compile and run this program?",
+            code: `#include <stdio.h>\n\nint main(void) {\n    int i = 16, j = 8;\n    do {\n        i /= 2;\n        j = i / 2;\n    } while(j > 0);\n    printf("%d", i + j);\n    return 0;\n}`,
+            options: ["the program outputs 1", "the program enters an infinite loop and outputs nothing", "the program outputs 2", "the program outputs 4"],
+            correctIndex: 0
+        };
+
+        // Q32
+        quizData[31] = {
+            id: 32,
+            question: "What happens if you try to compile and run this program?",
+            code: `#include <stdio.h>\n\nint main(void) {\n    int i = 16, j = 6;\n    while(j > 0) {\n        i /= 2;\n        j -= i / 2;\n    }\n\n    printf("%d", i + j);\n    return 0;\n}`,
+            options: ["the program outputs 4", "the program outputs 2", "the program outputs 1", "the program enters an infinite loop and outputs nothing"],
+            correctIndex: 0
+        };
+
+        // Q33
+        quizData[32] = {
+            id: 33,
+            question: "What happens if you try to compile and run this program?",
+            code: `#include <stdio.h>\n\nint main(void) {\n    int i = 2, j;\n\n    for(j = 0; j < 0; j -= i)\n        i /= 2;\n\n    printf("%d", i + j);\n    return 0;\n}`,
+            options: ["the program outputs 2", "the program outputs 4", "the program outputs 1", "the program enters an infinite loop and outputs nothing"],
+            correctIndex: 0
+        };
+
+        // Q34
+        quizData[33] = {
+            id: 34,
+            question: "What happens if you try to compile and run this program?",
+            code: `#include <stdio.h>\n\nint main(void) {\n    int i = 5, j = 4;\n\n    for(i--; i--; i--)\n        j--;\n\n    printf("%d", i + j);\n    return 0;\n}`,
+            options: ["the program outputs 1", "the program outputs 2", "the program outputs 4", "the program enters an infinite loop and outputs nothing"],
+            correctIndex: 0
+        };
+
+        // Q35
+        quizData[34] = {
+            id: 35,
+            question: "What happens if you try to compile and run this program?",
+            code: `#include <stdio.h>\n\nint main(void) {\n    int i = 1, j = 0, k;\n\n    k = (i & j) + (i | j) + (i ^ j) + !i + j;\n    printf("%d", k);\n    return 0;\n}`,
+            options: ["the program outputs 2", "the program outputs 4", "the program outputs 1", "the program outputs 0"],
+            correctIndex: 0
+        };
+
+        // Q36
+        quizData[35] = {
+            id: 36,
+            question: "What happens if you try to compile and run this program?",
+            code: `#include <stdio.h>\n\nint main(void) {\n    int i = 1, j = 0, k;\n\n    k = (i << j) + (j << i) + (i << i) + (j << j);\n    k >>= i;\n\n    printf("%d", k);\n    return 0;\n}`,
+            options: ["the program outputs 1", "the program outputs 4", "the program outputs 2", "the program outputs 0"],
+            correctIndex: 0
+        };
+
+        // Q37
+        quizData[36] = {
+            id: 37,
+            question: "What happens if you try to compile and run this program?",
+            code: `#include <stdio.h>\n\nint main(void) {\n    int i = 1, j = i + 2 * i;\n\n    switch(j - i) {\n        case 1: j++;\n        case 2: j--;\n        case 0: j++; break;\n        default: j = 0;\n    }\n\n    printf("%d", ++j);\n    return 0;\n}`,
+            options: ["the program outputs 4", "the program outputs 2", "the program outputs 1", "the program outputs 0"],
+            correctIndex: 0
+        };
+
+        // Q38
+        quizData[37] = {
+            id: 38,
+            question: "What happens if you try to compile and run this program?",
+            code: `#include <stdio.h>\n\nint main(void) {\n    int i = 1, j = i + 2 * i;\n    switch(j) {\n        default: j = 0;\n        case 1: j++; break;\n        case 2: j--;\n        case 0: j++; break;\n    }\n\n    printf("%d", ++j);\n    return 0;\n}`,
+            options: ["the program outputs 2", "the program outputs 4", "the program outputs 1", "the program outputs 0"],
+            correctIndex: 0
+        };
+
+        // Q39
+        quizData[38] = {
+            id: 39,
+            question: "What happens if you try to compile and run this program?",
+            code: `#include <stdio.h>\n\nint main(void) {\n    int i, t[4];\n\n    for(i = 0; i < 3; i++) {\n        t[i + 1] = 2 * t[i];   case 2: j--;\n    }\n\n    printf("%d/n", t[3]);\n    return 0;\n}`,
+            options: ["the program outputs 4", "the program outputs 2", "the program outputs 1", "the program outputs 0"],
+            correctIndex: 3
+        };
+
+        // Q40
+        quizData[39] = {
+            id: 40,
+            question: "What happens if you try to compile and run this program?",
+            code: `#include <stdio.h>\n\nint main(void) {\n    int i, t[4];\n\n    for(i = 3; i; i--) {\n        t[i] = i - 1;\n        t[t[i]] = t[i];\n    }\n\n    printf("%d/n", t[0]);\n    return 0;\n}`,
+            options: ["the program outputs 0", "the program outputs 4", "the program outputs 1", "the program outputs 2"],
+            correctIndex: 0
+        };
+
+        // Q41
+        quizData[40] = {
+            id: 41,
+            question: "What happens if you try to compile and run this program?",
+            code: `#include <stdio.h>\n\nint main(void) {\n    int i, s = 0, t[] = {0, 1, 2, 4, 8, 16};\n\n    for(i = 2; t[i] < 8; i *= 2)\n        s += t[i];\n\n    printf("%d\\n", s);\n    return 0;\n}`,
+            options: ["the program outputs 2", "the program outputs 4", "the program outputs 1", "the program outputs 0"],
+            correctIndex: 0
+        };
+
+        // Q42
+        quizData[41] = {
+            id: 42,
+            question: "What happens if you try to compile and run this program?",
+            code: `#include <stdio.h>\n\nint main(void) {\n    char t[] = { 'a', 'z', 'B', 'Z', '0' };\n\n    printf("%d\\n", t[t[1] - t[0] - t[3] + t[2] + 3] - t[4]);\n    return 0;\n}`,
+            options: ["the program outputs 0", "the program outputs 4", "the program outputs 1", "the program outputs 2"],
+            correctIndex: 0
+        };
+
+        // Q43
+        quizData[42] = {
+            id: 43,
+            question: "What happens if you try to compile and run this program?",
+            code: `#include <stdio.h>\n\nint main(void) {\n    char a = 'A', *b = &a, **c = &b;\n    **c = a + (a == *b);\n\n    printf("%c", a);\n    return 0;\n}`,
+            options: ["the program outputs B", "the program outputs C", "the program outputs A", "the program outputs NULL"],
+            correctIndex: 0
+        };
+
+        // Q44
+        quizData[43] = {
+            id: 44,
+            question: "What happens if you try to compile and run this program?",
+            code: `#include <stdio.h>\n\nint main(void) {\n    int t[4][4];\n\n    printf("%d\\n", sizeof(t) / sizeof(t[0]) / sizeof(t[0][0]));\n    return 0;\n}`,
+            options: ["the program outputs 1", "the program outputs 2", "the program outputs 8", "the program outputs 4"],
+            correctIndex: 0
+        };
+
+        // Q45
+        quizData[44] = {
+            id: 45,
+            question: "What happens if you try to compile and run this program?",
+            code: `#include <stdio.h>\n\nint main(void) {\n    int t[4] = { 0, -1, -2, -3 }, *p = t + 3;\n\n    printf("%d\\n", p[*p] - t[2]);\n    return 0;\n}`,
+            options: ["the program outputs 2", "the program outputs 4", "the program outputs 1", "the program outputs 8"],
+            correctIndex: 0
+        };
+
+        // Q46
+        quizData[45] = {
+            id: 46,
+            question: "What happens if you try to compile and run this program?",
+            code: `#include <stdio.h>\n\nint main(void) {\n    char *p = " 0 4 / 1 / 3 / 2 ";\n\n    printf("%d\\n", p[p[1]] + *(p + 1) + p[4]);\n    return 0;\n}`,
+            options: ["the program outputs 8", "the program outputs 4", "the program outputs 1", "the program outputs 2"],
+            correctIndex: 1
+        };
+
+        // Q47
+        quizData[46] = {
+            id: 47,
+            question: "What happens if you try to compile and run this program?",
+            code: `#include <stdio.h>\n#include <string.h>\n\nint main(void) {\n    char tt[20] = "0123456789";\n    strcpy(tt, tt + 2);\n\n    printf("%d\\n", strlen(tt) - tt[9] + '5');\n    return 0;\n}`,
+            options: ["the program outputs 4", "the program outputs 8", "the program outputs 1", "the program outputs 2"],
+            correctIndex: 0
+        };
+
+        // Q48
+        quizData[47] = {
+            id: 48,
+            question: "What happens if you try to compile and run this program?",
+            code: `#include <stdio.h>\n#include <string.h>\n\nint main(void) {\n    char tt[20] = "0123456789";\n    strcat(tt + 2, "987");\n\n    printf("%d\\n", strlen(tt) - tt[5] + '0');\n    return 0;\n}`,
+            options: ["the program outputs 8", "the program outputs 4", "the program outputs 1", "the program outputs 2"],
+            correctIndex: 0
+        };
+
+        // Q49
+        quizData[48] = {
+            id: 49,
+            question: "What happens if you try to compile and run this program?",
+            code: `#include <stdio.h>\n#include <stdlib.h>\n\nint main(void) {\n    int *t = (int *) malloc(sizeof(int) + sizeof(int));\n    t++;\n    *t = 8;\n    t[1] = *t / 2;\n    t--;\n    t[1] = *t / 2;\n\n    printf("%d\\n", *t);\n    free(t);\n    return 0;\n}`,
+            options: ["the program outputs 0", "the program outputs 8", "the program outputs 1", "the program outputs 2"],
+            correctIndex: 0
+        };
+
+        // Q50
+        quizData[49] = {
+            id: 50,
+            question: "What happens if you try to compile and run this program?",
+            code: `#include <stdio.h>\n\nint main(void) {\n    char *t1 [10];\n    char (*t2)[10];\n\n    printf("%d", (sizeof(t1) == sizeof(t2)) + sizeof(t1[0]));\n    return 0;\n}`,
+            options: ["the program outputs 8", "the program outputs 4", "the program outputs 1", "the program outputs 2"],
+            correctIndex: 0
+        };
+
+        let currentQuestionIndex = 0;
+
+        const numberGrid = document.getElementById('number-grid');
+        const qNumDisplay = document.getElementById('q-num-display');
+        const qTextDisplay = document.getElementById('q-text-display');
+        const codeBlockContainer = document.getElementById('code-block-container');
+        const optionsDisplay = document.getElementById('options-display');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const instaBanner = document.getElementById('insta-banner');
+        const congratsBanner = document.getElementById('congrats-banner');
+        const canvas = document.getElementById('confetti-canvas');
+        const ctx = canvas.getContext('2d');
+
+        let confettiActive = false;
+        let confettiParticles = [];
+        const colors = ['#f09433', '#e6683c', '#dc2743', '#cc2366', '#00bcd4', '#38ef7d', '#ffeb3b'];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Confetti {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * -canvas.height - 20;
+                this.size = Math.random() * 8 + 6;
+                this.color = colors[Math.floor(Math.random() * colors.length)];
+                this.speed = Math.random() * 5 + 4;
+                this.angle = Math.random() * Math.PI * 2;
+                this.spin = Math.random() * 0.2 - 0.1;
+            }
+            update() {
+                this.y += this.speed;
+                this.angle += this.spin;
+                if (this.y > canvas.height) {
+                    this.y = -20;
+                    this.x = Math.random() * canvas.width;
+                }
+            }
+            draw() {
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.rotate(this.angle);
+                ctx.fillStyle = this.color;
+                ctx.fillRect(-this.size/2, -this.size/2, this.size, this.size);
+                ctx.restore();
+            }
+        }
+
+        function setupConfetti() {
+            confettiParticles = [];
+            for (let i = 0; i < 150; i++) {
+                confettiParticles.push(new Confetti());
+            }
+        }
+
+        function animateConfetti() {
+            if (!confettiActive) return;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            confettiParticles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animateConfetti);
+        }
+
+        function triggerConfettiEffect(activate) {
+            if (activate) {
+                if (!confettiActive) {
+                    canvas.style.display = "block";
+                    confettiActive = true;
+                    setupConfetti();
+                    animateConfetti();
+                }
+            } else {
+                confettiActive = false;
+                canvas.style.display = "none";
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+            }
+        }
+
+        function initGrid() {
+            numberGrid.innerHTML = '';
+            quizData.forEach((item, index) => {
+                const button = document.createElement('div');
+                button.classList.add('grid-item');
+                button.innerText = item.id;
+                button.setAttribute('id', `grid-item-${index}`);
+                button.onclick = () => loadQuestion(index);
+                numberGrid.appendChild(button);
+            });
+        }
+
+        function loadQuestion(index) {
+            currentQuestionIndex = index;
+            const currentData = quizData[index];
+
+            // 1. Show Banner for 45 to 50
+            if (currentData.id >= 45 && currentData.id <= 50) {
+                instaBanner.style.display = "flex";
+            } else {
+                instaBanner.style.display = "none";
+            }
+
+            // 2. Show Congrats Overlay & Merupulu Effects ONLY at 50th Question
+            if (currentData.id === 50) {
+                congratsBanner.style.display = "block";
+                triggerConfettiEffect(true);
+            } else {
+                congratsBanner.style.display = "none";
+                triggerConfettiEffect(false);
+            }
+
+            qNumDisplay.innerText = `Question ${currentData.id}`;
+            qTextDisplay.innerText = currentData.question;
+
+            if (currentData.code) {
+                codeBlockContainer.style.display = "block";
+                codeBlockContainer.innerText = currentData.code;
+            } else {
+                codeBlockContainer.style.display = "none";
+            }
+
+            optionsDisplay.innerHTML = '';
+            currentData.options.forEach((optionText, optIndex) => {
+                const li = document.createElement('li');
+                li.classList.add('option-item');
+                li.innerText = optionText;
+                
+                if (optIndex === currentData.correctIndex || 
+                   (currentData.correctIndices && currentData.correctIndices.includes(optIndex))) {
+                    li.classList.add('correct');
+                }
+                optionsDisplay.appendChild(li);
+            });
+
+            document.querySelectorAll('.grid-item').forEach(item => item.classList.remove('active'));
+            const activeGridItem = document.getElementById(`grid-item-${index}`);
+            if (activeGridItem) {
+                activeGridItem.classList.add('active');
+                activeGridItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+
+            prevBtn.disabled = (index === 0);
+            nextBtn.disabled = (index === quizData.length - 1);
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIndex < quizData.length - 1) loadQuestion(currentQuestionIndex + 1);
+        }
+
+        function prevQuestion() {
+            if (currentQuestionIndex > 0) loadQuestion(currentQuestionIndex - 1);
+        }
+
+        initGrid();
+        loadQuestion(0);
+    </script>
+</body>
+</html>
