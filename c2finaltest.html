@@ -30,18 +30,6 @@
             position: relative;
         }
 
-        /* Confetti Canvas Container */
-        #confetti-canvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 999;
-            display: none;
-        }
-
         /* Left Navigation Sidebar */
         .sidebar {
             width: 340px;
@@ -116,57 +104,6 @@
             justify-content: flex-start;
         }
 
-        /* Instagram Highlight Alert Box */
-        .insta-alert {
-            width: 100%;
-            max-width: 850px;
-            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
-            color: white;
-            padding: 16px 20px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            font-weight: 600;
-            font-size: 1.05rem;
-            display: none; 
-            align-items: center;
-            box-shadow: 0 6px 15px rgba(220, 39, 67, 0.2);
-            animation: fadeIn 0.4s ease;
-        }
-
-        .insta-alert svg {
-            margin-right: 12px;
-            flex-shrink: 0;
-        }
-
-        /* Congrats Overlay Message for Q50 */
-        .congrats-badge {
-            width: 100%;
-            max-width: 850px;
-            background: linear-gradient(135deg, #11998e, #38ef7d);
-            color: white;
-            padding: 15px 20px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            font-weight: 700;
-            font-size: 1.2rem;
-            text-align: center;
-            display: none;
-            box-shadow: 0 10px 20px rgba(56, 239, 125, 0.2);
-            animation: bounceIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes bounceIn {
-            0% { opacity: 0; transform: scale(0.3); }
-            50% { opacity: 0.9; transform: scale(1.1); }
-            80% { transform: scale(0.9); }
-            100% { opacity: 1; transform: scale(1); }
-        }
-
         .question-card {
             background-color: var(--card-bg);
             border-radius: 12px;
@@ -175,6 +112,7 @@
             max-width: 850px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.03);
             border: 1px solid rgba(227, 233, 240, 0.8);
+            margin-top: 20px;
         }
 
         .question-number {
@@ -302,8 +240,6 @@
 </head>
 <body>
 
-    <canvas id="confetti-canvas"></canvas>
-
     <div class="sidebar">
         <h2>Answer Key</h2>
         <div class="grid-container" id="number-grid"></div>
@@ -311,15 +247,6 @@
 
     <div class="main-content">
         <div class="question-container">
-            <div class="insta-alert" id="insta-banner">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
-                <span>If exam complete msg me at insta one small process is left so thats way dont forget to msg me</span>
-            </div>
-
-            <div class="congrats-badge" id="congrats-banner">
-                🎉 Congratulations! You have reached the final question! 🌟🏆
-            </div>
-
             <div class="question-card">
                 <span class="question-number" id="q-num-display">Question 1</span>
                 <div class="question-text" id="q-text-display">Loading question content...</div>
@@ -808,81 +735,6 @@
         const optionsDisplay = document.getElementById('options-display');
         const prevBtn = document.getElementById('prev-btn');
         const nextBtn = document.getElementById('next-btn');
-        const instaBanner = document.getElementById('insta-banner');
-        const congratsBanner = document.getElementById('congrats-banner');
-        const canvas = document.getElementById('confetti-canvas');
-        const ctx = canvas.getContext('2d');
-
-        let confettiActive = false;
-        let confettiParticles = [];
-        const colors = ['#f09433', '#e6683c', '#dc2743', '#cc2366', '#00bcd4', '#38ef7d', '#ffeb3b'];
-
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
-
-        class Confetti {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * -canvas.height - 20;
-                this.size = Math.random() * 8 + 6;
-                this.color = colors[Math.floor(Math.random() * colors.length)];
-                this.speed = Math.random() * 5 + 4;
-                this.angle = Math.random() * Math.PI * 2;
-                this.spin = Math.random() * 0.2 - 0.1;
-            }
-            update() {
-                this.y += this.speed;
-                this.angle += this.spin;
-                if (this.y > canvas.height) {
-                    this.y = -20;
-                    this.x = Math.random() * canvas.width;
-                }
-            }
-            draw() {
-                ctx.save();
-                ctx.translate(this.x, this.y);
-                ctx.rotate(this.angle);
-                ctx.fillStyle = this.color;
-                ctx.fillRect(-this.size/2, -this.size/2, this.size, this.size);
-                ctx.restore();
-            }
-        }
-
-        function setupConfetti() {
-            confettiParticles = [];
-            for (let i = 0; i < 150; i++) {
-                confettiParticles.push(new Confetti());
-            }
-        }
-
-        function animateConfetti() {
-            if (!confettiActive) return;
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            confettiParticles.forEach(p => {
-                p.update();
-                p.draw();
-            });
-            requestAnimationFrame(animateConfetti);
-        }
-
-        function triggerConfettiEffect(activate) {
-            if (activate) {
-                if (!confettiActive) {
-                    canvas.style.display = "block";
-                    confettiActive = true;
-                    setupConfetti();
-                    animateConfetti();
-                }
-            } else {
-                confettiActive = false;
-                canvas.style.display = "none";
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-            }
-        }
 
         function initGrid() {
             numberGrid.innerHTML = '';
@@ -899,22 +751,6 @@
         function loadQuestion(index) {
             currentQuestionIndex = index;
             const currentData = quizData[index];
-
-            // 1. Show Banner for 45 to 50
-            if (currentData.id >= 45 && currentData.id <= 50) {
-                instaBanner.style.display = "flex";
-            } else {
-                instaBanner.style.display = "none";
-            }
-
-            // 2. Show Congrats Overlay & Merupulu Effects ONLY at 50th Question
-            if (currentData.id === 50) {
-                congratsBanner.style.display = "block";
-                triggerConfettiEffect(true);
-            } else {
-                congratsBanner.style.display = "none";
-                triggerConfettiEffect(false);
-            }
 
             qNumDisplay.innerText = `Question ${currentData.id}`;
             qTextDisplay.innerText = currentData.question;
