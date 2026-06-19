@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C-Essentials 1 Module 4 - Answer Key Portal</title>
+    <style>
+        :root {
+            --primary-color: #00bcd4;
+            --primary-hover: #0097a7;
+            --bg-color: #f5f7fb;
+            --card-bg: #ffffff;
+            --text-color: #2b3a4a;
+            --border-color: #e3e9f0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            display: flex;
+            height: 100vh;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Left Navigation Sidebar */
+        .sidebar {
+            width: 340px;
+            background-color: var(--card-bg);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            padding: 24px;
+            box-shadow: 4px 0 10px rgba(0,0,0,0.02);
+            z-index: 10;
+        }
+
+        .sidebar h2 {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #788896;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            border-bottom: 2px solid var(--bg-color);
+            padding-bottom: 12px;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+
+        .grid-item {
+            background-color: #f8fafc;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 12px 0;
+            text-align: center;
+            font-weight: 600;
+            cursor: pointer;
+            color: #516375;
+            transition: all 0.2s ease;
+        }
+
+        .grid-item:hover {
+            background-color: #eef2f7;
+            border-color: #cbd5e1;
+        }
+
+        .grid-item.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+            box-shadow: 0 4px 10px rgba(0, 188, 212, 0.3);
+        }
+
+        /* Main Display Viewport */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background-color: var(--bg-color);
+            z-index: 5;
+        }
+
+        .question-container {
+            flex: 1;
+            padding: 40px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        .question-card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 40px;
+            width: 100%;
+            max-width: 850px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.03);
+            border: 1px solid rgba(227, 233, 240, 0.8);
+            margin-top: 20px;
+        }
+
+        .question-number {
+            font-size: 0.9rem;
+            color: var(--primary-color);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .question-text {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            line-height: 1.5;
+            white-space: pre-line;
+        }
+
+        /* Code Block Box Styling */
+        pre {
+            background-color: #1e293b;
+            color: #f8fafc;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Fira Code', Consolas, Monaco, monospace;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 25px;
+            overflow-x: auto;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        /* Multiple Choice Options CSS */
+        .options-list {
+            list-style: none;
+        }
+
+        .option-item {
+            padding: 16px 20px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            margin-bottom: 12px;
+            background-color: #fdfdfd;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            font-weight: 500;
+        }
+
+        .option-item::before {
+            content: "";
+            width: 18px;
+            height: 18px;
+            border: 2px solid #cbd5e1;
+            border-radius: 50%;
+            margin-right: 14px;
+            display: inline-block;
+            flex-shrink: 0;
+        }
+
+        /* Highlight Selected Key Style */
+        .option-item.correct {
+            background-color: #e6fbf7;
+            border-color: #a7f3d0;
+            color: #065f46;
+            font-weight: 600;
+        }
+
+        .option-item.correct::before {
+            border-color: #10b981;
+            background-color: #10b981;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>');
+            background-size: 12px;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+        
+        .option-item.multi-correct::before {
+            border-radius: 4px;
+        }
+        
+        .badge {
+            background-color: #e2e8f0;
+            color: #475569;
+            font-size: 0.8rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: bold;
+            margin-left: 8px;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <h2>C-Ess 1 Mod 4</h2>
+        <div class="grid-container" id="number-grid"></div>
+    </div>
+
+    <div class="main-content">
+        <div class="question-container">
+            <div class="question-card">
+                <span class="question-number" id="q-num-display">Question 1</span>
+                <div class="question-text" id="q-text-display">Loading...</div>
+                <pre id="code-block-container"></pre>
+                <ul class="options-list" id="options-display"></ul>
+            </div>
+        </div>
+
+        <div class="footer-nav">
+            <button class="btn btn-secondary" id="prev-btn" onclick="prevQuestion()">Previous</button>
+            <button class="btn btn-primary" id="next-btn" onclick="nextQuestion()">Next</button>
+        </div>
+    </div>
+
+    <script>
+        const quizData = [];
+
+        // Q1
+        quizData.push({
+            id: 1,
+            question: "What happens if you try to compile and run this program?",
+            code: `#include <stdio.h>\n\nint main(void)\n{\n    int i = 3, j = i - 2;\n    \n    switch(i - 2) {\n        case 1: j++;\n        case 2: j++;\n        case 0: j++; break;\n        default:j = 0;\n    }\n    \n    printf("%d",j);\n    return 0;\n}`,
+            options: ["the program outputs 4", "the program outputs 1", "the program outputs 2", "the program outputs -1"],
+            correctIndex: 0
+        });
+
+        // Q2
+        quizData.push({
+            id: 2,
+            question: "What happens if you try to compile and run this program?",
+            code: `#include <stdio.h>\n\nint main(void)\n{\n    int i, t[5];\n    \n    t[0] = 0;\n    \n    for(i = 1; i < 5; i++)\n        t[i] = t[i - 1] + i;\n        \n    printf("%d",t[4]);\n    return 0;\n}`,
+            options: ["the program outputs 10", "the program outputs 9", "the program outputs 8", "the program outputs 11"],
+            correctIndex: 0
+        });
+
+        // Q3
+        quizData.push({
+            id: 3,
+            question: "What happens if you try to compile and run this program?",
+            code: `#include <stdio.h>\n\nint main(void)\n{\n    int i, j, k;\n    \n    i = 2;\n    j = 3;\n    \n    if(j)\n        j ;\n    else if(i)\n        i++;\n    else\n        j++;\n    if(j)\n        i ;\n    else if(j)\n        j++;\n    else\n        j = 0;\n        \n    k = i + j;\n    \n    printf("%d",k);\n    return 0;\n}`,
+            options: ["the program outputs 5", "the program outputs 1"],
+            correctIndex: 0
+        });
+
+        // Q4
+        quizData.push({
+            id: 4,
+            question: "What happens if you try to compile and run this program?",
+            code: `#include <stdio.h>\n\nint main(void)\n{\n    int i, t[5];\n    \n    t[4] = 0;\n    \n    for(i = 3; i >= 0; i--)\n        t[i] = t[4] * i;\n        \n    printf("%d",t[0]);\n    return 0;\n}`,
+            options: ["the program outputs 0", "the program outputs 1", "the program outputs 2", "the program outputs -1"],
+            correctIndex: 0
+        });
+
+        // Q5
+        quizData.push({
+            id: 5,
+            question: "What happens if you try to compile and run this program?",
+            code: `#include <stdio.h>\n\nint main(void)\n{\n    int t[2];\n    \n    t[0] = 1; t[1] = 0;\n    printf("%d",t[t[t[t[0]]]]);\n    return 0;\n}`,
+            options: ["the program outputs 1", "the program outputs 0", "the program outputs 2", "the program outputs -1"],
+            correctIndex: 0
+        });
+
+        // Q6
+        quizData.push({
+            id: 6,
+            question: "What happens if you try to compile and run this program?",
+            code: `#include <stdio.h>\n\nint main(void)\n{\n    int i, t[3];\n    \n    for(i = 2; i >= 0; i--)\n        t[i] = 1;\n        \n    printf("%d", t[1] - t[t[0] + t[2]]);\n    \n    return 0;\n}`,
+            options: ["the program outputs 0", "the program outputs 1", "the program outputs -1", "the program outputs 2"],
+            correctIndex: 0
+        });
+
+        // Q7
+        quizData.push({
+            id: 7,
+            question: "What is the value of the var variable at the end of the following snippet?",
+            code: `#include <stdio.h>\n\nint main(void)\n{\n    int i,t[4] = { 1, 2, 4, 8 };\n    \n    for(i = 0; i < 2 ; i++)\n        t[i] = t[3 - i];\n    printf("%d",t[2]);\n    return 0;\n}`,
+            options: ["4", "1", "2", "8"],
+            correctIndex: 0
+        });
+
+        // Q8
+        quizData.push({
+            id: 8,
+            question: "What happens if you try to compile and run this program?",
+            code: `#include <stdio.h>\n\nint main(void)\n{\n    int s,i,t[] = { 0, 1, 2, 3, 4, 5 };\n    \n    s = 1;\n    \n    for(i = 2; i < 6 ; i += i + 1)\n        s += t[i];\n        \n    printf("%d",s);\n    return 0;\n}`,
+            options: ["the program outputs 8", "the program outputs 2", "the program outputs 1", "the program outputs 4"],
+            correctIndex: 0
+        });
+
+        // Q9
+        quizData.push({
+            id: 9,
+            question: "What happens if you try to compile and run this program?",
+            code: `#include <stdio.h>\n\nint main(void)\n{\n    char t[] = { 'a', 'b', 'A', 'B' };\n    \n    printf("%d",t[1] - t[0] + t[3] - t[2]);\n    return 0;\n}`,
+            options: ["the program outputs 2", "the program outputs 8", "the program outputs 1", "the program outputs 4"],
+            correctIndex: 0
+        });
+
+        // Q10
+        quizData.push({
+            id: 10,
+            question: "What happens if you try to compile and run this program?",
+            code: `#include <stdio.h>\n\nint main(void)\n{\n    float t[5] = { 1E0, 1E1, 1E2, 1E3, 1E4 };\n    \n    printf("%f",t[0] + t[2] + t[3]);\n    return 0;\n}`,
+            options: ["the program outputs 1101.000000", "the program outputs 1011.000000", "the program outputs 1110.000000", "the program outputs 1111.000000"],
+            correctIndex: 0
+        });
+
+        // Q11
+        quizData.push({
+            id: 11,
+            question: "What happens if you try to compile and run this program?",
+            code: `#include <stdio.h>\n\nint main(void)\n{\n    int i = 1, *j = &i, **k = &j;\n    \n    printf("%d",**k);\n    return 0;\n}`,
+            options: ["the program outputs 1", "the program outputs 0", "the program outputs NULL", "the program outputs nul"],
+            correctIndex: 0
+        });
+
+        // Q12
+        quizData.push({
+            id: 12,
+            question: "What happens if you try to compile and run this program?",
+            code: `#include <stdio.h>\n\nint main(void)\n{\n    char t[3];\n    \n    printf("%d",sizeof(t) - sizeof(t[0]));\n    return 0;\n}`,
+            options: ["the program outputs 2", "the program outputs 1", "the program outputs 3", "the program outputs 4"],
+            correctIndex: 0
+        });
+
+        // Q13
+        quizData.push({
+            id: 13,
+            question: "What happens if you try to compile and run this program?",
+            code: `#include <stdio.h>\n\nint main(void)\n{\n    int t[6];\n    \n    printf("%d",sizeof(t) / sizeof(int));\n    return 0;\n}`,
+            options: ["the program outputs 6", "the program outputs 8", "the program outputs 4", "the program outputs 2"],
+            correctIndex: 0
+        });
+
+        // Q14
+        quizData.push({
+            id: 14,
+            question: "What happens if you try to compile and run this program?",
+            code: `#include <stdio.h>\n\nint main(void)\n{\n    int t[10] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }, *p = t + 4;\n    \n    p += *p;\n    printf("%d", *p);\n    return 0;\n}`,
+            options: ["the program outputs 10", "the program outputs 9", "the program outputs 8", "the program outputs 7"],
+            correctIndex: 0
+        });
+
+        // Q15
+        quizData.push({
+            id: 15,
+            question: "What happens if you try to compile and run this program?",
+            code: `#include <stdio.h>\n\nint main(void)\n{\n    int t[10] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }, *p = t;\n    \n    p += 2;\n    p += p[-1];\n    \n    printf("%d", *p);\n    return 0;\n}`,
+            options: ["the program outputs 5", "the program outputs 3", "the program outputs 1", "the program outputs 7"],
+            correctIndex: 0
+        });
+
+        // Q16
+        quizData.push({
+            id: 16,
+            question: "What happens if you try to compile and run this program?",
+            code: `#include <stdio.h>\n\nint main(void)\n{\n    char s[] = \" 0 1 2 3 4\";\n    \n    printf(\"%c\",'A' + s[3]);\n    return 0;\n}`,
+            options: ["the program outputs D", "the program outputs A", "the program outputs B", "the program outputs C"],
+            correctIndex: 0
+        });
+
+        // Q17
+        quizData.push({
+            id: 17,
+            question: "What happens if you try to compile and run this program?",
+            code: `#include <stdio.h>\n\nint main(void)\n{\n    printf(\"%c\", \"ACEGIK\"[3] - 1);\n    return 0;\n}`,
+            options: ["the program outputs F", "the program outputs E", "the program outputs G", "the program outputs H"],
+            correctIndex: 0
+        });
+
+        // Q18
+        quizData.push({
+            id: 18,
+            question: "What happens if you try to compile and run this program?",
+            code: `#include <stdio.h>\n\nint main(void)\n{\n    char s[10] = \"ABCDE\";\n    \n    strcpy(s + 2, \"ABCDE\");\n    printf(\"%d\", s[0] - s[2]);\n    return 0;\n}`,
+            options: ["the program outputs 0", "the program outputs 1", "the program outputs -2", "the program outputs -1"],
+            correctIndex: 0
+        });
+
+        // Q19
+        quizData.push({
+            id: 19,
+            question: "What happens if you try to compile and run this program?",
+            code: `#include <stdio.h>\n\nint main(void)\n{\n    char s[10] = \"ABCDE\";\n    \n    strcat(s + 2, \"ABCDE\");\n    printf(\"%d\", s[0] - s[2]);\n    return 0;\n}`,
+            options: ["the program outputs -2", "the program outputs -1", "the program outputs 0", "the program outputs 1"],
+            correctIndex: 0
+        });
+
+        // Q20
+        quizData.push({
+            id: 20,
+            question: "What happens if you try to compile and run this program?",
+            code: `#include <stdio.h>\n\nint main(void)\n{\n    char s[10] = \"ABCDE\";\n    \n    strcat(s + 2, \"ABCDE\");\n    printf(\"%d\", s[0] - s[2]);\n    return 0;\n}`,
+            options: ["the program outputs -2", "the program outputs -1", "the program outputs 0", "the program outputs 1"],
+            correctIndex: 0
+        });
+
+        let currentQuestionIndex = 0;
+
+        const numberGrid = document.getElementById('number-grid');
+        const qNumDisplay = document.getElementById('q-num-display');
+        const qTextDisplay = document.getElementById('q-text-display');
+        const codeBlockContainer = document.getElementById('code-block-container');
+        const optionsDisplay = document.getElementById('options-display');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+
+        function initGrid() {
+            numberGrid.innerHTML = '';
+            quizData.forEach((item, index) => {
+                const button = document.createElement('div');
+                button.classList.add('grid-item');
+                button.innerText = item.id;
+                button.setAttribute('id', `grid-item-${index}`);
+                button.onclick = () => loadQuestion(index);
+                numberGrid.appendChild(button);
+            });
+        }
+
+        function loadQuestion(index) {
+            currentQuestionIndex = index;
+            const currentData = quizData[index];
+
+            qNumDisplay.innerHTML = `Question ${currentData.id}`;
+            qTextDisplay.innerText = currentData.question;
+
+            if (currentData.code) {
+                codeBlockContainer.style.display = "block";
+                codeBlockContainer.innerText = currentData.code;
+            } else {
+                codeBlockContainer.style.display = "none";
+            }
+
+            optionsDisplay.innerHTML = '';
+            currentData.options.forEach((optionText, optIndex) => {
+                const li = document.createElement('li');
+                li.classList.add('option-item');
+                li.innerText = optionText;
+                
+                if (optIndex === currentData.correctIndex) {
+                    li.classList.add('correct');
+                }
+                optionsDisplay.appendChild(li);
+            });
+
+            document.querySelectorAll('.grid-item').forEach(item => item.classList.remove('active'));
+            const activeGridItem = document.getElementById(`grid-item-${index}`);
+            if (activeGridItem) {
+                activeGridItem.classList.add('active');
+                activeGridItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+
+            prevBtn.disabled = (index === 0);
+            nextBtn.disabled = (index === quizData.length - 1);
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIndex < quizData.length - 1) loadQuestion(currentQuestionIndex + 1);
+        }
+
+        function prevQuestion() {
+            if (currentQuestionIndex > 0) loadQuestion(currentQuestionIndex - 1);
+        }
+
+        initGrid();
+        loadQuestion(0);
+    </script>
+</body>
+</html>
