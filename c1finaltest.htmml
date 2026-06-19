@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Final Test of C Essentials 1 - Complete Exam Key</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #111;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-style: italic;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 15px;
+        }
+        .question-block {
+            margin-bottom: 40px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 30px;
+        }
+        .question-block:last-child {
+            border-bottom: none;
+        }
+        .question-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        .question-text {
+            margin-bottom: 15px;
+            font-size: 1em;
+        }
+        .code-container {
+            background-color: #1e1e1e;
+            color: #d4d4d4;
+            padding: 15px;
+            border-radius: 4px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.95em;
+            overflow-x: auto;
+            margin-bottom: 20px;
+            white-space: pre;
+        }
+        .options-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .option {
+            background-color: #ebebeb;
+            padding: 12px 15px;
+            margin-bottom: 8px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            font-size: 0.95em;
+        }
+        .option.correct {
+            background-color: #00b0f0;
+            color: #fff;
+            font-weight: bold;
+        }
+        .icon {
+            margin-right: 12px;
+            font-size: 1.1em;
+            display: inline-block;
+            width: 18px;
+            text-align: center;
+        }
+        .inline-code {
+            background-color: #aeaeae;
+            color: #fff;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: monospace;
+            font-weight: bold;
+        }
+        .correct .inline-code {
+            background-color: #888;
+        }
+        .block-output {
+            display: block;
+            line-height: 1.2;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Final Test of C Essentials 1</h1>
+    <div class="subtitle">Complete Exam Answer Key (Questions 1-30)</div>
+
+    <div class="question-block">
+        <div class="question-title">Question 1</div>
+        <div class="question-text">The French language is an example of:</div>
+        <ul class="options-list">
+            <li class="option correct"><span class="icon">⦿</span> a natural language</li>
+            <li class="option"><span class="icon">○</span> a machine language</li>
+            <li class="option"><span class="icon">○</span> a programming language</li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-title">Question 2</div>
+        <div class="question-text">Which of the following are <u>legal</u> variable names in the C language?<br>Select <u>three</u> answers.</div>
+        <ul class="options-list">
+            <li class="option correct"><span class="icon">⚃</span> <span class="inline-code">MyVariableIsTheLongestvariablenameisthewholeprogram</span></li>
+            <li class="option correct"><span class="icon">⚃</span> <span class="inline-code">My_Variable</span></li>
+            <li class="option correct"><span class="icon">⚃</span> <span class="inline-code">_myVariable</span></li>
+            <li class="option"><span class="icon">☐</span> <span class="inline-code">01myvariable</span></li>
+            <li class="option"><span class="icon">☐</span> <span class="inline-code">MyV@riable</span></li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-title">Question 3</div>
+        <div class="question-text">What is the value of the <span class="inline-code">var</span> variable after the execution of the following snippet of code:</div>
+        <div class="code-container">1  int var;
+2  
+3  var = -1;
+4  var = var + 1;
+5  var = var + var;
+6  </div>
+        <ul class="options-list">
+            <li class="option"><span class="icon">○</span> the program outputs <span class="inline-code">0</span></li>
+            <li class="option"><span class="icon">○</span> the program outputs <span class="inline-code">-1</span></li>
+            <li class="option"><span class="icon">○</span> the program outputs <span class="inline-code">1</span></li>
+            <li class="option correct"><span class="icon">⦿</span> the program outputs <span class="inline-code">2</span></li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-title">Question 4</div>
+        <div class="question-text">Which of the following is the <u>correct</u> way of making comments in C?</div>
+        <ul class="options-list">
+            <li class="option correct"><span class="icon">⦿</span> <span class="inline-code">/* my comment */</span></li>
+            <li class="option"><span class="icon">○</span> <span class="inline-code">&lt;!-- my comment --&gt;</span></li>
+            <li class="option"><span class="icon">○</span> <span class="inline-code"># my comment #</span></li>
+            <li class="option"><span class="icon">○</span> <span class="inline-code">*/ my comment /*</span></li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-title">Question 5</div>
+        <div class="question-text">Which of the following are <u>valid</u> floating-point literals?<br>Select <u>two</u> answers.</div>
+        <ul class="options-list">
+            <li class="option correct"><span class="icon">⚃</span> <span class="inline-code">.1</span></li>
+            <li class="option"><span class="icon">☐</span> <span class="inline-code">-0.1</span></li>
+            <li class="option"><span class="icon">☐</span> <span class="inline-code">1</span></li>
+            <li class="option correct"><span class="icon">⚃</span> <span class="inline-code">-1</span></li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-title">Question 6</div>
+        <div class="question-text">What is the value of the <span class="inline-code">var</span> variable at the end of the following snippet?</div>
+        <div class="code-container">1  int var;
+2  
+3  var = 9;
+4  var = var / 2;
+5  </div>
+        <ul class="options-list">
+            <li class="option"><span class="icon">○</span> <span class="inline-code">4</span></li>
+            <li class="option correct"><span class="icon">⦿</span> <span class="inline-code">4.5</span></li>
+            <li class="option"><span class="icon">○</span> <span class="inline-code">5</span></li>
+            <li class="option"><span class="icon">○</span> <span class="inline-code">false</span></li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-title">Question 7</div>
+        <div class="question-text">What is the value of the <span class="inline-code">var</span> variable at the end of the following snippet?</div>
+        <div class="code-container">1  int var;
+2  
+3  var = 3;
+4  var = var * var;
+5  /* var = var + var; */
+6  /*
+7  var = var / var;
+8  var = var % var;
+9  */
+10 var = var - 1;
+11 </div>
+        <ul class="options-list">
+            <li class="option correct"><span class="icon">⦿</span> <span class="inline-code">8</span></li>
+            <li class="option"><span class="icon">○</span> <span class="inline-code">9</span></li>
+            <li class="option"><span class="icon">○</span> <span class="inline-code">7</span></li>
+            <li class="option"><span class="icon">○</span> <span class="inline-code">-1</span></li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-title">Question 8</div>
+        <div class="question-text">What is the value of the <span class="inline-code">c</span> variable at the end of the following snippet?</div>
+        <div class="code-container">1  #include &lt;stdio.h&gt;
+2  
+3  int main(void)
+4  {
+5      int a, b, c;
+6      
+7      a = -1;
+8      b = 2;
+9      
+10     if(a)
+11         a--;
+12     if(b)
+13         b++;
+14         
+15     c = a * b;
+16     
+17     printf("%d", c);
+18     return 0;
+19 }</div>
+        <ul class="options-list">
+            <li class="option correct"><span class="icon">⦿</span> <span class="inline-code">-6</span></li>
+            <li class="option"><span class="icon">○</span> <span class="inline-code">0</span></li>
+            <li class="option"><span class="icon">○</span> <span class="inline-code">1</span></li>
+            <li class="option"><span class="icon">○</span> <span class="inline-code">6</span></li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-title">Question 9</div>
+        <div class="question-text">What happens if you try to compile and run this program?</div>
+        <div class="code-container">1  #include &lt;stdio.h&gt;
+2  
+3  nt main(void)
+4  {
+5      int i, j, k;
+6      
+7      i = 1;
+8      j = 3;
+9      
+10     int x;
+11     
+12     if(j)
+13         j--;
+14     else
+15         i++;
+16     if(i) 0;
+17         i--;
+18     else
+19         j++;
+20     k = i + j;
+21     
+22     printf("%d", k);
+23     return 0;
+24 }</div>
+        <ul class="options-list">
+            <li class="option correct"><span class="icon">⦿</span> the program outputs <span class="inline-code">2</span></li>
+            <li class="option"><span class="icon">○</span> the program outputs <span class="inline-code">1</span></li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-title">Question 10</div>
+        <div class="question-text">What happens if you try to compile and run this program?</div>
+        <div class="code-container">1  #include &lt;stdio.h&gt;
+2  
+3  int main(void)
+4  {
+5      int i, j;
+6      i = 1; j = 1;
+7      
+8      while(i &gt; 16) {
+9          i += 4;
+10         j++;
+11     }
+12     
+13     printf("%d", j);
+14     return 0;
+15 }</div>
+        <ul class="options-list">
+            <li class="option correct"><span class="icon">⦿</span> the program outputs <span class="inline-code">1</span></li>
+            <li class="option"><span class="icon">○</span> the program outputs <span class="inline-code">5</span></li>
+            <li class="option"><span class="icon">○</span> the program outputs <span class="inline-code">0</span></li>
+            <li class="option"><span class="icon">○</span> the program outputs <span class="inline-code">4</span></li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-title">Question 11</div>
+        <div class="question-text">What happens if you try to compile and run this program?</div>
+        <div class="code-container">1  #include &lt;stdio.h&gt;
+2  
+3  int main(void)
+4  {
+5  
+6      k = !i | j;
+7      k = !k;
+8      
+9      printf("%d", k);
+10     return 0;
+11 }</div>
+        <ul class="options-list">
+            <li class="option correct"><span class="icon">⦿</span> the program outputs <span class="inline-code">0</span></li>
+            <li class="option"><span class="icon">○</span> the program outputs <span class="inline-code">1</span></li>
+            <li class="option"><span class="icon">○</span> the program outputs <span class="inline-code">-2</span></li>
+            <li class="option"><span class="icon">○</span> the program outputs <span class="inline-code">-1</span></li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-title">Question 12</div>
+        <div class="question-text">What happens if you try to compile and run this program?</div>
+        <div class="code-container">1  #include &lt;stdio.h&gt;
+2  
+3  int main(void)
+4  {
+5  
+6      int i = 1, j = -1;
+7      
+8      for(;;) {
+9          i *= 2;
+10         j++;
+11         
+12         if(i &gt;= 16)
+13             break;
+14     }
+15     
+16     printf("%d",j);
+17     return 0;
+18 }</div>
+        <ul class="options-list">
+            <li class="option correct"><span class="icon">⦿</span> the program outputs <span class="inline-code">3</span></li>
+            <li class="option"><span class="icon">○</span> the program outputs <span class="inline-code">2</span></li>
+            <li class="option"><span class="icon">○</span> the program outputs <span class="inline-code">1</span></li>
+            <li class="option"><span class="icon">○</span> the program outputs <span class="inline-code">0</span></li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-title">Question 13</div>
+        <div class="question-text">What happens if you try to compile and run this program?</div>
+        <div class="code-container">1  #include &lt;stdio.h&gt;
+2  
+3  int main(void)
+4  {
+5  
+6      int i = 2, j = 0;
+7      
+8      switch(i + 5) {
+9      case 1: j++;
+10     case 2: j++;
+11     default:j = 5;
+12     case 0: j++; break;
+13     }
+14     
+15     printf("%d",j);
+16     return 0;
+17 }</div>
+        <ul class="options-list">
+            <li class="option correct"><span class="icon">⦿</span> the program outputs <span class="inline-code">6</span></li>
+            <li class="option"><span class="icon">○</span> the program outputs <span class="inline-code">5</span></li>
+            <li class="option"><span class="icon">○</span> the program outputs <span class="inline-code">2</span></li>
+            <li class="option"><span class="icon">○</span> the program outputs <span class="inline-code">10</span></li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-title">Question 14</div>
+        <div class="question-text">What happens if you try to compile and run this program?</div>
+        <div class="code-container">1  #include &lt;stdio.h&gt;
+2  
+3  int main(void)
+4  {
+5      int i, t[4];
+6      
+7      t[3] = 0;
+8      
+9      for(i = 1; i &gt;= 0; i--)
+10         t[i] = t[3] * i;
+11         
+12     printf("%d",t[1]);
+13     return 0;
+14 }</div>
+        <ul class="options-list">
+            <li class="option correct"><span class="icon">⦿</span> the program outputs <span class="inline-code">0</span></li>
+            <li class="option"><span class="icon">○</span> the program outputs <span class="inline-code">1</span></li>
+            <li class="option"><span class="icon">○</span> the program outputs <span class="inline-code">3</span></li>
+            <li class="option"><span class="icon">○</span> the program outputs <span class="inline-code">2</span></li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-title">Question 15</div>
+        <div class="question-text">Which of the following examples are <u>legal</u> ways of initializing the <span class="inline-code">arr</span> array?<br>Select <u>two</u> answers.</div>
+        <ul class="options-list">
+            <li class="option correct"><span class="icon">⚃</span> <span class="inline-code">int arr[3] = {1, 2, 3};</span></li>
+            <li class="option"><span class="icon">☐</span> <span class="inline-code">int arr[] = {1, 2, 3};</span></li>
+            <li class="option"><span class="icon">☐</span> <span class="inline-code">int arr{3} = {1, 2, 3};</span></li>
+            <li class="option correct"><span class="icon">⚃</span> <span class="inline-code">int arr{3} = [1, 2, 3];</span></li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-title">Question 16</div>
+        <div class="question-text">What is the output of the following program?</div>
+        <div class="code-container">1  #include &lt;stdio.h&gt;
+2  
+3  int main()
+4  {
+5      int arr[5] = {1, 2, 3, 4, 5};
+6      arr[1] = 0;
+7      arr[3] = 0;
+8      
+9      for(i = 1; i &gt;= 0; i--)
+10         t[i] = t[3] * i;
+11         
+12     for(int i = 0; i &lt; 5; ++i) {
+13     printf("%d ", arr[i]);
+14     }
+15     return 0;
+16     
+17     return 0;
+18 }</div>
+        <ul class="options-list">
+            <li class="option correct"><span class="icon">⦿</span> <span class="inline-code">1 0 3 0 5</span></li>
+            <li class="option"><span class="icon">○</span> <span class="inline-code">0 2 0 4 5</span></li>
+            <li class="option"><span class="icon">○</span> <span class="inline-code">0 0 0 4 5</span></li>
+            <li class="option"><span class="icon">○</span> <span class="inline-code">1</span></li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-title">Question 17</div>
+        <div class="question-text">What is the output of the following program?</div>
+        <div class="code-container">1  #include &lt;stdio.h&gt;
+2  
+3  void fun(int a, int b)
+4  {
+5      printf("%d", b);
+6      printf("%d", a);
+7  }
+8  int main()
+9  {
+10     int arr[] = {1, 2, 3, 4};
+11     fun(arr[1], arr[3]);
+12     return 0;
+13 }</div>
+        <ul class="options-list">
+            <li class="option correct"><span class="icon">⦿</span> <span class="inline-code">42</span></li>
+            <li class="option"><span class="icon">○</span> <span class="inline-code">24</span></li>
+            <li class="option"><span class="icon">○</span> <span class="inline-code">ab</span></li>
+            <li class="option"><span class="icon">○</span> <span class="inline-code">13</span></li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-title">Question 18</div>
+        <div class="question-text">What happens if you try to compile and run this program?</div>
+        <div class="code-container">1  #include &lt;stdio.h&gt;
+2  #include &lt;string.h&gt;
+3  
+4  int main(void)
+5  {
+6      char s[5] = "ABC";
+7      
+8      strcat(s + 1, "ABC");
+9      
+10     printf("%d", s[0] - s[1]);
+11     return 0;
+12 }</div>
+        <ul class="options-list">
+            <li class="option correct"><span class="icon">⦿</span> the program outputs <span class="inline-code">-1</span></li>
+            <li class="option"><span class="icon">○</span> the program outputs <span class="inline-code">-2</span></li>
+            <li class="option"><span class="icon">○</span> the program outputs <span class="inline-code">0</span></li>
+            <li class="option"><span class="icon">○</span> the program outputs <span class="inline-code">A</span></li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-title">Question 19</div>
+        <div class="question-text">What is the output of the following program?</div>
+        <div class="code-container">1  #include &lt;stdio.h&gt;
+2  
+3  int main ()
+4  {
+5      int* a, b;
+6      b = 1;
+7      a = &amp;b;
+8      b = 2;
+9      
+10     printf("%d\n", b);
+11     printf("%d", *a);
+12     
+13     return 0;
+14 }</div>
+        <ul class="options-list">
+            <li class="option correct"><span class="icon">⦿</span> <span class="inline-code block-output">2<br>2</span></li>
+            <li class="option"><span class="icon">○</span> <span class="inline-code block-output">1<br>2</span></li>
+            <li class="option"><span class="icon">○</span> <span class="inline-code block-output">1<br>1</span></li>
+            <li class="option"><span class="icon">○</span> <span class="inline-code block-output">2<br>1</span></li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-title">Question 20</div>
+        <div class="question-text">What is the expected output of the following code?</div>
+        <div class="code-container">1  #include &lt;stdio.h&gt;
+2  
+3  int fun(int a) {
+4      return a + 1;
+5  }
+6  
+7  int main()
+8  {
+9      int a = 0;
+10     
+11     fun(1);
+12     printf("%d", *a);
+13 }</div>
+        <ul class="options-list">
+            <li class="option"><span class="icon">○</span> <span class="inline-code">0</span></li>
+            <li class="option"><span class="icon">○</span> <span class="inline-code">1</span></li>
+            <li class="option"><span class="icon">○</span> <span class="inline-code">2</span></li>
+            <li class="option correct"><span class="icon">⦿</span> The code will cause an error</li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-title">Question 21</div>
+        <div class="question-text">What is the value of the following integer literal?</div>
+        <div class="code-container">1  013
+2  </div>
+        <ul class="options-list">
+            <li class="option correct"><span class="icon">⦿</span> <span class="inline-code">11</span></li>
+            <li class="option"><span class="icon">○</span> <span class="inline-code">13</span></li>
+            <li class="option"><span class="icon">○</span> <span class="inline-code">19</span></li>
+            <li class="option"><span class="icon">○</span> the literal is invalid</li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-title">Question 22</div>
+        <div class="question-text">What is the value of the following integer literal?</div>
+        <div class="code-container">1  0x22
+2  </div>
+        <ul class="options-list">
+            <li class="option correct"><span class="icon">⦿</span> <span class="inline-code">34</span></li>
+            <li class="option"><span class="icon">○</span> <span class="inline-code">22</span></li>
+            <li class="option"><span class="icon">○</span> <span class="inline-code">18</span></li>
+            <li class="option"><span class="icon">○</span> the literal is invalid</li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-title">Question 23</div>
+        <div class="question-text">What happens if you try to compile and run this program?</div>
+        <div class="code-container">1  #include &lt;stdio.h&gt;
+2  
+3  int main(void)
+4  {
+5      int i = 4, j = 1;
+6      
+7      while(j &gt; 0) {
+8          i /= 2;
+9          printf("%d", i);
+10     }
+11     
+12     printf("%d", i + j);
+13     return 0;
+14 }</div>
+        <ul class="options-list">
+            <li class="option"><span class="icon">○</span> the program enters an infinite loop and outputs a single line containing <span class="inline-code">21</span> followed by an infinite number of <span class="inline-code">0</span>s</li>
+            <li class="option"><span class="icon">○</span> the program outputs <span class="inline-code">21</span></li>
+            <li class="option"><span class="icon">○</span> the program outputs <span class="inline-code">5</span></li>
+            <li class="option correct"><span class="icon">⦿</span> the program enters an infinite loop and outputs a single line containing an infinite number of <span class="inline-code">21</span>s</li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-title">Question 24</div>
+        <div class="question-text">What happens if you try to compile and run this program?</div>
+        <div class="code-container">1  #include &lt;stdio.h&gt;
+2  
+3  int main(void)
+4  {
+5  
+6      int i = -1, j = 3;
+7      
+8      for(j &gt; 0; j; j--)
+9          i *= 2;
+10         
+11     printf("%d", i + j);
+12     return 0;
+13 }</div>
+        <ul class="options-list">
+            <li class="option correct"><span class="icon">⦿</span> the program outputs <span class="inline-code">-8</span></li>
+            <li class="option"><span class="icon">○</span> the program outputs <span class="inline-code">-4</span></li>
+            <li class="option"><span class="icon">○</span> the program outputs <span class="inline-code">0</span></li>
+            <li class="option"><span class="icon">○</span> the program enters an infinite loop and outputs nothing</li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-title">Question 25</div>
+        <div class="question-text">What happens if you try to compile and run this program?</div>
+        <div class="code-container">1  #include &lt;stdio.h&gt;
+2  
+3  int main(void)
+4  {
+5      int i = -3, j = 0;
+6      
+7      for(i++; i++; i++)
+8          j--;
+9          
+10     printf("%d", i - j);
+11     return 0;
+12 }</div>
+        <ul class="options-list">
+            <li class="option"><span class="icon">○</span> the program outputs <span class="inline-code">2</span></li>
+            <li class="option correct"><span class="icon">⦿</span> the program outputs <span class="inline-code">1</span></li>
+            <li class="option"><span class="icon">○</span> the program outputs <span class="inline-code">0</span></li>
+            <li class="option"><span class="icon">○</span> the program enters an infinite loop and outputs nothing</li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-title">Question 26</div>
+        <div class="question-text">What happens if you try to compile and run this program?</div>
+        <div class="code-container">1  #include &lt;stdio.h&gt;
+2  
+3  int main(void)
+4  {
+5      int i = 2, j = 1, k;
+6      
+7      k = i &gt;&gt; j;
+8      k &lt;&lt;= i;
+9      
+10     printf("%d", k);
+11     return 0;
+12 }</div>
+        <ul class="options-list">
+            <li class="option correct"><span class="icon">⦿</span> the program outputs <span class="inline-code">4</span></li>
+            <li class="option"><span class="icon">○</span> the program outputs <span class="inline-code">2</span></li>
+            <li class="option"><span class="icon">○</span> the program outputs <span class="inline-code">1</span></li>
+            <li class="option"><span class="icon">○</span> the program outputs <span class="inline-code">8</span></li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-title">Question 27</div>
+        <div class="question-text">What happens if you try to compile and run this program?</div>
+        <div class="code-container">1  #include &lt;stdio.h&gt;
+2  
+3  int main(void)
+4  {
+5      int i = 3;
+6      int j = i - 1 / i;
+7      
+8      switch(i - j) {
+9      case 1: j--;
+10         case 2: j++;
+11         case 0: j++; break;
+12         default: j = -1;
+13     }
+14     
+15     printf("%d", --j);
+16     return 0;
+17 }</div>
+        <ul class="options-list">
+            <li class="option correct"><span class="icon">⦿</span> the program outputs <span class="inline-code">3</span></li>
+            <li class="option"><span class="icon">○</span> the program outputs <span class="inline-code">-1</span></li>
+            <li class="option"><span class="icon">○</span> the program outputs <span class="inline-code">0</span></li>
+            <li class="option"><span class="icon">○</span> the program outputs <span class="inline-code">2</span></li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-title">Question 28</div>
+        <div class="question-text">What happens if you try to compile and run this program?</div>
+        <div class="code-container">1  #include &lt;stdio.h&gt;
+2  
+3  int fun() {
+4      int a;
+5      return ++a;
+6  }
+7  
+8  int main()
+9  {
+10     printf("%d", fun());
+11     return 0;
+12 }</div>
+        <ul class="options-list">
+            <li class="option"><span class="icon">○</span> the program outputs <span class="inline-code">1</span></li>
+            <li class="option"><span class="icon">○</span> the program outputs <span class="inline-code">0</span></li>
+            <li class="option"><span class="icon">○</span> the program outputs <span class="inline-code">a</span></li>
+            <li class="option correct"><span class="icon">⦿</span> the program causes an error</li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-title">Question 29</div>
+        <div class="question-text">What is the expected output of the following program if the user provides <span class="inline-code">3</span> as input?</div>
+        <div class="code-container">1  #include &lt;stdio.h&gt;
+2  
+3  int fun(int a) {
+4      int b = 1;
+5      return a &lt;&lt; b;
+6  }
+7  int main()
+8  {
+9      int x;
+10     
+11     scanf("%d", &amp;x);
+12     
+13     printf ("%d", fun(x));
+14     
+15     return 0;
+16 }</div>
+        <ul class="options-list">
+            <li class="option correct"><span class="icon">⦿</span> the program outputs <span class="inline-code">6</span></li>
+            <li class="option"><span class="icon">○</span> the program outputs <span class="inline-code">2</span></li>
+            <li class="option"><span class="icon">○</span> the program outputs <span class="inline-code">9</span></li>
+            <li class="option"><span class="icon">○</span> the program outputs <span class="inline-code">4</span></li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-title">Question 30</div>
+        <div class="question-text">What happens if you try to compile and run this program?</div>
+        <div class="code-container">1  #include &lt;stdio.h&gt;
+2  
+3  int fun(int a=1) {
+4      return a;
+5  }
+6  
+7  int main() {
+8      printf("%d", fun(2));
+9  }</div>
+        <ul class="options-list">
+            <li class="option correct"><span class="icon">⦿</span> the program causes an error</li>
+            <li class="option"><span class="icon">○</span> the program outputs <span class="inline-code">2</span></li>
+            <li class="option"><span class="icon">○</span> the program outputs <span class="inline-code">1</span></li>
+            <li class="option"><span class="icon">○</span> the program outputs <span class="inline-code">0</span></li>
+        </ul>
+    </div>
+
+</div>
+
+</body>
+</html>
