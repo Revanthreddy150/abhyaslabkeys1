@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Essentials 1 - Module 2 Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+        h1 {
+            text-align: center;
+            color: #002c52;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #002c52;
+            padding-bottom: 10px;
+        }
+        .question-block {
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+        }
+        .question-title {
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        .question-text {
+            font-size: 16px;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+        .code-box {
+            background-color: #e1e1e1;
+            padding: 15px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            white-space: pre-wrap;
+        }
+        .terminal-box {
+            background-color: #212121;
+            color: #fff;
+            padding: 15px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            line-height: 1.6;
+            position: relative;
+        }
+        .terminal-box .line-number {
+            color: #666;
+            margin-right: 15px;
+            user-select: none;
+            display: inline-block;
+            width: 15px;
+            text-align: right;
+        }
+        .terminal-box .keyword { color: #5bc0de; }
+        .terminal-box .number { color: #cc99cc; }
+        .terminal-box .string { color: #f0ad4e; }
+        .options-list {
+            list-style: none;
+            padding: 0;
+        }
+        .option {
+            background-color: #e9e9e9;
+            padding: 15px 20px;
+            margin-bottom: 10px;
+            border-radius: 6px;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+        .option.correct {
+            background-color: #00aadc;
+            color: white;
+            font-weight: bold;
+        }
+        .option.correct::after {
+            content: "";
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 0 20px 20px 0;
+            border-color: transparent #fff transparent transparent;
+        }
+        .icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background-color: white;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+        .icon-correct::before {
+            content: "✓";
+            color: #00aadc;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        .inline-code {
+            background-color: #b5b5b5;
+            padding: 2px 6px;
+            font-family: monospace;
+            border-radius: 4px;
+            color: #222;
+        }
+        .option.correct .inline-code {
+            background-color: rgba(255, 255, 255, 0.3);
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Python Essentials 1: Module 2 Test</h1>
+
+    <div class="question-block">
+        <div class="question-title">Question 1</div>
+        <div class="question-text">
+            The <span class="inline-code">\n</span> digraph forces the <span class="inline-code">print()</span> function to:
+        </div>
+        <ul class="options-list">
+            <li class="option correct">
+                <span class="icon icon-correct"></span>
+                break the output line
+            </li>
+            <li class="option">
+                output exactly two characters: <span class="inline-code">\</span> and <span class="inline-code">n</span>
+            </li>
+            <li class="option">
+                duplicate the character next to the digraph
+            </li>
+            <li class="option">
+                stop its execution
+            </li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-title">Question 2</div>
+        <div class="question-text">
+            The meaning of the <strong>keyword parameter</strong> is determined by:
+        </div>
+        <ul class="options-list">
+            <li class="option correct">
+                <span class="icon icon-correct"></span>
+                the argument's name specified along with its value
+            </li>
+            <li class="option">
+                its position within the argument list
+            </li>
+            <li class="option">
+                its connection with existing variables
+            </li>
+            <li class="option">
+                its value
+            </li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-title">Question 3</div>
+        <div class="question-text">
+            The value <strong>twenty point twelve times ten raised to the power of eight</strong> should be written as:
+        </div>
+        <ul class="options-list">
+            <li class="option correct">
+                <span class="icon icon-correct"></span>
+                <span class="inline-code">20.12E8</span>
+            </li>
+            <li class="option">
+                <span class="inline-code">20.12*10^8</span>
+            </li>
+            <li class="option">
+                <span class="inline-code">20.12E8.0</span>
+            </li>
+            <li class="option">
+                <span class="inline-code">20E12.8</span>
+            </li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-title">Question 4</div>
+        <div class="question-text">
+            The <span class="inline-code">0o</span> prefix means that the number after it is denoted as:
+        </div>
+        <ul class="options-list">
+            <li class="option">
+                octal
+            </li>
+            <li class="option correct">
+                <span class="icon icon-correct"></span>
+                binary
+            </li>
+            <li class="option">
+                decimal
+            </li>
+            <li class="option">
+                hexadecimal
+            </li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-title">Question 5</div>
+        <div class="question-text">
+            The <span class="inline-code">**</span> operator:
+        </div>
+        <ul class="options-list">
+            <li class="option correct">
+                <span class="icon icon-correct"></span>
+                performs exponentiation
+            </li>
+            <li class="option">
+                does not exist
+            </li>
+            <li class="option">
+                performs floating-point multiplication
+            </li>
+            <li class="option">
+                performs duplicated multiplication
+            </li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-title">Question 6</div>
+        <div class="question-text">
+            The result of the following division:
+        </div>
+        <div class="code-box">1 / 1</div>
+        <ul class="options-list">
+            <li class="option correct">
+                <span class="icon icon-correct"></span>
+                is equal to <span class="inline-code">1.0</span>
+            </li>
+            <li class="option">
+                is equal to <span class="inline-code">1</span>
+            </li>
+            <li class="option">
+                cannot be evaluated
+            </li>
+            <li class="option">
+                cannot be predicted
+            </li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-title">Question 7</div>
+        <div class="question-text">
+            Which of the following statements are <strong>true</strong>? (Select <strong>two</strong> answers)
+        </div>
+        <ul class="options-list">
+            <li class="option correct">
+                <span class="icon icon-correct"></span>
+                The right argument of the <span class="inline-code">%</span> operator cannot be zero.
+            </li>
+            <li class="option correct">
+                <span class="icon icon-correct"></span>
+                The <span class="inline-code">**</span> operator uses right-sided binding.
+            </li>
+            <li class="option">
+                The result of the <span class="inline-code">/</span> operator is always an integer value.
+            </li>
+            <li class="option">
+                Addition precedes multiplication.
+            </li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-title">Question 8</div>
+        <div class="question-text">
+            Left-sided binding determines that the result of the following expression:
+        </div>
+        <div class="code-box">1 // 2 * 3</div>
+        <div class="question-text">is equal to:</div>
+        <ul class="options-list">
+            <li class="option correct">
+                <span class="icon icon-correct"></span>
+                <span class="inline-code">0</span>
+            </li>
+            <li class="option">
+                <span class="inline-code">4.5</span>
+            </li>
+            <li class="option">
+                <span class="inline-code">0.0</span>
+            </li>
+            <li class="option">
+                <span class="inline-code">0.16666666666666666</span>
+            </li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-title">Question 9</div>
+        <div class="question-text">
+            Which of the following variable names are <strong>illegal</strong>? (Select <strong>two</strong> answers)
+        </div>
+        <ul class="options-list">
+            <li class="option correct">
+                <span class="icon icon-correct"></span>
+                <span class="inline-code">True</span>
+            </li>
+            <li class="option correct">
+                <span class="icon icon-correct"></span>
+                <span class="inline-code">and</span>
+            </li>
+            <li class="option">
+                <span class="inline-code">true</span>
+            </li>
+            <li class="option">
+                <span class="inline-code">TRUE</span>
+            </li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-title">Question 10</div>
+        <div class="question-text">
+            The <span class="inline-code">print()</span> function can output values of:
+        </div>
+        <ul class="options-list">
+            <li class="option correct">
+                <span class="icon icon-correct"></span>
+                any number of arguments (including zero)
+            </li>
+            <li class="option">
+                any number of arguments (excluding zero)
+            </li>
+            <li class="option">
+                just one argument
+            </li>
+            <li class="option">
+                not more than five arguments
+            </li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-title">Question 11</div>
+        <div class="question-text">What is the output of the following snippet?</div>
+        <div class="terminal-box">
+            <div><span class="line-number">1</span>x = <span class="number">1</span></div>
+            <div><span class="line-number">2</span>y = <span class="number">2</span></div>
+            <div><span class="line-number">3</span>z = x</div>
+            <div><span class="line-number">4</span>x = y</div>
+            <div><span class="line-number">5</span>y = z</div>
+            <div><span class="line-number">6</span><span class="keyword">print</span>(x, y)</div>
+        </div>
+        <ul class="options-list">
+            <li class="option correct">
+                <span class="icon icon-correct"></span>
+                <span class="inline-code">2 1</span>
+            </li>
+            <li class="option">
+                <span class="inline-code">1 2</span>
+            </li>
+            <li class="option">
+                <span class="inline-code">1 1</span>
+            </li>
+            <li class="option">
+                <span class="inline-code">2 2</span>
+            </li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-title">Question 12</div>
+        <div class="question-text">What is the output of the following snippet if the user enters two lines containing 2 and 4 respectively?</div>
+        <div class="terminal-box">
+            <div><span class="line-number">1</span>x = <span class="keyword">input</span>()</div>
+            <div><span class="line-number">2</span>y = <span class="keyword">input</span>()</div>
+            <div><span class="line-number">3</span><span class="keyword">print</span>(x + y)</div>
+        </div>
+        <ul class="options-list">
+            <li class="option correct">
+                <span class="icon icon-correct"></span>
+                <span class="inline-code">24</span>
+            </li>
+            <li class="option">
+                <span class="inline-code">2</span>
+            </li>
+            <li class="option">
+                <span class="inline-code">4</span>
+            </li>
+            <li class="option">
+                <span class="inline-code">6</span>
+            </li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-title">Question 13</div>
+        <div class="question-text">What is the output of the following snippet if the user enters two lines containing 2 and 4 respectively?</div>
+        <div class="terminal-box">
+            <div><span class="line-number">1</span>x = <span class="keyword">int</span>(<span class="keyword">input</span>())</div>
+            <div><span class="line-number">2</span>y = <span class="keyword">int</span>(<span class="keyword">input</span>())</div>
+            <div><span class="line-number">3</span></div>
+            <div><span class="line-number">4</span>x = x // y</div>
+            <div><span class="line-number">5</span>y = y // x</div>
+            <div><span class="line-number">6</span></div>
+            <div><span class="line-number">7</span><span class="keyword">print</span>(y)</div>
+        </div>
+        <ul class="options-list">
+            <li class="option correct">
+                <span class="icon icon-correct"></span>
+                the code will cause a runtime error
+            </li>
+            <li class="option">
+                <span class="inline-code">2.0</span>
+            </li>
+            <li class="option">
+                <span class="inline-code">4.0</span>
+            </li>
+            <li class="option">
+                <span class="inline-code">8.0</span>
+            </li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-title">Question 14</div>
+        <div class="question-text">What is the output of the following snippet if the user enters two lines containing 2 and 4 respectively?</div>
+        <div class="terminal-box">
+            <div><span class="line-number">1</span>x = <span class="keyword">int</span>(<span class="keyword">input</span>())</div>
+            <div><span class="line-number">2</span>y = <span class="keyword">int</span>(<span class="keyword">input</span>())</div>
+            <div><span class="line-number">3</span></div>
+            <div><span class="line-number">4</span>x = x / y</div>
+            <div><span class="line-number">5</span>y = y / x</div>
+            <div><span class="line-number">6</span></div>
+            <div><span class="line-number">7</span><span class="keyword">print</span>(y)</div>
+        </div>
+        <ul class="options-list">
+            <li class="option correct">
+                <span class="icon icon-correct"></span>
+                <span class="inline-code">8.0</span>
+            </li>
+            <li class="option">
+                <span class="inline-code">4.0</span>
+            </li>
+            <li class="option">
+                <span class="inline-code">2.0</span>
+            </li>
+            <li class="option">
+                the code will cause a runtime error
+            </li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-title">Question 15</div>
+        <div class="question-text">What is the output of the following snippet if the user enters two lines containing 11 and 4 respectively?</div>
+        <div class="terminal-box">
+            <div><span class="line-number">1</span>x = <span class="keyword">int</span>(<span class="keyword">input</span>())</div>
+            <div><span class="line-number">2</span>y = <span class="keyword">int</span>(<span class="keyword">input</span>())</div>
+            <div><span class="line-number">3</span></div>
+            <div><span class="line-number">4</span>x = x % y</div>
+            <div><span class="line-number">5</span>x = x % y</div>
+            <div><span class="line-number">6</span>y = y % x</div>
+            <div><span class="line-number">7</span></div>
+            <div><span class="line-number">8</span><span class="keyword">print</span>(y)</div>
+        </div>
+        <ul class="options-list">
+            <li class="option correct">
+                <span class="icon icon-correct"></span>
+                <span class="inline-code">1</span>
+            </li>
+            <li class="option">
+                <span class="inline-code">2</span>
+            </li>
+            <li class="option">
+                <span class="inline-code">3</span>
+            </li>
+            <li class="option">
+                <span class="inline-code">4</span>
+            </li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-title">Question 16</div>
+        <div class="question-text">What is the output of the following snippet if the user enters two lines containing 3 and 6 respectively?</div>
+        <div class="terminal-box">
+            <div><span class="line-number">1</span>x = <span class="keyword">input</span>()</div>
+            <div><span class="line-number">2</span>y = <span class="keyword">int</span>(<span class="keyword">input</span>())</div>
+            <div><span class="line-number">3</span></div>
+            <div><span class="line-number">4</span><span class="keyword">print</span>(x * y)</div>
+        </div>
+        <ul class="options-list">
+            <li class="option correct">
+                <span class="icon icon-correct"></span>
+                <span class="inline-code">333333</span>
+            </li>
+            <li class="option">
+                <span class="inline-code">18</span>
+            </li>
+            <li class="option">
+                <span class="inline-code">666</span>
+            </li>
+            <li class="option">
+                <span class="inline-code">36</span>
+            </li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-title">Question 17</div>
+        <div class="question-text">What is the output of the following snippet?</div>
+        <div class="terminal-box">
+            <div><span class="line-number">1</span>z = y = x = <span class="number">1</span></div>
+            <div><span class="line-number">2</span><span class="keyword">print</span>(x, y, z, sep=<span class="string">'*'</span>)</div>
+        </div>
+        <ul class="options-list">
+            <li class="option correct">
+                <span class="icon icon-correct"></span>
+                <span class="inline-code">1*1*1</span>
+            </li>
+            <li class="option">
+                <span class="inline-code">1 1 1</span>
+            </li>
+            <li class="option">
+                <span class="inline-code">x*y*z</span>
+            </li>
+            <li class="option">
+                <span class="inline-code">x y z</span>
+            </li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-title">Question 18</div>
+        <div class="question-text">What is the output of the following snippet?</div>
+        <div class="terminal-box">
+            <div><span class="line-number">1</span>y = <span class="number">2</span> + <span class="number">3</span> * <span class="number">5.</span></div>
+            <div><span class="line-number">2</span><span class="keyword">print</span>(Y)</div>
+        </div>
+        <ul class="options-list">
+            <li class="option correct">
+                <span class="icon icon-correct"></span>
+                the snippet will cause an execution error
+            </li>
+            <li class="option">
+                <span class="inline-code">25.</span>
+            </li>
+            <li class="option">
+                <span class="inline-code">17</span>
+            </li>
+            <li class="option">
+                <span class="inline-code">17.0</span>
+            </li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-title">Question 19</div>
+        <div class="question-text">What is the output of the following snippet?</div>
+        <div class="terminal-box">
+            <div><span class="line-number">1</span>x = <span class="number">1</span> / <span class="number">2</span> + <span class="number">3</span> // <span class="number">3</span> + <span class="number">4</span> ** <span class="number">2</span></div>
+            <div><span class="line-number">2</span><span class="keyword">print</span>(x)</div>
+        </div>
+        <ul class="options-list">
+            <li class="option correct">
+                <span class="icon icon-correct"></span>
+                <span class="inline-code">17.5</span>
+            </li>
+            <li class="option">
+                <span class="inline-code">17</span>
+            </li>
+            <li class="option">
+                <span class="inline-code">8</span>
+            </li>
+            <li class="option">
+                <span class="inline-code">8.5</span>
+            </li>
+        </ul>
+    </div>
+
+    <div class="question-block">
+        <div class="question-title">Question 20</div>
+        <div class="question-text">What is the output of the following snippet if the user enters two lines containing 2 and 4 respectively?</div>
+        <div class="terminal-box">
+            <div><span class="line-number">1</span>x = <span class="keyword">int</span>(<span class="keyword">input</span>())</div>
+            <div><span class="line-number">2</span>y = <span class="keyword">int</span>(<span class="keyword">input</span>())</div>
+            <div><span class="line-number">3</span></div>
+            <div><span class="line-number">4</span><span class="keyword">print</span>(x + y)</div>
+        </div>
+        <ul class="options-list">
+            <li class="option correct">
+                <span class="icon icon-correct"></span>
+                <span class="inline-code">6</span>
+            </li>
+            <li class="option">
+                <span class="inline-code">24</span>
+            </li>
+            <li class="option">
+                <span class="inline-code">2</span>
+            </li>
+            <li class="option">
+                <span class="inline-code">4</span>
+            </li>
+        </ul>
+    </div>
+
+</div>
+
+</body>
+</html>
