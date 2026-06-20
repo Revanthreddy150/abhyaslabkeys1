@@ -423,7 +423,7 @@
             id: 18,
             question: "What happens if you try to compile and run this program assuming that the fputs() function operation succeeds?",
             code: `#include <stdio.h>\n\nint f(char t[]) {\n    return t[0] - t[1];\n}\n\nint main(void) {\n    int i = 2;\n    i -= f("ABA" + 1);\n    printf("%d", i);\n    return 0;\n}`,
-            options: ["the program outputs 3", "the program outputs 12A", "the compilation or the execution fails", "the program outputs 1"],
+            options: ["the program outputs 1", "the program outputs 12A", "the compilation or the execution fails", "the program outputs 1"],
             correctIndex: 0
         });
 
@@ -432,7 +432,7 @@
             id: 19,
             question: "What happens if you try to compile and run this program assuming that the fputs() function operation succeeds?",
             code: `#include <stdio.h>\n\nint main(void) {\n    FILE *f = fopen("file", "w");\n    char c;\n    \n    fputs("12A", f);\n    fclose(f);\n    f = fopen("file", "r");\n    fscanf(f, "%c", &c);\n    fclose(f);\n    \n    printf("%d", c);\n    return 0;\n}`,
-            options: ["the program outputs 49", "the compilation or the execution fails", "the program outputs 1", "the program outputs 12A"],
+            options: ["the program outputs 1", "the compilation or the execution fails", "the program outputs 1", "the program outputs 12A"],
             correctIndex: 0
         });
 
