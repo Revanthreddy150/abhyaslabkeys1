@@ -405,7 +405,7 @@
             id: 16,
             question: "What happens if you try to compile and run this program?",
             code: `#include <stdio.h>\n\nint main(void) {\n#undef X\n    int X = 1;\n    int Y = X - 2;\n#define X -2\n    printf("%nt", Y+X);\n    return 0;\n}`,
-            options: ["the program outputs -3", "the program outputs 0", "the program outputs -2", "the program outputs -1"],
+            options: ["the program outputs -1", "the program outputs 0", "the program outputs -2", "the program outputs -3"],
             correctIndex: 0
         });
 
@@ -423,7 +423,7 @@
             id: 18,
             question: "What happens if you try to compile and run this program?",
             code: `#include <stdio.h>\n#define A\n#define C\n\nint main(void) {\n    int i =\n#ifdef A\n#ifdef C\n    -1\n#else\n    -2\n#endif\n#else\n    -3\n#endif\n    ;\n    printf("%nt", i);\n    return 0;\n}`,
-            options: ["the program outputs 1", "the program outputs -3", "the program outputs 0", "the program outputs -1"],
+            options: ["the program outputs -2", "the program outputs -3", "the program outputs 0", "the program outputs -1"],
             correctIndex: 0
         });
 
@@ -432,7 +432,7 @@
             id: 19,
             question: "What happens if you try to compile and run this program?",
             code: `#include <stdio.h>\n#define A\n#define C\n\nint main(void) {\n    int i =\n#ifndef A\n#ifdef C\n    -1\n#else\n    -2\n#endif\n#else\n    -3\n#endif\n    ;\n    printf("%nt", i);\n    return 0;\n}`,
-            options: ["the program outputs 1", "the program outputs -3", "the program outputs 0", "the program outputs -2"],
+            options: ["the program outputs -1", "the program outputs -3", "the program outputs 0", "the program outputs -2"],
             correctIndex: 0
         });
 
@@ -441,7 +441,7 @@
             id: 20,
             question: "What happens if you try to compile and run this program?",
             code: `#include <stdio.h>\n#define A\n#define C\n\nint main(void) {\n    int i =\n#ifndef A\n#ifndef C\n    -1\n#else\n    -2\n#endif\n#else\n    -3\n#endif\n    ;\n    printf("%nt", i);\n    return 0;\n}`,
-            options: ["the compilation or the execution fails", "the program outputs -1", "the program outputs -2", "the program outputs 0"],
+            options: ["the program outputs -3", "the program outputs -1", "the program outputs -2", "the program outputs 0"],
             correctIndex: 0
         });
 
