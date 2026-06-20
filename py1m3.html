@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Essentials 1: Module 3 - Complete Exam Key</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        h1 {
+            text-align: center;
+            color: #007acc;
+            border-bottom: 2px solid #007acc;
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+        }
+        .question-card {
+            background: #fafafa;
+            border-left: 5px solid #007acc;
+            padding: 20px;
+            margin-bottom: 25px;
+            border-radius: 4px;
+        }
+        .question-title {
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-bottom: 10px;
+            color: #222;
+        }
+        .code-block {
+            background-color: #1e1e1e;
+            color: #d4d4d4;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', Courier, monospace;
+            white-space: pre-wrap;
+            margin: 10px 0;
+        }
+        .answer-box {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            padding: 12px;
+            border-radius: 4px;
+            font-weight: bold;
+            margin: 15px 0 10px 0;
+            display: flex;
+            align-items: center;
+        }
+        .answer-box::before {
+            content: "✓ ";
+            font-size: 1.2em;
+            margin-right: 8px;
+        }
+        .explanation {
+            background-color: #e2e3e5;
+            color: #383d41;
+            padding: 12px;
+            border-radius: 4px;
+            font-size: 0.95em;
+            margin-top: 10px;
+        }
+        .explanation ul {
+            margin: 5px 0 0 0;
+            padding-left: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Python Essentials 1: Module 3 Complete Exam Key</h1>
+
+    <div class="question-card">
+        <div class="question-title">Question 1</div>
+        <p>An operator able to check whether two values are equal is coded as:</p>
+        <div class="answer-box">==</div>
+        <div class="explanation">
+            <strong>Explanation:</strong> Remember that the <code>==</code> operator compares two arguments and checks if they are equal.
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-title">Question 2</div>
+        <p>The value eventually assigned to x is equal to:</p>
+        <div class="code-block">x = 1
+x = x == x</div>
+        <div class="answer-box">True</div>
+        <div class="explanation">
+            <strong>Explanation:</strong> The <code>==</code> operator is more prominent in the operator hierarchy than the <code>=</code> operator. Therefore, the operation on the right is evaluated before the one on the left.
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-title">Question 3</div>
+        <p>How many stars (*) will the following snippet send to the console?</p>
+        <div class="code-block">i = 0
+while i <= 3:
+    i += 2
+    print("*")</div>
+        <div class="answer-box">two</div>
+        <div class="explanation">
+            <strong>Explanation:</strong>
+            <ul>
+                <li>The <code>i</code> variable is assigned the integer value of 0.</li>
+                <li>The <code>while</code> loop compares if 0 <= 3, and since it is <strong>True</strong>, the loop is entered.</li>
+                <li>The <code>i</code> variable is incremented by 2, and a <em>first star</em> is printed on the console.</li>
+                <li>The <code>while</code> loop now compares if 2 <= 3, and since it is <strong>True</strong>, the loop is entered.</li>
+                <li>The variable <code>i</code> is incremented by 2, and a <em>second star</em> is printed on the console.</li>
+                <li>The <code>while</code> loop now compares if 4 <= 3, and since it is <strong>False</strong>, the loop is no longer executed.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-title">Question 4</div>
+        <p>How many stars (*) will the following snippet send to the console?</p>
+        <div class="code-block">i = 0
+while i <= 5:
+    i += 1
+    if i % 2 == 0:
+        break
+    print("*")</div>
+        <div class="answer-box">one</div>
+        <div class="explanation">
+            <strong>Explanation:</strong>
+            <ul>
+                <li>The <code>i</code> variable is assigned the integer value of 0.</li>
+                <li>The <code>while</code> loop is entered. <code>i</code> is incremented by 1 (becomes 1).</li>
+                <li>The operation <code>1 % 2</code> is evaluated to 1. Since <code>1 == 0</code> is <strong>False</strong>, the <code>if</code> conditional is not executed.</li>
+                <li>A <strong>star</strong> is printed on the console.</li>
+                <li>In the next iteration, <code>i</code> becomes 2. <code>2 % 2 == 0</code> is <strong>True</strong>, so the <code>break</code> statement terminates the loop.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-title">Question 5</div>
+        <p>How many hashes (#) will the following snippet send to the console?</p>
+        <div class="code-block">for i in range(1):
+    print("#")
+else:
+    print("#")</div>
+        <div class="answer-box">two</div>
+        <div class="explanation">
+            <strong>Explanation:</strong>
+            <ul>
+                <li>The <code>for</code> loop begins using the variable <code>i</code> as counter, it begins in 0 and stops before 1, so a single iteration is performed.</li>
+                <li>A <strong>first #</strong> is printed on the console.</li>
+                <li>After exiting the loop normally, the <code>else</code> statement is executed.</li>
+                <li>A <strong>second #</strong> is printed on the console.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-title">Question 6</div>
+        <p>How many hashes (#) will the following snippet send to the console?</p>
+        <div class="code-block">var = 0
+while var < 6:
+    var += 1
+    if var % 2 == 0:
+        continue
+    print("#")</div>
+        <div class="answer-box">three</div>
+        <div class="explanation">
+            <strong>Explanation:</strong>
+            <ul>
+                <li>The <code>var</code> variable starts at 0 and loops up to 5.</li>
+                <li>For even numbers (2, 4, 6), the <code>continue</code> statement skips the print command.</li>
+                <li>For odd numbers (1, 3, 5), it executes the print block, printing a total of <strong>three</strong> hashes.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-title">Question 7</div>
+        <p>How many hashes (#) will the following snippet send to the console?</p>
+        <div class="code-block">var = 1
+while var < 10:
+    print("#")
+    var = var << 1</div>
+        <div class="answer-box">four</div>
+        <div class="explanation">
+            <strong>Explanation:</strong>
+            <ul>
+                <li><code>var = 1</code>: Loop prints 1st #, shifts left to 2.</li>
+                <li><code>var = 2</code>: Loop prints 2nd #, shifts left to 4.</li>
+                <li><code>var = 4</code>: Loop prints 3rd #, shifts left to 8.</li>
+                <li><code>var = 8</code>: Loop prints 4th #, shifts left to 16. Loop terminates as 16 < 10 is False.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-title">Question 8</div>
+        <p>What value will be assigned to the x variable?</p>
+        <div class="code-block">z = 10
+y = 0
+x = y < z and z > y or y > z and z < y</div>
+        <div class="answer-box">True</div>
+        <div class="explanation">
+            <strong>Explanation:</strong>
+            <ul>
+                <li><code>y < z</code> is True and <code>z > y</code> is True &rarr; True <code>and</code> True returns <strong>True</strong>.</li>
+                <li><code>y > z</code> is False and <code>z < y</code> is False &rarr; False <code>and</code> False returns <strong>False</strong>.</li>
+                <li>Finally, <strong>True</strong> <code>or</code> False returns <strong>True</strong>.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-title">Question 9</div>
+        <p>What is the output of the following snippet?</p>
+        <div class="code-block">a = 1
+b = 0
+c = a & b
+d = a | b
+e = a ^ b
+
+print(c + d + e)</div>
+        <div class="answer-box">2</div>
+        <div class="explanation">
+            <strong>Explanation:</strong>
+            <ul>
+                <li><code>c = a & b</code> &rarr; 1 & 0 = 0</li>
+                <li><code>d = a | b</code> &rarr; 1 | 0 = 1</li>
+                <li><code>e = a ^ b</code> &rarr; 1 ^ 0 = 1</li>
+                <li>Sum: 0 + 1 + 1 = <strong>2</strong>.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-title">Question 10</div>
+        <p>What is the output of the following snippet?</p>
+        <div class="code-block">my_list = [3, 1, -2]
+print(my_list[my_list[-1]])</div>
+        <div class="answer-box">1</div>
+        <div class="explanation">
+            <strong>Explanation:</strong>
+            <ul>
+                <li><code>my_list[-1]</code> picks the last element, which is <strong>-2</strong>.</li>
+                <li>Then, <code>my_list[-2]</code> picks the second to last element, which is <strong>1</strong>.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-title">Question 11</div>
+        <p>What is the output of the following snippet?</p>
+        <div class="code-block">my_list = [1, 2, 3, 4]
+print(my_list[-3:-2])</div>
+        <div class="answer-box">[2]</div>
+        <div class="explanation">
+            <strong>Explanation:</strong> Using negative indices <code>(-3:-2)</code>, the elements from the third-last position to before the second-last position are selected. Therefore, only the element 2 is extracted into a new sublist.
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-title">Question 12</div>
+        <p>The second assignment:</p>
+        <div class="code-block">vals = [0, 1, 2]
+vals[0], vals[2] = vals[2], vals[0]</div>
+        <div class="answer-box">reverses the list</div>
+        <div class="explanation">
+            <strong>Explanation:</strong> Using positive indices, the value in position 0 is swapped with the element in position 2. The elements are now in this order: 2, 1, 0. Therefore, the list has been reversed.
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-title">Question 13</div>
+        <p>After execution of the following snippet, the sum of all vals elements will be equal to:</p>
+        <div class="code-block">vals = [0, 1, 2]
+vals.insert(0, 1)
+del vals[1]</div>
+        <div class="answer-box">4</div>
+        <div class="explanation">
+            <strong>Explanation:</strong>
+            <ul>
+                <li>The list starts as <code>[0, 1, 2]</code>.</li>
+                <li><code>vals.insert(0, 1)</code> inserts 1 at index 0 &rarr; <code>[1, 0, 1, 2]</code>.</li>
+                <li><code>del vals[1]</code> deletes the item at index 1 &rarr; <code>[1, 1, 2]</code>.</li>
+                <li>Sum: 1 + 1 + 2 = <strong>4</strong>.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-title">Question 14</div>
+        <p>Take a look at the snippet, and choose the true statements: (Select two answers)</p>
+        <div class="code-block">nums = [1, 2, 3]
+vals = nums
+del vals[1:2]</div>
+        <div class="answer-box">nums and vals are of the same length <br>AND<br> nums and vals refer to the same list</div>
+        <div class="explanation">
+            <strong>Explanation:</strong> The assignment <code>vals = nums</code> does not create a copy; both variables point to the exact same list in memory. Modifying one affects the other, keeping their length equal.
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-title">Question 15</div>
+        <p>Which of the following sentences are true? (Select two answers)</p>
+        <div class="code-block">nums = [1, 2, 3]
+vals = nums[-1:-2]</div>
+        <div class="answer-box">nums is longer than vals <br>AND<br> nums and vals are two different lists</div>
+        <div class="explanation">
+            <strong>Explanation:</strong> Slicing constructs a brand new list. Since the slice range <code>[-1:-2]</code> is invalid when moving in the default positive direction, it results in an empty list <code>[]</code> or a sequence shorter than the original, making <code>nums</code> longer.
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-title">Question 16</div>
+        <p>What is the output of the following snippet?</p>
+        <div class="code-block">my_list_1 = [1, 2, 3]
+my_list_2 = []
+for v in my_list_1:
+    my_list_2.insert(0, v)
+print(my_list_2)</div>
+        <div class="answer-box">[3, 2, 1]</div>
+        <div class="explanation">
+            <strong>Explanation:</strong> Every item from <code>my_list_1</code> is prepended to the start (index 0) of <code>my_list_2</code> consecutively, effectively reversing the collection.
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-title">Question 17</div>
+        <p>What is the output of the following snippet?</p>
+        <div class="code-block">my_list = [1, 2, 3]
+for v in range(len(my_list)):
+    my_list.insert(1, my_list[v])
+print(my_list)</div>
+        <div class="answer-box">[1, 1, 1, 1, 2, 3]</div>
+        <div class="explanation">
+            <strong>Explanation:</strong> The loop updates exactly 3 times. In each iteration, it reads the current index <code>v</code> and inserts that value into index 1, progressively inserting '1's into the list.
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-title">Question 18</div>
+        <p>How many elements does the my_list list contain?</p>
+        <div class="code-block">my_list = [i for i in range(-1, 2)]</div>
+        <div class="answer-box">three</div>
+        <div class="explanation">
+            <strong>Explanation:</strong> The expression <code>range(-1, 2)</code> generates values starting from -1 up to (but excluding) 2, which are: <code>-1, 0, 1</code>. That results in exactly three items.
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-title">Question 19</div>
+        <p>What is the output of the following snippet?</p>
+        <div class="code-block">t = [[3-i for i in range(3)] for j in range(3)]
+s = 0
+for i in range(3):
+    s += t[i][i]
+print(s)</div>
+        <div class="answer-box">6</div>
+        <div class="explanation">
+            <strong>Explanation:</strong> The matrix evaluates to <code>[[3, 2, 1], [3, 2, 1], [3, 2, 1]]</code>. Summing up diagonal elements <code>t[0][0] + t[1][1] + t[2][2]</code> returns 3 + 2 + 1 = <strong>6</strong>.
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-title">Question 20</div>
+        <p>What is the output of the following snippet?</p>
+        <div class="code-block">my_list = [[0, 1, 2, 3] for i in range(2)]
+print(my_list[2][0])</div>
+        <div class="answer-box">the snippet will cause a runtime error</div>
+        <div class="explanation">
+            <strong>Explanation:</strong> The list comprehension builds a nested structure containing only two sublists (index 0 and index 1). Querying index <code>[2]</code> results in an <code>IndexError</code>.
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
