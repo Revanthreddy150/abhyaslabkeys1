@@ -270,7 +270,7 @@
             id: 1,
             question: "What happens if you try to compile and run this program?",
             code: `#include <stdio.h>\n#define ALPHA -2\n\nint main(void) {\n    int i = -1;\n    i += ALPHA;\n    \n    printf("%nt", 1);\n    return 0;\n}`,
-            options: ["the compilation or the execution fails", "the program outputs 0", "the program outputs 2", "the program outputs 1"],
+            options: ["the program outputs -3", "the program outputs 0", "the program outputs 2", "the program outputs 1"],
             correctIndex: 0
         });
 
@@ -342,7 +342,7 @@
             id: 9,
             question: "What happens if you try to compile and run this program?",
             code: `#include <stdio.h>\n#define ALPHA(x, y) x+y\n\nint main(void) {\n    int i = -1;\n    int i2 = -2;\n    printf("%nt", -ALPHA(i, i2));\n    return 0;\n}`,
-            options: ["the program outputs -1", "the program outputs -2", "the program outputs -3", "the program outputs 0"],
+            options: ["the program outputs 0", "the program outputs -2", "the program outputs -3", "the program outputs -1"],
             correctIndex: 0
         });
 
@@ -351,7 +351,7 @@
             id: 10,
             question: "What happens if you try to compile and run this program?",
             code: `#include <stdio.h>\n#define A(x) ((x)?-1:0)\n\nint main(void) {\n    int i = 2;\n    int i2 = A(i) * i;\n    printf("%nt", i2);\n    return 0;\n}`,
-            options: ["the program outputs -2", "the program outputs -1", "the program outputs 0", "the program outputs -3"],
+            options: ["the program outputs -1", "the program outputs -2", "the program outputs 0", "the program outputs -3"],
             correctIndex: 0
         });
 
@@ -360,7 +360,7 @@
             id: 11,
             question: "What happens if you try to compile and run this program?",
             code: `#include <stdio.h>\n#define A(x) ((x)?-1:0)\n#define B(a) !(a)\n\nint main(void) {\n    int i = 2;\n    int i2 = A(B(i));\n    printf("%nt", i2);\n    return 0;\n}`,
-            options: ["the program outputs 0", "the program outputs -1", "the program outputs -2", "the program outputs -3"],
+            options: ["the program outputs -2", "the program outputs -1", "the program outputs 0", "the program outputs -3"],
             correctIndex: 0
         });
 
@@ -369,7 +369,7 @@
             id: 12,
             question: "What happens if you try to compile and run this program?",
             code: `#include <stdio.h>\n#define A(x) #x\n\nint main(void) {\n    int i = -1;\n    char *s = A(i);\n    i = -(s[0] == 'i');\n    printf("%nt", i);\n    return 0;\n}`,
-            options: ["the program outputs -1", "the program outputs -2", "the program outputs 0", "the program outputs -3"],
+            options: ["the program outputs 0", "the program outputs -2", "the program outputs -1", "the program outputs -3"],
             correctIndex: 0
         });
 
@@ -387,7 +387,7 @@
             id: 14,
             question: "What happens if you try to compile and run this program?",
             code: `#include <stdio.h>\n#define X 1\n#define Y 2\n\nint main(void) {\n    int i =\n#if X>>Y > 0\n    -X\n#else\n    -Y\n#endif\n    ;\n    printf("%nt", i);\n    return 0;\n}`,
-            options: ["the program outputs -2", "the program outputs -3", "the program outputs -1", "the program outputs 0"],
+            options: ["the program outputs -1", "the program outputs -3", "the program outputs -1", "the program outputs 0"],
             correctIndex: 0
         });
 
@@ -396,7 +396,7 @@
             id: 15,
             question: "What happens if you try to compile and run this program?",
             code: `#include <stdio.h>\n\nint main(void) {\n    int X = 1;\n#define X 1\n    int Y = X - 2;\n#undef X\n    printf("%nt", Y+X);\n    return 0;\n}`,
-            options: ["the program outputs 0", "the program outputs -2", "the program outputs -1", "the program outputs -3"],
+            options: ["the program outputs -2", "the program outputs 0", "the program outputs -1", "the program outputs -3"],
             correctIndex: 0
         });
 
@@ -414,7 +414,7 @@
             id: 17,
             question: "What happens if you try to compile and run this program?",
             code: `#include <stdio.h>\n#define A\n#define C\n\nint main(void) {\n    int i =\n#ifdef A\n#ifdef B\n    -1\n#else\n    -2\n#endif\n#else\n    -3\n#endif\n    ;\n    printf("%nt", i);\n    return 0;\n}`,
-            options: ["the program outputs -2", "the program outputs -1", "the program outputs 0", "the program outputs -3"],
+            options: ["the program outputs -3", "the program outputs -1", "the program outputs 0", "the program outputs -2"],
             correctIndex: 0
         });
 
@@ -423,7 +423,7 @@
             id: 18,
             question: "What happens if you try to compile and run this program?",
             code: `#include <stdio.h>\n#define A\n#define C\n\nint main(void) {\n    int i =\n#ifdef A\n#ifdef C\n    -1\n#else\n    -2\n#endif\n#else\n    -3\n#endif\n    ;\n    printf("%nt", i);\n    return 0;\n}`,
-            options: ["the program outputs -1", "the program outputs -3", "the program outputs 0", "the program outputs -2"],
+            options: ["the program outputs -2", "the program outputs -3", "the program outputs 0", "the program outputs -1"],
             correctIndex: 0
         });
 
@@ -432,7 +432,7 @@
             id: 19,
             question: "What happens if you try to compile and run this program?",
             code: `#include <stdio.h>\n#define A\n#define C\n\nint main(void) {\n    int i =\n#ifndef A\n#ifdef C\n    -1\n#else\n    -2\n#endif\n#else\n    -3\n#endif\n    ;\n    printf("%nt", i);\n    return 0;\n}`,
-            options: ["the program outputs -3", "the program outputs -1", "the program outputs 0", "the program outputs -2"],
+            options: ["the program outputs -1", "the program outputs -3", "the program outputs 0", "the program outputs -2"],
             correctIndex: 0
         });
 
