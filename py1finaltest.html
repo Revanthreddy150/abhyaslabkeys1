@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Exam Answer Key</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f6f9;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+        }
+        .question-block {
+            margin-bottom: 35px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .question-title {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: #1a202c;
+            margin-bottom: 12px;
+        }
+        pre {
+            background-color: #1e1e1e;
+            color: #d4d4d4;
+            padding: 15px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.95rem;
+            margin: 15px 0;
+        }
+        .options-list {
+            list-style: none;
+            padding: 0;
+            margin: 15px 0 0 0;
+        }
+        .option {
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 12px 15px;
+            margin-bottom: 8px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+        }
+        .option.correct {
+            background-color: #e0f2fe;
+            border-color: #0ea5e9;
+            color: #0369a1;
+            font-weight: 600;
+        }
+        .option.correct::before {
+            content: "✓ ";
+            margin-right: 8px;
+            font-weight: bold;
+        }
+        code {
+            background-color: #edf2f7;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+        pre code {
+            background-color: transparent;
+            padding: 0;
+            color: inherit;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Python Assessment Answer Key</h1>
+
+    <!-- Question 1 -->
+    <div class="question-block">
+        <div class="question-title">Question 1: Consider the following Python code snippet. What will the contents of <code>my_numbers</code> be after execution?</div>
+<pre><code>my_numbers = [10, 20, 30, 40, 50]
+
+for i in range(4):
+    my_numbers.insert(i, my_numbers[-1])
+
+print(my_numbers)</code></pre>
+        <ul class="options-list">
+            <li class="option correct">[50, 10, 50, 20, 50, 30, 50, 40]</li>
+            <li class="option">[10, 50, 20, 30, 40, 50, 50, 50]</li>
+            <li class="option">[10, 20, 30, 40, 50, 50, 50, 50]</li>
+            <li class="option">[10, 20, 30, 50, 50, 50, 50, 40]</li>
+        </ul>
+    </div>
+
+    <!-- Question 2 -->
+    <div class="question-block">
+        <div class="question-title">Question 2: In the context of a function call in Python, what determines the meaning of a positional argument?</div>
+        <ul class="options-list">
+            <li class="option correct">Its position within the argument list</li>
+            <li class="option">Its value</li>
+            <li class="option">The argument's name specified along with its value</li>
+            <li class="option">Its connection with existing variables</li>
+        </ul>
+    </div>
+
+    <!-- Question 3 -->
+    <div class="question-block">
+        <div class="question-title">Question 3: Analyze the following Python code snippet:</div>
+<pre><code>alpha = [4, 8, 15, 16, 23, 42]
+beta = alpha[:]
+beta[2] = 99</code></pre>
+        <div class="question-title" style="font-size: 1rem; font-weight: normal; margin-top: 10px;">Which of the following statements are <strong>true</strong> regarding the code above? (Select <strong>two</strong> answers)</div>
+        <ul class="options-list">
+            <li class="option"><code>alpha</code> and <code>beta</code> are two names for the same list; thus, both lists now include the number <code>99</code> at the third position.</li>
+            <li class="option correct"><code>alpha</code> and <code>beta</code> are separate lists; the <code>alpha</code> list remains unchanged after the modification.</li>
+            <li class="option">The <code>beta</code> list is shorter than the <code>alpha</code> list because an element has been modified.</li>
+            <li class="option correct">The <code>alpha</code> list is of the same length as the <code>beta</code> list, but their contents are not identical.</li>
+        </ul>
+    </div>
+
+    <!-- Question 4 -->
+    <div class="question-block">
+        <div class="question-title">Question 4: An operator able to check whether two values are <strong>not equal</strong> is coded as:</div>
+        <ul class="options-list">
+            <li class="option">&lt;&gt;</li>
+            <li class="option correct">!=</li>
+            <li class="option">not ==</li>
+            <li class="option">=/=</li>
+        </ul>
+    </div>
+
+    <!-- Question 5 -->
+    <div class="question-block">
+        <div class="question-title">Question 5: Given the Python code segment below:</div>
+<pre><code>def compute_square(x):
+    return x * x
+
+def compute_quad(x):
+    return compute_square(x) * compute_square(None)
+
+print(compute_quad(4))</code></pre>
+        <div class="question-title" style="font-size: 1rem; font-weight: normal; margin-top: 10px;">What will be the output of the code?</div>
+        <ul class="options-list">
+            <li class="option">The code will output 256.</li>
+            <li class="option">The code will output 16.</li>
+            <li class="option correct">The code will cause a runtime error.</li>
+            <li class="option">The code will output 64.</li>
+        </ul>
+    </div>
+
+    <!-- Question 6 -->
+    <div class="question-block">
+        <div class="question-title">Question 6: The result of the following division:</div>
+<pre><code>1 // 2</code></pre>
+        <ul class="options-list">
+            <li class="option">is equal to 0.0</li>
+            <li class="option">cannot be predicted</li>
+            <li class="option correct">is equal to 0</li>
+            <li class="option">is equal to 0.5</li>
+        </ul>
+    </div>
+
+    <!-- Question 7 -->
+    <div class="question-block">
+        <div class="question-title">Question 7: Consider the Python function defined below:</div>
+<pre><code>def raise_power(base, exponent):
+    return base ** exponent
+
+print(raise_power(exponent=3, 2))</code></pre>
+        <div class="question-title" style="font-size: 1rem; font-weight: normal; margin-top: 10px;">What is the result of executing this code?</div>
+        <ul class="options-list">
+            <li class="option">The code will output 8.</li>
+            <li class="option correct">The code is erroneous and will not execute.</li>
+            <li class="option">The code will output None.</li>
+            <li class="option">The code will output 9.</li>
+        </ul>
+    </div>
+
+    <!-- Question 8 -->
+    <div class="question-block">
+        <div class="question-title">Question 8: What value will be assigned to the <code>x</code> variable?</div>
+<pre><code>z = 0
+y = 10
+x = y &lt; z and z &gt; y or y &lt; z and z &lt; y</code></pre>
+        <ul class="options-list">
+            <li class="option">1</li>
+            <li class="option">True</li>
+            <li class="option">0</li>
+            <li class="option correct">False</li>
+        </ul>
+    </div>
+
+    <!-- Question 9 -->
+    <div class="question-block">
+        <div class="question-title">Question 9: Review the following identifiers and select the ones that are reserved keywords in Python and would cause a SyntaxError if used as variable names. (Select <strong>two</strong> answers)</div>
+        <ul class="options-list">
+            <li class="option correct">class</li>
+            <li class="option">true</li>
+            <li class="option correct">continue</li>
+            <li class="option">function</li>
+        </ul>
+    </div>
+
+    <!-- Question 10 -->
+    <div class="question-block">
+        <div class="question-title">Question 10: What is the expected output of the following Python code?</div>
+<pre><code>my_values = [3 * i for i in range(5)]
+
+def modify_list(values):
+    del values[values[2] // 3]
+    return values
+
+print(modify_list(my_values))</code></pre>
+        <ul class="options-list">
+            <li class="option correct">[0, 3, 9, 12]</li>
+            <li class="option">[0, 6, 9, 12]</li>
+            <li class="option">[3, 6, 9, 12]</li>
+            <li class="option">[0, 3, 6, 12]</li>
+        </ul>
+    </div>
+
+    <!-- Question 11 -->
+    <div class="question-block">
+        <div class="question-title">Question 11: What is the output of the following piece of code?</div>
+<pre><code>x = 1
+y = 2
+x, y, z = x, x, y
+z, y, z = x, y, z
+
+print(x, y, z)</code></pre>
+        <ul class="options-list">
+            <li class="option">1 2 1</li>
+            <li class="option">1 1 2</li>
+            <li class="option correct">1 2 2</li>
+            <li class="option">2 1 2</li>
+        </ul>
+    </div>
+
+    <!-- Question 12 -->
+    <div class="question-block">
+        <div class="question-title">Question 12: What will be the output of the following snippet?</div>
+<pre><code>a = 1
+b = 0
+a = a ^ b
+b = a ^ b
+a = a ^ b
+
+print(a, b)</code></pre>
+        <ul class="options-list">
+            <li class="option">0 0</li>
+            <li class="option correct">0 1</li>
+            <li class="option">1 0</li>
+            <li class="option">1 1</li>
+        </ul>
+    </div>
+
+    <!-- Question 13 -->
+    <div class="question-block">
+        <div class="question-title">Question 13: What is the output of the following Python code snippet?</div>
+<pre><code>def custom_function(value):
+    if value % 3 == 0:
+        return 1
+    else:
+        return 2
+
+print(custom_function(custom_function(4)))</code></pre>
+        <ul class="options-list">
+            <li class="option">1</li>
+            <li class="option correct">2</li>
+            <li class="option">3</li>
+            <li class="option">4</li>
+        </ul>
+    </div>
+
+    <!-- Question 14 -->
+    <div class="question-block">
+        <div class="question-title">Question 14: Consider the following Python code snippet and determine which statement is correct:</div>
+<pre><code>inventory = ['apple', 'banana', 'cherry']
+backup_inventory = inventory
+del backup_inventory[:]</code></pre>
+        <ul class="options-list">
+            <li class="option"><code>inventory</code> contains more items than <code>backup_inventory</code>.</li>
+            <li class="option"><code>backup_inventory</code> contains more items than <code>inventory</code>.</li>
+            <li class="option correct">Both <code>inventory</code> and <code>backup_inventory</code> contain the same number of items.</li>
+            <li class="option">The code will result in a runtime error.</li>
+        </ul>
+    </div>
+
+    <!-- Question 15 -->
+    <div class="question-block">
+        <div class="question-title">Question 15: Consider the following Python code, where only integer inputs are allowed:</div>
+<pre><code>first_integer = int(input("Enter an integer: "))
+second_integer = int(input("Enter another integer: "))
+first_integer = first_integer % second_integer
+first_integer = first_integer % second_integer
+second_integer = second_integer % first_integer
+print(second_integer)</code></pre>
+        <div class="question-title" style="font-size: 1rem; font-weight: normal; margin-top: 10px;">Which condition will ensure that the code runs successfully without a runtime error?</div>
+        <ul class="options-list">
+            <li class="option correct">The initial value of <code>first_integer</code> cannot be a multiple of <code>second_integer</code>.</li>
+            <li class="option"><code>second_integer</code> must be larger than <code>first_integer</code>.</li>
+            <li class="option"><code>first_integer</code> must be initialized to zero.</li>
+            <li class="option"><code>second_integer</code> must be initialized to zero.</li>
+        </ul>
+    </div>
+
+    <!-- Question 16 -->
+    <div class="question-block">
+        <div class="question-title">Question 16: Assuming the user enters <code>8</code> on the first line and <code>5</code> on the second line, what is the output of the following code?</div>
+<pre><code>first_input = input("Enter first number: ")
+second_input = input("Enter second number: ")
+print(second_input + first_input)</code></pre>
+        <ul class="options-list">
+            <li class="option">85</li>
+            <li class="option">13</li>
+            <li class="option">5</li>
+            <li class="option correct">58</li>
+        </ul>
+    </div>
+
+    <!-- Question 17 -->
+    <div class="question-block">
+        <div class="question-title">Question 17: What is the output of the following piece of code?</div>
+<pre><code>print("a", "b", "c", sep="sep")</code></pre>
+        <ul class="options-list">
+            <li class="option">asepbsepcsep</li>
+            <li class="option">a b c</li>
+            <li class="option">abc</li>
+            <li class="option correct">asepbsepc</li>
+        </ul>
+    </div>
+
+    <!-- Question 18 -->
+    <div class="question-block">
+        <div class="question-title">Question 18: What is the output of the following piece of code?</div>
+<pre><code>x = 1 // 5 + 1 / 5
+print(x)</code></pre>
+        <ul class="options-list">
+            <li class="option">0</li>
+            <li class="option">0.5</li>
+            <li class="option">0.4</li>
+            <li class="option correct">0.2</li>
+        </ul>
+    </div>
+
+    <!-- Question 19 -->
+    <div class="question-block">
+        <div class="question-title">Question 19: What is the result of trying to execute the following code snippet if <code>sample_tuple</code> is a tuple that has been previously defined with at least two elements?</div>
+<pre><code>sample_tuple[0] = 5
+print(sample_tuple)</code></pre>
+        <ul class="options-list">
+            <li class="option correct">A TypeError will be raised because elements of a tuple cannot be reassigned.</li>
+            <li class="option">The code will execute successfully, assigning the value 5 to the first element of the tuple.</li>
+            <li class="option">The code will only execute if all elements in <code>sample_tuple</code> are integers.</li>
+            <li class="option">The code will run without error only if <code>sample_tuple</code> contains more than two elements.</li>
+        </ul>
+    </div>
+
+    <!-- Question 20 -->
+    <div class="question-block">
+        <div class="question-title">Question 20: What is the output of the following piece of code if the user enters two lines containing <code>2</code> and <code>4</code> respectively?</div>
+<pre><code>x = float(input())
+y = float(input())
+print(y ** (1 / x))</code></pre>
+        <ul class="options-list">
+            <li class="option">1.0</li>
+            <li class="option">0.0</li>
+            <li class="option correct">2.0</li>
+            <li class="option">4.2</li>
+        </ul>
+    </div>
+
+    <!-- Question 21 -->
+    <div class="question-block">
+        <div class="question-title">Question 21: What is the expected output of the following code snippet?</div>
+<pre><code>dictionary = {'alpha': 'beta', 'gamma': 'alpha', 'beta': 'gamma'}
+value = dictionary['gamma']
+
+for key in range(len(dictionary)):
+    value = dictionary[value]
+
+print(value)</code></pre>
+        <ul class="options-list">
+            <li class="option">('alpha', 'beta', 'gamma')</li>
+            <li class="option correct">alpha</li>
+            <li class="option">gamma</li>
+            <li class="option">beta</li>
+        </ul>
+    </div>
+
+    <!-- Question 22 -->
+    <div class="question-block">
+        <div class="question-title">Question 22: How many elements are in the <code>values</code> list?</div>
+<pre><code>values = [i for i in range(-1, -3, -1)]</code></pre>
+        <ul class="options-list">
+            <li class="option">One</li>
+            <li class="option">Three</li>
+            <li class="option correct">Two</li>
+            <li class="option">Zero</li>
+        </ul>
+    </div>
+
+    <!-- Question 23 -->
+    <div class="question-block">
+        <div class="question-title">Question 23: Which of the following function calls <strong>correctly</strong> invoke the function defined below? (Select <strong>two</strong> answers)</div>
+<pre><code>def custom_function(x, y, z=0):
+    # Body of the function.</code></pre>
+        <ul class="options-list">
+            <li class="option correct">custom_function(y=2, x=1)</li>
+            <li class="option">custom_function(x=3)</li>
+            <li class="option correct">custom_function(4, 5, 6)</li>
+            <li class="option">custom_function()</li>
+        </ul>
+    </div>
+
+    <!-- Question 24 -->
+    <div class="question-block">
+        <div class="question-title">Question 24: What is the output of the following snippet?</div>
+<pre><code>def fun(x, y):
+    if x == y:
+        return x
+    else:
+        return fun(x, y-1)
+
+print(fun(0, 3))</code></pre>
+        <ul class="options-list">
+            <li class="option">1</li>
+            <li class="option">the snippet will cause a runtime error</li>
+            <li class="option">2</li>
+            <li class="option correct">0</li>
+        </ul>
+    </div>
+
+    <!-- Question 25 -->
+    <div class="question-block">
+        <div class="question-title">Question 25: How many stars (*) will the following snippet send to the console?</div>
+<pre><code>i = 0
+while i &lt; i + 2 :
+    i += 1
+    print("*")
+else:
+    print("*")</code></pre>
+        <ul class="options-list">
+            <li class="option">one</li>
+            <li class="option">two</li>
+            <li class="option correct">the snippet will enter an infinite loop, printing one star per line</li>
+            <li class="option">zero</li>
+        </ul>
+    </div>
+
+    <!-- Question 26 -->
+    <div class="question-block">
+        <div class="question-title">Question 26: What is the output of the following Python code snippet?</div>
+<pre><code>my_tuple = (10, 20, 30, 40, 50)
+my_tuple = my_tuple[-3:-1]
+my_tuple = my_tuple[-1]
+print(my_tuple)</code></pre>
+        <ul class="options-list">
+            <li class="option">30</li>
+            <li class="option">20</li>
+            <li class="option correct">40</li>
+            <li class="option">50</li>
+        </ul>
+    </div>
+
+    <!-- Question 27 -->
+    <div class="question-block">
+        <div class="question-title">Question 27: Given the following Python code:</div>
+<pre><code>my_dict = {"apple": 1, "banana": 2, "cherry": 3}</code></pre>
+        <div class="question-title" style="font-size: 1rem; font-weight: normal; margin-top: 10px;">Which of the following code snippets correctly prints all the values in the dictionary my_dict?</div>
+        <ul class="options-list">
+            <li class="option correct">for value in my_dict.values():<br>&nbsp;&nbsp;&nbsp;&nbsp;print(value)</li>
+            <li class="option">for key in my_dict:<br>&nbsp;&nbsp;&nbsp;&nbsp;print(value)</li>
+            <li class="option">for item in my_dict:<br>&nbsp;&nbsp;&nbsp;&nbsp;print(item)</li>
+            <li class="option">for val in my_dict.vals():<br>&nbsp;&nbsp;&nbsp;&nbsp;print(val)</li>
+        </ul>
+    </div>
+
+    <!-- Question 28 -->
+    <div class="question-block">
+        <div class="question-title">Question 28: What is the output of the following snippet?</div>
+<pre><code>dct = {}
+dct['1'] = (1, 2)
+dct['2'] = (2, 1)
+
+for x in dct.keys():
+    print(dct[x][1], end="")</code></pre>
+        <ul class="options-list">
+            <li class="option correct">21</li>
+            <li class="option">(2,1)</li>
+            <li class="option">(1,2)</li>
+            <li class="option">12</li>
+        </ul>
+    </div>
+
+    <!-- Question 29 -->
+    <div class="question-block">
+        <div class="question-title">Question 29: What is the output of the following snippet?</div>
+<pre><code>def fun(inp=2, out=3):
+    return inp * out
+
+print(fun(out=2))</code></pre>
+        <ul class="options-list">
+            <li class="option">6</li>
+            <li class="option correct">4</li>
+            <li class="option">the snippet is erroneous and will cause SyntaxError</li>
+            <li class="option">2</li>
+        </ul>
+    </div>
+
+    <!-- Question 30 -->
+    <div class="question-block">
+        <div class="question-title">Question 30: How many times will the # symbol be printed to the console by the following code snippet?</div>
+<pre><code>matrix = [[x for x in range(3)] for y in range(3)]
+
+count = 0
+for row in matrix:
+    for element in row:
+        if element % 2 != 0:
+            count += 1
+print(count)</code></pre>
+        <ul class="options-list">
+            <li class="option">Zero</li>
+            <li class="option">One</li>
+            <li class="option">Two</li>
+            <li class="option correct">Three</li>
+        </ul>
+    </div>
+
+    <!-- Question 31 -->
+    <div class="question-block">
+        <div class="question-title">Question 31: What is the output of the following code if the user enters a <code>0</code>?</div>
+<pre><code>try:
+    value = input("Enter a value: ")
+    print(int(value)/len(value))
+except ValueError:
+    print("Bad input...")
+except ZeroDivisionError:
+    print("Very bad input...")
+except TypeError:
+    print("Very very bad input...")
+except:
+    print("Booo!")</code></pre>
+        <ul class="options-list">
+            <li class="option">Booo!</li>
+            <li class="option">1.0</li>
+            <li class="option correct">0.0</li>
+            <li class="option">Very very bad input...</li>
+            <li class="option">Bad input...</li>
+            <li class="option">Very bad input...</li>
+        </ul>
+    </div>
+
+    <!-- Question 32 -->
+    <div class="question-block">
+        <div class="question-title">Question 32: What is the expected behavior of the following Python program?</div>
+<pre><code>try:
+    print(10 / 0)
+    break
+except ZeroDivisionError::
+    print("Zero division error occurred...")
+except (ValueError, TypeError):
+    print("Value or type error occurred..")
+except:
+    print("Unknown error occurred...")</code></pre>
+        <ul class="options-list">
+            <li class="option correct">The program will cause a SyntaxError exception.</li>
+            <li class="option">The program will cause a ZeroDivisionError exception and output the message "Zero division error occurred..."</li>
+            <li class="option">The program will cause a ValueError or TypeError exception and output the message "Value or type error occurred.."</li>
+            <li class="option">The program will cause an "Unknown error occurred..." exception and output the message "Unknown error occurred..."</li>
+        </ul>
+    </div>
+
+    <!-- Question 33 -->
+    <div class="question-block">
+        <div class="question-title">Question 33: What is the expected behavior of the following program?</div>
+<pre><code>foo = (1, 2, 3)
+foo.index(0)</code></pre>
+        <ul class="options-list">
+            <li class="option">The program will cause an AttributeError exception.</li>
+            <li class="option correct">The program will cause a ValueError exception.</li>
+            <li class="option">The program will cause a TypeError exception.</li>
+            <li class="option">The program will cause a SyntaxError exception.</li>
+            <li class="option">The program will output 1 to the screen.</li>
+        </ul>
+    </div>
+
+    <!-- Question 34 -->
+    <div class="question-block">
+        <div class="question-title">Question 34: Which of the following snippets shows the correct way of handling multiple exceptions in a single <em>except</em> clause?</div>
+<pre><code># A:
+except (TypeError, ValueError, ZeroDivisionError):
+    # Some code.
+
+# B:
+except TypeError, ValueError, ZeroDivisionError:
+    # Some code.
+
+# C:
+except: (TypeError, ValueError, ZeroDivisionError)
+    # Some code.
+
+# D:
+except: TypeError, ValueError, ZeroDivisionError
+    # Some code.
+
+# E:
+except (TypeError, ValueError, ZeroDivisionError)
+    # Some code.
+
+# F:
+except TypeError, ValueError, ZeroDivisionError
+    # Some code.</code></pre>
+        <ul class="options-list">
+            <li class="option correct">A only</li>
+            <li class="option">A and B</li>
+        </ul>
+    </div>
+
+    <!-- Question 35 -->
+    <div class="question-block">
+        <div class="question-title">Question 35: What will happen when you attempt to run the following code?</div>
+<pre><code>print(3 + "5")</code></pre>
+        <ul class="options-list">
+            <li class="option">The code will raise the AttributeError exception.</li>
+            <li class="option">The code will print "8" to the console.</li>
+            <li class="option">The code will raise the ValueError exception.</li>
+            <li class="option">The code will raise the SyntaxError exception.</li>
+            <li class="option correct">The code will raise the TypeError exception.</li>
+        </ul>
+    </div>
+
+</div>
+
+</body>
+</html>
