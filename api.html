@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student API Endpoint</title>
+    <style>
+        body {
+            background-color: #0d1117;
+            color: #58a6ff;
+            font-family: 'Courier New', Courier, monospace;
+            padding: 20px;
+            margin: 0;
+        }
+        pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-size: 15px;
+            color: #39ff14;
+        }
+    </style>
+</head>
+<body>
+    <pre id="jsonOutput">{"status": "loading", "message": "Querying student database..."}</pre>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyD9VmsEv39OuyVwN58oMUzmZYvSJ_9HhPk",
+            authDomain: "mainheadhider.firebaseapp.com",
+            databaseURL: "https://mainheadhider-default-rtdb.firebaseio.com",
+            projectId: "mainheadhider",
+            storageBucket: "mainheadhider.firebasestorage.app",
+            messagingSenderId: "935649101059",
+            appId: "1:935649101059:web:259e3e28904582ec9b9536",
+            measurementId: "G-EYWLVZB82Z"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        const outputEl = document.getElementById("jsonOutput");
+
+        function respond(data) {
+            outputEl.textContent = JSON.stringify(data, null, 2);
+        }
+
+        async function processApiRequest() {
+            // Read ?id=... from the URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const queryId = (urlParams.get('id') || '').trim();
+
+            // Validate that the input is exactly 10 digits
+            if (!/^\d{10}$/.test(queryId)) {
+                respond({
+                    status: "error",
+                    message: "Invalid input. Please provide a valid 10-digit number via ?id=XXXXXXXXXX"
+                });
+                return;
+            }
+
+            try {
+                const rootRef = ref(db, 'students/by_campus');
+                const snapshot = await get(rootRef);
+
+                if (!snapshot.exists()) {
+                    respond({
+                        status: "error",
+                        message: "Database is currently empty."
+                    });
+                    return;
+                }
+
+                let foundStudent = null;
+
+                // Loop through campus nodes and student records
+                snapshot.forEach((campusSnap) => {
+                    campusSnap.forEach((studentSnap) => {
+                        const s = studentSnap.val();
+                        if (s && typeof s === 'object') {
+                            const suc = s.suc ? String(s.suc).trim() : '';
+                            const rollNo = s.rollNo ? String(s.rollNo).trim() : '';
+
+                            if (suc === queryId || rollNo === queryId) {
+                                foundStudent = {
+                                    name: s.studentName || "N/A",
+                                    email: s.email || "N/A",
+                                    group: s.course || s.section || "N/A"
+                                };
+                                return true; // Stop loop
+                            }
+                        }
+                    });
+                    if (foundStudent) return true;
+                });
+
+                if (foundStudent) {
+                    respond({
+                        status: "success",
+                        data: foundStudent
+                    });
+                } else {
+                    respond({
+                        status: "error",
+                        message: "No student found matching this 10-digit number."
+                    });
+                }
+
+            } catch (err) {
+                respond({
+                    status: "error",
+                    message: "Database query failed: " + err.message
+                });
+            }
+        }
+
+        processApiRequest();
+    </script>
+</body>
+</html>
