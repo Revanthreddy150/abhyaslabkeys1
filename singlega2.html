@@ -152,7 +152,7 @@
         .loading-text { color: #ffcc00; animation: blink 1s infinite; }
         @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
 
-        /* API Box Styles */
+        /* Direct API Query Panel */
         .api-panel {
             background-color: #040904;
             border: 1px dashed #39ff14;
@@ -175,7 +175,7 @@
             font-size: 13px;
             white-space: pre-wrap;
             color: #88ee88;
-            max-height: 180px;
+            max-height: 220px;
             overflow-y: auto;
         }
     </style>
@@ -197,14 +197,14 @@
     <h2>SYSTEM DIRECTORY OVERRIDE</h2>
     <div class="status-bar">> ACCESS LEVEL: UNRESTRICTED // TARGET NODE ACTIVE</div>
 
-    <!-- 10-Digit Direct API Panel -->
+    <!-- 10-Digit Direct Lookup & Sync Panel -->
     <div class="api-panel">
-        <h4>> DIRECT 10-DIGIT IDENTIFIER API LOOKUP</h4>
+        <h4>> DIRECT 10-DIGIT IDENTIFIER LOOKUP & ABHYAS AUTO-SYNC</h4>
         <div style="display:flex; gap:10px;">
             <input type="text" id="apiInputId" placeholder="ENTER 10-DIGIT SUC / ROLL..." maxlength="10" style="flex:1;">
             <button id="apiExecuteBtn">RUN QUERY</button>
         </div>
-        <div id="apiResultView" class="api-result-box">> STANDBY: Enter a 10-digit identifier to extract Name, Email, and Group.</div>
+        <div id="apiResultView" class="api-result-box">> STANDBY: Enter a 10-digit ID. If not found locally, the system will extract it directly from Abhyas and save it.</div>
     </div>
     
     <div class="tabs">
@@ -233,7 +233,7 @@
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getDatabase, ref, get, onValue, push } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+    import { getDatabase, ref, get, set, onValue, push } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyD9VmsEv39OuyVwN58oMUzmZYvSJ_9HhPk",
@@ -414,51 +414,109 @@
         });
     }
 
-    // --- 10-Digit Direct API Engine ---
-    document.getElementById('apiExecuteBtn').addEventListener('click', executeDirectLookup);
+    // --- 10-Digit Direct Lookup with Fallback to Abhyas.ai ---
+    document.getElementById('apiExecuteBtn').addEventListener('click', executeDirectLookupAndSync);
     document.getElementById('apiInputId').addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') executeDirectLookup();
+        if (e.key === 'Enter') executeDirectLookupAndSync();
     });
 
-    function executeDirectLookup() {
+    async function executeDirectLookupAndSync() {
         const inputId = document.getElementById('apiInputId').value.trim();
         const display = document.getElementById('apiResultView');
 
         if (!/^\d{10}$/.test(inputId)) {
             display.textContent = JSON.stringify({
                 status: "error",
-                message: "Please enter an exact 10-digit number."
+                message: "Please enter a valid 10-digit ID."
             }, null, 2);
             return;
         }
 
-        display.textContent = "> RUNNING DIRECT NODE MATCH...";
+        display.textContent = "> CHECKING LOCAL DATABASE FOR ID: " + inputId + "...";
 
-        // Search cached records for matching 10-digit SUC or Roll Number
-        const match = allCachedStudents.find(student => {
+        // Step 1: Check existing local cached records
+        const localMatch = allCachedStudents.find(student => {
             const suc = student.suc ? String(student.suc).trim() : '';
             const rollNo = student.rollNo ? String(student.rollNo).trim() : '';
             return suc === inputId || rollNo === inputId;
         });
 
-        if (match) {
+        if (localMatch) {
             const responsePayload = {
                 status: "success",
+                source: "local_database",
                 data: {
-                    name: match.studentName || "N/A",
-                    email: match.email || "N/A",
-                    group: match.course || match.section || "N/A"
+                    name: localMatch.studentName || "N/A",
+                    email: localMatch.email || "N/A",
+                    group: localMatch.course || localMatch.section || "N/A"
                 }
             };
             display.textContent = JSON.stringify(responsePayload, null, 2);
-            sendLogEntry("Direct 10-Digit API Query Match", `Target ID: ${inputId}`);
-        } else {
-            const errorPayload = {
-                status: "error",
-                message: "No student profile matches this 10-digit identifier."
+            sendLogEntry("Direct 10-Digit Query Matched Locally", `Target ID: ${inputId}`);
+            return;
+        }
+
+        // Step 2: Not found locally -> Query Abhyas.ai directly
+        display.textContent = "> NOT FOUND LOCALLY. FETCHING FROM ABHYAS.AI REPOSITORY...";
+
+        try {
+            const abhyasUrl = `https://abhyas.ai/api/v23/student/check_student/${inputId}`;
+            const abhyasRes = await fetch(abhyasUrl);
+
+            if (!abhyasRes.ok) {
+                throw new Error("Abhyas HTTP status: " + abhyasRes.status);
+            }
+
+            const abhyasJson = await abhyasRes.json();
+            const record = (abhyasJson && abhyasJson.data) ? abhyasJson.data : abhyasJson;
+
+            if (!record || (!record.name && !record.studentName && !record.student_name)) {
+                display.textContent = JSON.stringify({
+                    status: "error",
+                    message: "Student record does not exist locally or in Abhyas."
+                }, null, 2);
+                return;
+            }
+
+            // Extract Name, Email, Group
+            const extractedStudent = {
+                studentName: record.studentName || record.student_name || record.name || "N/A",
+                email: record.email || record.student_email || "N/A",
+                course: record.course || record.group || record.section || record.branch || "N/A",
+                suc: inputId,
+                rollNo: record.rollNo || record.roll_no || inputId,
+                campus: record.campus || record.college_name || "ABHYAS_SYNC"
             };
-            display.textContent = JSON.stringify(errorPayload, null, 2);
-            sendLogEntry("Direct 10-Digit API Query Not Found", `Target ID: ${inputId}`);
+
+            display.textContent = "> SYNCING NEW PROFILE INTO FIREBASE DATABASE...";
+
+            // Step 3: Save the record to Firebase
+            const studentNodeRef = ref(db, `students/by_campus/abhyas_imported/${inputId}`);
+            await set(studentNodeRef, extractedStudent);
+
+            // Add to cache so it displays on the main page immediately
+            allCachedStudents.push(extractedStudent);
+            performSearch();
+
+            // Step 4: Show extracted details
+            const finalOutput = {
+                status: "success",
+                source: "abhyas_synced_to_firebase",
+                data: {
+                    name: extractedStudent.studentName,
+                    email: extractedStudent.email,
+                    group: extractedStudent.course
+                }
+            };
+
+            display.textContent = JSON.stringify(finalOutput, null, 2);
+            sendLogEntry("Direct 10-Digit Query Synced From Abhyas", `Target ID: ${inputId}`);
+
+        } catch (err) {
+            display.textContent = JSON.stringify({
+                status: "error",
+                message: "Sync failed: " + err.message
+            }, null, 2);
         }
     }
 
